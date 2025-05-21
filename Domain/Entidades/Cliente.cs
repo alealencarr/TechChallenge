@@ -29,7 +29,7 @@ namespace Domain.Entidades
         public Guid Id { get; }
         public CpfVo? CPF { get; set; }
         public string Nome { get; set; } = string.Empty;
-
+     
         public string Email { get; set; } = string.Empty;
 
         [NotMapped]

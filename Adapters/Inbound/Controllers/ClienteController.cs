@@ -20,13 +20,13 @@ namespace Adapters.Inbound.Controllers
         }
 
         [HttpPost]
-        public async Task<IResult> CriarCliente(CriarClienteCommand command)
+        public async Task<IActionResult> CriarCliente(CriarClienteCommand command)
         {    
             var result = await _criarClienteHandler.Handle(command);
 
             return result.IsSucess ?
-                TypedResults.Created($"/{result.Data?.Id}", result) :
-                TypedResults.BadRequest(result);
+                Created($"/{result.Data?.Id}", result) :
+                BadRequest(result);
 
 
         }

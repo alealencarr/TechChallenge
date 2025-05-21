@@ -36,9 +36,13 @@ namespace Aplicacao.UseCases.Cliente.CriarCliente
 
                 return new Response<ClienteDTO?>(data: clienteDto, code: System.Net.HttpStatusCode.Created, "Cliente Criado com sucesso.");
             }
+            catch (ArgumentException ex)
+            {
+                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
-                return  new Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível criar a categoria.");
+                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível criar a categoria.");
             }
         }
     }

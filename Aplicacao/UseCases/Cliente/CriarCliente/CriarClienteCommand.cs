@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace Aplicacao.UseCases.Cliente.CriarCliente
 {
     public class CriarClienteCommand
     {
+        [Required(ErrorMessage = "Favor informar o CPF.")]
         public string CPF { get; set; } = string.Empty;
 
         public string Nome { get; set; } = string.Empty;
