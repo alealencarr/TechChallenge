@@ -1,0 +1,55 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio cache files
+.vs/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Auto generated files
+*.generated.cs
+
+# Rider IDE
+.idea/
+
+# Logs
+*.log
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+
+# ASP.NET Core
+wwwroot/
+appsettings.Development.json
+
+# Entity Framework Core Migrations
+Migrations/
+
+# Docker
+docker-compose.override.yml
+
+# Publish output
+publish/
+
+# User secrets (local secrets store)
+secrets.json
+
+# Resharper
+_ReSharper*/
+
+# DotCover
+*.dotCover
+
+# Others
+*.vsix
+*.dbmdl
+
+# Mac system files
+.DS_Store
