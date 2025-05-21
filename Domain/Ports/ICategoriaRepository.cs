@@ -9,6 +9,8 @@ namespace Domain.Ports
 {
     public interface ICategoriaRepository
     {
-        void Adicionar(Categoria categoria);
+        Task<List<Categoria>> GetAll();
+
+        Task<Categoria?> GetById(string id);
     }
 }

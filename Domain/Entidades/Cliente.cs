@@ -12,7 +12,7 @@ namespace Domain.Entidades
     {
         public Cliente(string cpf, string nome, string email)
         {
-            new CpfVo(cpf);
+            CPF =  new CpfVo(cpf);
             Nome= nome;
             Email= email;
             ClienteIdentificado = true;

@@ -7,19 +7,19 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplicacao.UseCases.Cliente.CriarCliente
+namespace Aplicacao.UseCases.Cliente.Criar
 {
-    public class CriarClienteHandler
+    public class CriarHandler
     {
 
         private readonly IClienteRepository _clienteRepository;
 
-        public CriarClienteHandler(IClienteRepository clienteRepository)
+        public CriarHandler(IClienteRepository clienteRepository)
         {
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<Response<ClienteDTO?>> Handle(CriarClienteCommand command)
+        public async Task<Response<ClienteDTO?>> Handler(CriarCommand command)
         {
 
             try
@@ -42,7 +42,7 @@ namespace Aplicacao.UseCases.Cliente.CriarCliente
             }
             catch (Exception ex)
             {
-                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível criar a categoria.");
+                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível criar o cliente.");
             }
         }
     }

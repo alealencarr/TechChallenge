@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,8 @@ namespace Domain.Ports
 {
     public interface IPedidoRepository
     {
+        Task Adicionar(Pedido pedido);
+        Task Alterar(Pedido pedido);
+        Task Finalizar(Pedido pedido);
     }
 }

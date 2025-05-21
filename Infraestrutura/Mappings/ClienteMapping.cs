@@ -23,13 +23,17 @@ namespace Infraestrutura.Mapping
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(255);
 
-            builder.Property(x => x.CPF.Valor)
+            builder.OwnsOne(x => x.CPF, cpf => //Mapeando Value O.
+            {
+                cpf.Property(x => x.Valor).HasColumnName("Cpf")
                 .IsRequired(true)
                 .HasColumnType("VARCHAR")
                 .HasMaxLength(11);
+            });
+
 
             builder.Property(x => x.Nome)
-                .IsRequired(true)
+                .IsRequired(false)
                 .HasColumnType("VARCHAR")
                 .HasMaxLength(100);
         }

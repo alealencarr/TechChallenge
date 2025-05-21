@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace Domain.Entidades.ItemPedido
 {
-    public class ItemComplementoPedido(Domain.Entidades.ItemCardapio.ItemComplementoCardapio itemComplementoBase)
+    public class ItemComplementoPedido
     {
+        private ItemComplementoPedido() {} 
+        internal ItemComplementoPedido (Domain.Entidades.ItemCardapio.ItemComplementoCardapio itemComplementoBase, Guid id)
+        {
+            PedidoId = id;
+        }
+
+        public Guid PedidoId { get; private set; }
+
     }
 }

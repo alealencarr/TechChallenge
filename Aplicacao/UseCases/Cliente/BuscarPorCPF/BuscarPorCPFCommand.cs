@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplicacao.UseCases.Cliente.BuscarClientePorCPF
+namespace Aplicacao.UseCases.Cliente.BuscarPorCPF
 {
-    public class BuscarClientePorCPFCommand
+    public class BuscarPorCPFCommand
     {
         public string CPF { get; set; }
 
-        public BuscarClientePorCPFCommand(string cpf)
+        public BuscarPorCPFCommand(string cpf)
         { 
             this.CPF = cpf; 
         }

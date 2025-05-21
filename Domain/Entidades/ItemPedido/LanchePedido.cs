@@ -13,8 +13,11 @@ namespace Domain.Entidades.ItemPedido
         private readonly List<Ingrediente> _ingredientes = new();
         public IReadOnlyCollection<Ingrediente> Ingredientes => _ingredientes.AsReadOnly();
 
-        public LanchePedido(Domain.Entidades.ItemCardapio.LancheCardapio lancheBase)
+        private LanchePedido() { }
+        internal LanchePedido(Domain.Entidades.ItemCardapio.LancheCardapio lancheBase, Guid IdPedido)
         {
+            PedidoId = IdPedido;
+
             _ingredientes = [.. lancheBase.Ingredientes];
         }
 
@@ -28,6 +31,8 @@ namespace Domain.Entidades.ItemPedido
         {
             _ingredientes.Add(ingrediente);
         }
+
+        public Guid PedidoId { get; private set; }
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aplicacao.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace Domain.ValueObjects
             if (!IsValid(valor))
                 throw new ArgumentException("CPF inválido.");
 
-            Valor = valor;
+            Valor = valor.FormataCpf();
         }
 
         public override string ToString()

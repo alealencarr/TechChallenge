@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>9b89cacc-3958-4e3d-9d61-41ae6abcc30a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.5" />
   </ItemGroup>
 
   <ItemGroup>

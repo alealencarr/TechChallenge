@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Pedido
 {
-    public class CriarPedidoUseCase
+    public class PedidoDTO
     {
     }
 }

@@ -27,7 +27,8 @@ namespace Adapters.Outbound.Repositories
 
         public async Task Alterar(Cliente cliente)
         {
-            throw new NotImplementedException();
+            _context.Clientes.Update(cliente);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Cliente?> GetClientePorCPF(string CPF)

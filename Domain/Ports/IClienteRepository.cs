@@ -13,6 +13,6 @@ namespace Domain.Ports
         Task Adicionar(Cliente cliente);
         Task Alterar(Cliente cliente);
 
-        Task<Cliente> GetClientePorCPF(string CPF);
+        Task<Cliente?> GetClientePorCPF(string CPF);
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplicacao.UseCases.Produtos
+namespace Aplicacao.UseCases.Produtos.Buscar
 {
-    public class AlterarProdutoUseCase
+    public class BuscarCommand
     {
     }
 }

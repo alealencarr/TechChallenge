@@ -14,6 +14,6 @@ namespace Domain.Entidades
             Id = Guid.NewGuid();
         }
         public Guid Id { get; }
-        public string Nome { get; set; }
+        public string Nome { get; set; } = string.Empty;
     }
 }
