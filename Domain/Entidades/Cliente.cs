@@ -21,7 +21,7 @@ namespace Domain.Entidades
             ClienteIdentificado = false;
         }
 
-        public Guid Id { get; private set;  }
+        public Guid Id { get; set;  }
         public CpfVo? CPF { get; set; }
         public string Nome { get; set; } = string.Empty;
 

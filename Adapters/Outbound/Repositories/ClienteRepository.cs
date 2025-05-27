@@ -27,12 +27,12 @@ namespace Adapters.Outbound.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Cliente?> GetClientePorCPF(string CPF)
+        public async Task<Cliente?> GetByCPF(string CPF)
         {
            return await _context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.CPF.Valor == CPF);           
         }
 
-        public async Task<Cliente?> GetClientePorId(string id)
+        public async Task<Cliente?> GetById(string id)
         {
             return await _context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id.ToString() == id);
         }

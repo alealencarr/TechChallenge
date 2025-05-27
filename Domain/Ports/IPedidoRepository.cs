@@ -10,7 +10,6 @@ namespace Domain.Ports
     public interface IPedidoRepository
     {
         Task Adicionar(Pedido pedido);
-        Task Alterar(Pedido pedido);
-        Task Finalizar(Pedido pedido);
+         Task Finalizar(Pedido pedido);
     }
 }

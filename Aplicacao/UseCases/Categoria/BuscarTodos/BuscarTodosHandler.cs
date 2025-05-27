@@ -1,5 +1,6 @@
 ﻿
 using Contracts.DTO.Categoria;
+using Domain.Entidades;
 using Domain.Ports;
 using System.Net;
 
@@ -21,12 +22,13 @@ namespace Aplicacao.UseCases.Categoria.BuscarTodos
             {
                 var categories = await _categoriaRepository.GetAll();
 
-                if (categories is null)
+                
+                if ((categories?.Count ?? 0) == 0)
                     return new Contracts.Response<List<CategoriaDTO>>(data: null, code: System.Net.HttpStatusCode.NotFound, "Nenhuma categoria encontrada.");
 
                 var categoriesDto = new List<CategoriaDTO>();
 
-                categoriesDto = categories
+                categoriesDto = categories!
                  .Select(x => new CategoriaDTO { Id = x.Id.ToString(), Nome = x.Nome })
                  .ToList();
 
@@ -38,7 +40,7 @@ namespace Aplicacao.UseCases.Categoria.BuscarTodos
             {
                 return new Contracts.Response<List<CategoriaDTO>>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch 
             {
                 return new Contracts.Response<List<CategoriaDTO>>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível localizar as categorias.");
             }

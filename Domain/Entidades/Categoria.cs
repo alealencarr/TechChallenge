@@ -9,8 +9,10 @@ namespace Domain.Entidades
             Nome = nome;
             Id = Guid.NewGuid();
         }
+
+        public Categoria() { }
  
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         public string Nome { get; set; }
 

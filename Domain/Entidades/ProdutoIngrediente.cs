@@ -8,14 +8,14 @@ namespace Domain.Entidades
 {
     public class ProdutoIngrediente
     {
-        public Guid IdProduto { get; set; }
-        public Produto Produto { get; set; }
-        public Guid IdIngrediente { get; set; }
-        public Ingrediente Ingrediente { get; set; }
-        public ProdutoIngrediente(Guid idProduto, Guid idIngrediente)
+        public Guid ProdutoId { get; set; }
+        public Produto? Produto { get; set; }
+        public Guid IngredienteId { get; set; }
+        public Ingrediente? Ingrediente { get; set; }
+        public ProdutoIngrediente(Guid produtoId, Guid ingredienteId)
         {
-            IdProduto = idProduto;
-            IdIngrediente = idIngrediente;
+            ProdutoId = produtoId;
+            IngredienteId = ingredienteId;
         }
     }
 }

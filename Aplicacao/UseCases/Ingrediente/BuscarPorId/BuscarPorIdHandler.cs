@@ -36,7 +36,7 @@ namespace Aplicacao.UseCases.Ingrediente.BuscarPorId
             {
                 return new Contracts.Response<IngredienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch
             {
                 return new Contracts.Response<IngredienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível localizar o Ingrediente.");
             }

@@ -45,6 +45,8 @@ builder.Services.AddScoped<IIngredienteRepository, IngredienteRepository>();
 builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Criar.CriarHandler>();
 builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Alterar.AlterarHandler>();
 builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.BuscarPorId.BuscarPorIdHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.BuscarTodos.BuscarTodosHandler>();
+
 ///
 
 
@@ -58,6 +60,18 @@ builder.Services.AddSwaggerGen(x =>
 var cnnStr = builder.Configuration.GetConnectionString("minhaconnectionstring") ?? string.Empty;
 
 builder.Services.AddDbContext<AppDbContext>(x => { x.UseSqlServer(cnnStr); });
+
+builder.Services.AddDbContext<AppDbContext>(x =>
+{
+    x.UseSqlServer(cnnStr, options =>
+    {
+        options.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null
+        );
+    });
+});
 
 
 var app = builder.Build();

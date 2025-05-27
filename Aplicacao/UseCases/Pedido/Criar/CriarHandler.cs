@@ -33,7 +33,7 @@ namespace Aplicacao.UseCases.Pedido.Criar
 
                 if (command.ClienteId.HasValue)
                 {
-                    var clienteBase = await _clienteRepository.GetClientePorId(command.ClienteId.Value.ToString());
+                    var clienteBase = await _clienteRepository.GetById(command.ClienteId.Value.ToString());
 
                     if (clienteBase is null)
                         return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Cliente com ID {command.ClienteId.Value.ToString()} não encontrado.");
@@ -44,7 +44,7 @@ namespace Aplicacao.UseCases.Pedido.Criar
 
                 foreach (var item in command.Itens)
                 {
-                    var product = await _produtoRepository.BuscarPorID(item.ProdutoId.ToString());
+                    var product = await _produtoRepository.GetById(item.ProdutoId.ToString());
 
                     if (product is null)
                         return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Produto com ID {item.ProdutoId.ToString()} não encontrado.");
@@ -53,7 +53,7 @@ namespace Aplicacao.UseCases.Pedido.Criar
 
                     var itemPedido = new ItemPedido(pedido.Id, product.Id, product.Preco);
 
-                    if (product.Categoria.IsLanche())
+                    if (product.Categoria!.IsLanche())
                     {
                         foreach (var ingrediente in item.IngredientesLanche)
                         {
@@ -91,7 +91,7 @@ namespace Aplicacao.UseCases.Pedido.Criar
             {
                 return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch  
             {
                 return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.InternalServerError, "Não foi possível criar o pedido.");
             }

@@ -23,6 +23,10 @@ namespace Adapters.Outbound.Repositories
             return await _appDbContext.Ingredientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id.ToString() == Id);
         }
 
+        public async Task<List<Ingrediente>?> GetAll()
+        {
+            return await _appDbContext.Ingredientes.AsNoTracking().ToListAsync();
+        }
         public async Task Adicionar(Ingrediente ingrediente)
         {
             await _appDbContext.Ingredientes.AddAsync(ingrediente);

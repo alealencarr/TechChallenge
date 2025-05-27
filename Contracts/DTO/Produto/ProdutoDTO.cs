@@ -5,7 +5,7 @@ namespace Contracts.DTO.Produto
 {
     public class ProdutoDTO
     {
-        public ProdutoDTO(string nome, decimal preco, Domain.Entidades.Categoria categoria, List<ProdutoImagemDTO> imagens, string descricao, string id, List<ProdutoIngredienteDTO> ingredientes)
+        public ProdutoDTO(string nome, decimal preco, Domain.Entidades.Categoria? categoria, List<ProdutoImagemDTO> imagens, string descricao, string id, List<ProdutoIngredienteDTO> ingredientes)
         {
             Nome = nome;
             Preco = preco;
@@ -22,7 +22,7 @@ namespace Contracts.DTO.Produto
 
         public decimal Preco { get; set; }
 
-        public Domain.Entidades.Categoria Categoria { get; set; }
+        public Domain.Entidades.Categoria? Categoria { get; set; }
 
         public List<ProdutoImagemDTO> Imagens { get; set; } = [];
 

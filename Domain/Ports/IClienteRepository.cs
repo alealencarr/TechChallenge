@@ -7,7 +7,7 @@ namespace Domain.Ports
         Task Adicionar(Cliente cliente);
         Task Alterar(Cliente cliente);
 
-        Task<Cliente?> GetClientePorId(string id);
-        Task<Cliente?> GetClientePorCPF(string CPF);
+        Task<Cliente?> GetById(string id);
+        Task<Cliente?> GetByCPF(string CPF);
     }
 }

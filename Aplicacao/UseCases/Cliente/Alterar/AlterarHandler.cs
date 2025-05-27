@@ -13,15 +13,15 @@ namespace Aplicacao.UseCases.Cliente.Alterar
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<Contracts.Response<ClienteDTO?>> Handler(AlterarPorCPFCommand command)
+        public async Task<Contracts.Response<ClienteDTO?>> Handler(AlterarPorIdCommand command)
         {
 
             try
             {
-                var cliente = await _clienteRepository.GetClientePorCPF(command.Cpf);
+                var cliente = await _clienteRepository.GetById(command.Id);
 
                 if (cliente is null)
-                    return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, "Cliente não encontrado com base neste CPF.");
+                    return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, "Cliente não encontrado com base neste Id.");
 
 
                 cliente.Email = command.Email;
@@ -29,7 +29,7 @@ namespace Aplicacao.UseCases.Cliente.Alterar
 
                 await _clienteRepository.Alterar(cliente);
 
-                ClienteDTO clienteDto = new ClienteDTO(cliente.CPF.Valor, cliente.Nome, cliente.Email, cliente.Id);
+                ClienteDTO clienteDto = new ClienteDTO(cliente.CPF!.Valor, cliente.Nome, cliente.Email, cliente.Id);
 
                 return new Contracts.Response<ClienteDTO?>(data: clienteDto, code: System.Net.HttpStatusCode.OK, "Cliente alterado com sucesso.");
             }
@@ -37,7 +37,7 @@ namespace Aplicacao.UseCases.Cliente.Alterar
             {
                 return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch 
             {
                 return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível alterar o cliente.");
             }

@@ -8,7 +8,7 @@ namespace Contracts.Request.Cliente
         public string Email { get; set; } = string.Empty;
 
 
-        public AlterarRequest(string cpf, string nome, string email)
+        public AlterarRequest(string nome, string email)
         {
             Nome = nome;
             Email = email;

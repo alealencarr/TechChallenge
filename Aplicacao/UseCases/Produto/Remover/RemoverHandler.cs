@@ -24,7 +24,7 @@ namespace Aplicacao.UseCases.Produtos.Remover
 
             try
             {
-                var produto = await _produtoRepository.BuscarPorID(id);
+                var produto = await _produtoRepository.GetById(id);
 
                 if (produto is null)
                     return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, "Produto não encontrado com base neste Id.");
@@ -38,8 +38,8 @@ namespace Aplicacao.UseCases.Produtos.Remover
                                                                                                     })], produto.Descricao, produto.Id.ToString()
                                                                                                     , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
                                                                                                     {
-                                                                                                        IdProduto = ing.IdProduto,
-                                                                                                        IdIngrediente = ing.IdIngrediente
+                                                                                                        IdProduto = ing.ProdutoId,
+                                                                                                        IdIngrediente = ing.IngredienteId
                                                                                                     })]);
 
  
@@ -49,7 +49,7 @@ namespace Aplicacao.UseCases.Produtos.Remover
             {
                 return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch  
             {
                 return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível excluir o produto.");
             }

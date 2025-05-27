@@ -13,5 +13,7 @@
             Preco = preco;
             Id = id;
         }
+
+        public IngredienteDTO() { }
     }
 }

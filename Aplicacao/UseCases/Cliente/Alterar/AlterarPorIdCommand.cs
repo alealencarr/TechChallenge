@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Cliente.Alterar
 {
-    public class AlterarPorCPFCommand
+    public class AlterarPorIdCommand
     {
         public string Nome { get; private set; } = string.Empty;
         public string Email { get; private set; } = string.Empty;
-        public string Cpf { get; private set; } = string.Empty;
+        public string Id { get; private set; } = string.Empty;
 
-        public AlterarPorCPFCommand(string cpf, string nome, string email)
+        public AlterarPorIdCommand(string id, string nome, string email)
         {
-            Cpf = cpf;
+            Id = id;
             Nome = nome;
             Email = email;
         }

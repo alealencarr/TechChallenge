@@ -36,7 +36,7 @@ namespace Aplicacao.UseCases.Cliente.Criar
             {
                 return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch 
             {
                 return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível criar o cliente.");
             }

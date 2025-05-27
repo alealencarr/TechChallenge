@@ -63,7 +63,7 @@ namespace Adapters.Inbound.Controllers
         }
 
         //[HttpPut("Alterar")]
-        //[Description("Alteração do Pedido com base no CPF informado via QueryString")]
+        //[Description("Alteração do Pedido com base no CPF.")]
         //public async Task<IActionResult> Alterar(AlterarCommand command, [FromQuery] string cpf)
         //{
         //    AlterarPorCPFCommand commandCpf = new AlterarPorCPFCommand(cpf, command.Nome, command.Email);

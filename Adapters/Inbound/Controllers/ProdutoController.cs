@@ -44,8 +44,8 @@ namespace Adapters.Inbound.Controllers
         }
 
         [HttpPut("alterar", Order = 2)]
-        [Description("Alteração do produto com base no Id informado via QueryString")]
-        public async Task<IActionResult> Alterar(Contracts.Request.Produto.AlterarRequest request, [FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        [Description("Alteração do produto com base no Id.")]
+        public async Task<IActionResult> Alterar(Contracts.Request.Produto.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
 
             AlterarPorIdCommand commandId = new AlterarPorIdCommand(request.Nome, request.Preco, request.CategoriaId, request.Imagens, request.Descricao,id, request.Ingredientes);

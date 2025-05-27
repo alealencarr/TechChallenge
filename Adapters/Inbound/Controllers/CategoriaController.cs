@@ -30,7 +30,7 @@ namespace Adapters.Inbound.Controllers
 
 
         [HttpGet("{id}")]
-        [Description("Busca a categoria com base no ID informado via QueryString.")]
+        [Description("Busca a categoria com base no ID informado.")]
         public async Task<IActionResult> BuscarPorId([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
 

@@ -11,7 +11,7 @@ namespace Domain.Ports
 
         Task<List<Produto>> Buscar(string? id, string? name);
 
-        Task<Produto?> BuscarPorID (string id);
+        Task<Produto?> GetById (string id);
 
     }
 }

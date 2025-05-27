@@ -39,8 +39,8 @@ namespace Aplicacao.UseCases.Produtos.Buscar
                     Preco = x.Preco,
                     Ingredientes = [.. x.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
                     {
-                        IdProduto = ing.IdProduto,
-                        IdIngrediente = ing.IdIngrediente
+                        IdProduto = ing.ProdutoId,
+                        IdIngrediente = ing.IngredienteId
                     })],
                     Imagens = [.. x.ProdutoImagens.Select(img => new ProdutoImagemDTO
                     {
@@ -57,7 +57,7 @@ namespace Aplicacao.UseCases.Produtos.Buscar
             {
                 return new Contracts.Response<List<ProdutoDTO>?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch
             {
                 return new Contracts.Response<List<ProdutoDTO>?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível localizar a Produto.");
             }

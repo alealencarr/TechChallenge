@@ -24,10 +24,7 @@ namespace Adapters.Outbound.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task Alterar(Pedido pedido)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public async Task Finalizar(Pedido pedido)
         {

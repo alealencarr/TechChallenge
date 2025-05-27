@@ -19,6 +19,7 @@ namespace Aplicacao.UseCases.Produtos.Alterar
             Imagens = imagens;
             CategoriaId = categoriaId;
             Ingredientes = ingredientes;
+            Id = id;
         }
         public string Nome { get; set; }
         public string Id { get; set; }

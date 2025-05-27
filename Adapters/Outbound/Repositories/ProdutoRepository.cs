@@ -27,8 +27,25 @@ namespace Adapters.Outbound.Repositories
 
         public async Task Alterar(Produto produto)
         {
-            _appDbContext.Produtos.Update(produto);
+            var produtoExistente = await _appDbContext.Produtos
+                 .Include(p => p.ProdutoIngredientes)
+                 .Include(p => p.ProdutoImagens)
+                 .FirstOrDefaultAsync(p => p.Id == produto.Id);
+
+ 
+            if (produtoExistente.ProdutoIngredientes.Count > 0)
+                _appDbContext.ProdutoIngredientes.RemoveRange(produtoExistente.ProdutoIngredientes);
+
+            if (produtoExistente.ProdutoImagens.Count > 0)
+                _appDbContext.ProdutoImagens.RemoveRange(produtoExistente.ProdutoImagens);
+
+            _appDbContext.Entry(produtoExistente).CurrentValues.SetValues(produto);
+
+            produtoExistente.VinculaIngredientes(produto.ProdutoIngredientes);
+            produtoExistente.VinculaImagens(produto.ProdutoImagens);
+
             await _appDbContext.SaveChangesAsync();
+
         }
 
         public async Task<List<Produto>> Buscar(string? id, string? name)
@@ -56,7 +73,7 @@ namespace Adapters.Outbound.Repositories
 
             return await query.ToListAsync();
         }
-        public async Task<Produto?> BuscarPorID(string id)
+        public async Task<Produto?> GetById(string id)
         {
             return await _appDbContext.Produtos
             .AsNoTracking()

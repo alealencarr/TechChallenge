@@ -28,7 +28,7 @@ namespace Adapters.Inbound.Controllers
 
         public async Task<IActionResult> Criar(Contracts.Request.Cliente.CriarRequest request)
         {
-            CriarCommand command = new(request.Email, request.Nome, request.Email);
+            CriarCommand command = new(request.CPF, request.Nome, request.Email);
 
             var result = await _criarHandler.Handler(command);
 
@@ -38,12 +38,12 @@ namespace Adapters.Inbound.Controllers
         }
 
         [HttpPut("alterar")]
-        [Description("Alteração do cliente com base no CPF informado via QueryString")]
-        public async Task<IActionResult> Alterar(Contracts.Request.Cliente.AlterarRequest request, [FromQuery][Required(ErrorMessage = "CPF é obrigatório.")] string cpf)
+        [Description("Alteração do cliente com base no Id.")]
+        public async Task<IActionResult> Alterar(Contracts.Request.Cliente.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
-            AlterarPorCPFCommand commandCpf = new AlterarPorCPFCommand(cpf, request.Nome, request.Email);
+            AlterarPorIdCommand commandId = new AlterarPorIdCommand(id, request.Nome, request.Email);
 
-            var result = await _alterarClienteHandler.Handler(commandCpf);
+            var result = await _alterarClienteHandler.Handler(commandId);
 
             return result.IsSucess ?
                 Ok(result) :
@@ -51,7 +51,7 @@ namespace Adapters.Inbound.Controllers
         }
 
         [HttpGet("{cpf}")]
-        [Description("Buscar o cliente com base no CPF informado via QueryString")]
+        [Description("Buscar o cliente com base no CPF.")]
         public async Task<IActionResult> BuscarPorCPF([FromRoute][Required(ErrorMessage = "CPF é obrigatório.")] string cpf)
         {
             BuscarPorCPFCommand command = new(cpf);

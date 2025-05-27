@@ -21,7 +21,7 @@ namespace Domain.Entidades
 
         public decimal Preco { get; set; }
         public Guid CategoriaId { get; set; }
-        public Categoria Categoria  { get; set; }
+        public Categoria? Categoria  { get; set; }
 
         public string Descricao { get; set; }
 

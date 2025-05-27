@@ -15,5 +15,7 @@ namespace Domain.Ports
 
         Task Alterar(Ingrediente ingrediente);
 
+        Task<List<Ingrediente>?> GetAll();
+
     }
 }

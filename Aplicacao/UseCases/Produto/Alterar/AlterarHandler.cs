@@ -29,14 +29,14 @@ namespace Aplicacao.UseCases.Produtos.Alterar
 
             try
             {
-                Domain.Entidades.Categoria _categoria = await _categoriaRepository.GetById(command.CategoriaId.ToString());
+                Domain.Entidades.Categoria? _categoria = await _categoriaRepository.GetById(command.CategoriaId.ToString());
 
                 if (_categoria is null)
                     return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, $"Categoria com ID {command.CategoriaId.ToString()} não encontrada.");
  
                 bool _isLanche = _categoria.IsLanche();
 
-                var produto = await _produtoRepository.BuscarPorID(command.Id);
+                var produto = await _produtoRepository.GetById(command.Id);
 
                 if (produto is null)
                     return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, $"Produto não encontrado com base neste Id {command.Id}.");
@@ -102,8 +102,8 @@ namespace Aplicacao.UseCases.Produtos.Alterar
                                                                                                     })], command.Descricao, produto.Id.ToString()
                                                                                                    , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
                                                                                                     {
-                                                                                                        IdProduto = ing.IdProduto,
-                                                                                                        IdIngrediente = ing.IdIngrediente
+                                                                                                        IdProduto = ing.ProdutoId,
+                                                                                                        IdIngrediente = ing.IngredienteId
                                                                                                     })]);
 
                 return new Contracts.Response<ProdutoDTO?>(data: produtoDto, code: System.Net.HttpStatusCode.OK, "Produto alterado com sucesso.");
@@ -112,7 +112,7 @@ namespace Aplicacao.UseCases.Produtos.Alterar
             {
                 return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch
             {
                 return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível alterar o produto.");
             }

@@ -32,7 +32,7 @@ namespace Aplicacao.UseCases.Categoria.BuscarPorId
             {
                 return new Contracts.Response<CategoriaDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch 
             {
                 return new Contracts.Response<CategoriaDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível localizar a categoria.");
             }

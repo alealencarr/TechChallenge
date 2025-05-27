@@ -28,7 +28,7 @@ namespace Aplicacao.UseCases.Produtos.Criar
 
             try
             {
-                Domain.Entidades.Categoria _categoria = await _categoriaRepository.GetById(command.CategoriaId.ToString());
+                Domain.Entidades.Categoria? _categoria = await _categoriaRepository.GetById(command.CategoriaId.ToString());
                 if(_categoria is null)
                     return new Contracts.Response<ProdutoDTO?>(data: null, HttpStatusCode.BadRequest, message: $"Categoria com ID {command.CategoriaId.ToString()} não encontrada.");
 
@@ -89,8 +89,8 @@ namespace Aplicacao.UseCases.Produtos.Criar
                                                                                                     })], command.Descricao, produto.Id.ToString()
                                                                                                     , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
                                                                                                     {
-                                                                                                        IdProduto = ing.IdProduto,
-                                                                                                        IdIngrediente = ing.IdIngrediente
+                                                                                                        IdProduto = ing.ProdutoId,
+                                                                                                        IdIngrediente = ing.IngredienteId
                                                                                                     })]);
 
                 return new Contracts.Response<ProdutoDTO?>(data: produtoDto, code: System.Net.HttpStatusCode.Created, "Produto criado com sucesso.");
@@ -99,7 +99,7 @@ namespace Aplicacao.UseCases.Produtos.Criar
             {
                 return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (Exception ex)
+            catch  
             {
                 return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível criar o produto.");
             }
