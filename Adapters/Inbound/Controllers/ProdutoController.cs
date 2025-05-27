@@ -32,8 +32,10 @@ namespace Adapters.Inbound.Controllers
 
         [HttpPost("criar", Name = "Criar",Order = 1)]
         [Description("Inclusão do produto com base no objeto informado via Body")]
-        public async Task<IActionResult> Criar(CriarCommand command)
+        public async Task<IActionResult> Criar(Contracts.Request.Produto.CriarRequest request)
         {
+            CriarCommand command = new(request.Nome, request.Preco, request.CategoriaId, request.Imagens, request.Descricao, request.Ingredientes);
+
             var result = await _criarHandler.Handle(command);
 
             return result.IsSucess ?
@@ -43,10 +45,10 @@ namespace Adapters.Inbound.Controllers
 
         [HttpPut("alterar", Name = "Alterar", Order = 2)]
         [Description("Alteração do produto com base no Id informado via QueryString")]
-        public async Task<IActionResult> Alterar(AlterarCommand command, [FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> Alterar(Contracts.Request.Produto.AlterarRequest command, [FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
 
-            AlterarPorIdCommand commandId = new AlterarPorIdCommand(command.Nome, command.Preco, command.Categoria, command.Imagens, command.Descricao,id, command.Ingredientes);
+            AlterarPorIdCommand commandId = new AlterarPorIdCommand(command.Nome, command.Preco, command.CategoriaId, command.Imagens, command.Descricao,id, command.Ingredientes);
             
             var result = await _alterarHandler.Handle(commandId);
 
@@ -56,7 +58,7 @@ namespace Adapters.Inbound.Controllers
         }
 
         [HttpGet(Name = "Buscar por Categoria", Order = 3)]
-        [Description("Buscar produtos com base na Categoria informado no body")]
+        [Description("Buscar produtos com base na Categoria informado na url")]
         public async Task<IActionResult> Buscar([FromQuery] string? id = null, [FromQuery]  string? name = null)
         {
             var result = await _buscarHandler.Handle(id, name);

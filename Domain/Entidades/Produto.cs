@@ -8,26 +8,33 @@ namespace Domain.Entidades
 {
     public class Produto
     {
-        public Produto(string nome, decimal preco, Categoria categoria, List<Imagem>? imagens, string descricao, List<Ingrediente>? ingredientes = null)
+        public Produto(string nome, decimal preco, Guid categoriaId, Categoria categoria, List<Imagem>? imagens, string descricao )
         {
             Id = Guid.NewGuid();
             Nome = nome;
             Preco = preco;
             Descricao = descricao;
             Imagens = imagens;
+            CategoriaId = categoriaId;
             Categoria = categoria;
-            Ingredientes = ingredientes;
+
         }
         public Guid Id { get; }
         public string Nome { get; set; }
 
         public decimal Preco { get; set; }
-        public Categoria Categoria { get; set; }
+        public Guid CategoriaId { get; set; }
+        public Categoria Categoria  { get; set; }
 
-        public List<Imagem>? Imagens { get; set; }
+        public ICollection<Imagem>? Imagens { get; set; }
 
         public string Descricao { get; set; }
 
-        public List<Ingrediente>? Ingredientes { get; set; }
+        public ICollection<ProdutoIngrediente>? ProdutoIngredientes { get; private set; }
+
+        public void VinculaIngredientes(ICollection<ProdutoIngrediente>? produtoIngredientes)
+        {
+            ProdutoIngredientes = produtoIngredientes;
+        }
     }
 }

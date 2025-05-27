@@ -6,17 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplicacao.UseCases.Produtos.Alterar
+namespace Contracts.Request.Produto
 {
-    public class AlterarCommand
+    public class AlterarRequest
     {
-        public AlterarCommand(string nome, decimal preco, Domain.Entidades.Categoria categoria, List<Imagem>? imagens, string descricao, List<Domain.Entidades.Ingrediente>? ingredientes = null)
+        public AlterarRequest(string nome, decimal preco, Guid categoriaId, List<Imagem>? imagens, string descricao, List<Guid>? ingredientes = null)
         {
             Nome = nome;
             Preco = preco;
             Descricao = descricao;
             Imagens = imagens;
-            Categoria = categoria;
+            CategoriaId = categoriaId;
             Ingredientes = ingredientes;
         }
         [Required(ErrorMessage = "É necessário informar o nome.")]
@@ -27,14 +27,13 @@ namespace Aplicacao.UseCases.Produtos.Alterar
         public decimal Preco { get; set; }
 
         [Required(ErrorMessage = "É necessário informar a categoria.")]
-        public Domain.Entidades.Categoria Categoria { get; set; }
+        public Guid CategoriaId { get; set; }
 
         public List<Imagem>? Imagens { get; set; }
 
         [Required(ErrorMessage = "É necessário informar a descrição.")]
         public string Descricao { get; set; }
 
-        // Só necessário se for "Lanche"
-        public List<Domain.Entidades.Ingrediente>? Ingredientes { get; set; }
+        public List<Guid>? Ingredientes { get; set; }
     }
 }

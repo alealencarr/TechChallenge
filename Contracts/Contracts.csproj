@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="DTO\Campanhas\" />
     <Folder Include="Request\Campanha\" />
-    <Folder Include="Request\Produto\" />
   </ItemGroup>
 
   <ItemGroup>

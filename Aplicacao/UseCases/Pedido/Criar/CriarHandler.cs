@@ -41,7 +41,10 @@ namespace Aplicacao.UseCases.Pedido.Criar
 
                 foreach (var item in command.Itens)
                 {
-                    var product = await _produtoRepository.BuscarPorID(item.ProdutoId.ToString()) ?? throw new ArgumentException($"Produto com ID {item.ProdutoId.ToString()} não encontrado.");
+                    var product = await _produtoRepository.BuscarPorID(item.ProdutoId.ToString());
+
+                    if (product is null)
+                        return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Produto com ID {item.ProdutoId.ToString()} não encontrado.");
 
                     var ingredientes = new List<IngredientePersonalizado>();
 
@@ -49,7 +52,10 @@ namespace Aplicacao.UseCases.Pedido.Criar
                     {
                         foreach (var ingrediente in item.IngredientesPersonalizados)
                         {
-                            var ingredienteDb = await _ingredienteRepository.GetById(ingrediente.Id.ToString()) ?? throw new ArgumentException($"Ingrediente com ID {ingrediente.Id.ToString()} não encontrado.");
+                            var ingredienteDb = await _ingredienteRepository.GetById(ingrediente.Id.ToString());
+
+                            if (ingredienteDb is null)
+                                return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Ingrediente com ID {ingrediente.Id.ToString()} não encontrado.");
 
                             ingredientes.Add(new IngredientePersonalizado
                             {

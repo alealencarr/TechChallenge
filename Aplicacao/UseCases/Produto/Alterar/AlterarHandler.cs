@@ -1,5 +1,7 @@
 ﻿using Aplicacao.Common;
+using Contracts.DTO.Ingrediente;
 using Contracts.DTO.Produto;
+using Domain.Entidades;
 using Domain.Ports;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,13 @@ namespace Aplicacao.UseCases.Produtos.Alterar
     public class AlterarHandler
     {
         private readonly IProdutoRepository _produtoRepository;
-
-        public AlterarHandler(IProdutoRepository produtoRepository)
+        private readonly ICategoriaRepository _categoriaRepository;
+        private readonly IIngredienteRepository _ingredienteRepository;
+        public AlterarHandler(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository, IIngredienteRepository ingredienteRepository)
         {
             _produtoRepository = produtoRepository;
+            _categoriaRepository = categoriaRepository;
+            _ingredienteRepository = ingredienteRepository;
         }
 
         public async Task<Contracts.Response<ProdutoDTO?>> Handle(AlterarPorIdCommand command)
@@ -24,27 +29,50 @@ namespace Aplicacao.UseCases.Produtos.Alterar
 
             try
             {
-                if (command.Categoria.IsLanche() && (command.Ingredientes?.Count ?? 0) == 0)
-                    return new Contracts.Response<ProdutoDTO?>(data: null, HttpStatusCode.BadRequest, message: "É necessário informar pelo menos um ingrediente para alterar um produto do tipo Lanche.");
+                Domain.Entidades.Categoria _categoria = await _categoriaRepository.GetById(command.CategoriaId.ToString());
+
+                if (_categoria is null)
+                    return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, $"Categoria com ID {command.CategoriaId.ToString()} não encontrada.");
+ 
+                bool _isLanche = _categoria.IsLanche();
 
                 var produto = await _produtoRepository.BuscarPorID(command.Id);
 
                 if (produto is null)
-                    return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, "Produto não encontrado com base neste Id.");
+                    return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, $"Produto não encontrado com base neste Id {command.Id}.");
 
                 produto.Nome = command.Nome;
                 produto.Preco = command.Preco;
                 produto.Imagens = command.Imagens;
-                produto.Categoria = command.Categoria;
+                produto.Categoria = _categoria;
                 produto.Descricao = command.Descricao;
-                if (command.Categoria.IsLanche())
-                    produto.Ingredientes = command.Ingredientes;
-                else
-                    command.Ingredientes = null;
-                                
+
+                ICollection<ProdutoIngrediente> _produtoIngredientes = null;
+                List<Domain.Entidades.Ingrediente>? _ingredientesDto = null;
+
+                if (_isLanche)
+                {
+                    if ((command.Ingredientes?.Count ?? 0) == 0)
+                        return new Contracts.Response<ProdutoDTO?>(data: null, HttpStatusCode.BadRequest, message: "É necessário informar pelo menos um ingrediente para criar um produto do tipo Lanche.");
+
+                    _produtoIngredientes = [];
+                    _ingredientesDto = [];
+
+                    foreach (var idIngrediente in command.Ingredientes!)
+                    {
+                        var ingredienteDb = await _ingredienteRepository.GetById(idIngrediente.ToString()) ?? throw new ArgumentException($"Ingrediente com ID {idIngrediente.ToString()} não encontrado.");
+                        _ingredientesDto.Add(ingredienteDb);
+
+                        ProdutoIngrediente _produtoIngrediente = new(produto.Id, ingredienteDb.Id, produto, ingredienteDb);
+                        _produtoIngredientes.Add(_produtoIngrediente);
+                    }
+                }
+
+                produto.VinculaIngredientes(_produtoIngredientes);
+
                 await _produtoRepository.Alterar(produto);
 
-                ProdutoDTO produtoDto = new ProdutoDTO(command.Nome, command.Preco, command.Categoria, command.Imagens, command.Descricao, produto.Id.ToString(), command.Ingredientes);
+                ProdutoDTO produtoDto = new ProdutoDTO(command.Nome, command.Preco, _categoria, command.Imagens, command.Descricao, produto.Id.ToString(), _ingredientesDto);
 
                 return new Contracts.Response<ProdutoDTO?>(data: produtoDto, code: System.Net.HttpStatusCode.OK, "Produto alterado com sucesso.");
             }
@@ -57,5 +85,8 @@ namespace Aplicacao.UseCases.Produtos.Alterar
                 return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível alterar o produto.");
             }
         }
+
+        
+
     }
 }

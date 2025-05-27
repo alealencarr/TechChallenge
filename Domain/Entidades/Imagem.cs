@@ -9,6 +9,12 @@ namespace Domain.Entidades
 {
     public class Imagem
     {
-        Blob Blob { get; set; }
+        public Guid Id { get; set; }
+        
+        public byte[] Blob { get; set; }
+
+        public Guid ProdutoId { get; set; }
+
+        public Produto Produto { get; set; }
     }
 }
