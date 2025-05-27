@@ -1,15 +1,10 @@
-﻿using Aplicacao.Common;
-using Aplicacao.UseCases.Pedido;
-using Aplicacao.UseCases.Pedido.Alterar;
+﻿using Aplicacao.UseCases.Pedido.Alterar;
 using Aplicacao.UseCases.Pedido.Criar;
 using Aplicacao.UseCases.Pedido.Finalizar;
+using Aplicacao.UseCases.Pedido.SharedCommand;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-
+ 
 namespace Adapters.Inbound.Controllers
 {
     [ApiController]
@@ -30,16 +25,44 @@ namespace Adapters.Inbound.Controllers
         [HttpPost("criar", Name = "Criar")]
         [Description("Inclusão do Pedido com base no objeto informado via Body")]
 
-        public async Task<IActionResult> Criar(CriarCommand command)
+        public async Task<IActionResult> Criar(Contracts.Request.Pedido.CriarRequest request)
         {
-            if (command.Lanches is null && command.Complementos is null)
-                return BadRequest(new Response<PedidoDTO?>(data: null, code: System.Net.HttpStatusCode.BadRequest, message: "Para criar um pedido é necessário informar ao menos 1 Lanche ou 1 acompanhamento."));
+            CriarCommand command = new(request.ClienteId, MapRequestToCommand(request.Itens));
 
-            dynamic result = new object(); //await _criarHandler.Handler(command);
+            var result = await _criarHandler.Handler(command);
 
             return result.IsSucess ?
                 Created($"/{result.Data?.Id}", result) :
                 BadRequest(result);
+        }
+
+        private List<ItemPedidoCommand> MapRequestToCommand(List<Contracts.Request.Pedido.ItemPedidoRequest> itensRequest)
+        {
+            List<ItemPedidoCommand> itens = [];
+
+            foreach (var item in itensRequest)
+            {
+                List<IngredienteCommand> ingredientes = [];
+                if (item.Ingredientes != null)
+                {
+                    foreach (var ingrediente in item.Ingredientes)
+                    {
+                        IngredienteCommand _ingrediente = new IngredienteCommand()
+                        {
+                            Id = ingrediente.Id,
+                            Adicional = ingrediente.Adicional
+                        };
+
+                        ingredientes.Add(_ingrediente);
+                    }
+
+                }
+                ItemPedidoCommand itemPedidoCommand = new ItemPedidoCommand(item.Id, ingredientes);
+
+                itens.Add(itemPedidoCommand);
+            }
+
+            return itens;
         }
 
         //[HttpPut("Alterar", Name = "Alterar")]

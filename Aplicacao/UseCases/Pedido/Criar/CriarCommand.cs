@@ -1,4 +1,4 @@
-﻿using Domain.Entidades.ItemCardapio;
+﻿using Domain.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +9,14 @@ namespace Aplicacao.UseCases.Pedido.Criar
 {
     public class CriarCommand
     {
-        public CriarCommand(List<LancheCardapio>? lanches, List<ItemComplementoCardapio>? complementos)
-        {
-            Lanches = lanches;
-            Complementos = complementos;
-        }
-        public List<LancheCardapio>? Lanches { get; }
-        public List<ItemComplementoCardapio>? Complementos { get; set; }
+        public Guid? ClienteId { get; set; }
+        public List<Aplicacao.UseCases.Pedido.SharedCommand.ItemPedidoCommand> Itens { get; set; }
 
-     }
+        public CriarCommand(Guid? clienteId, List<Aplicacao.UseCases.Pedido.SharedCommand.ItemPedidoCommand> itens)
+        {
+            ClienteId = clienteId;
+            Itens = itens;
+        }
+
+    }
 }

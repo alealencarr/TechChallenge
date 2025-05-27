@@ -2,11 +2,7 @@
 using Domain.Ports;
 using Infraestrutura;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Adapters.Outbound.Repositories
 {
@@ -34,6 +30,11 @@ namespace Adapters.Outbound.Repositories
         public async Task<Cliente?> GetClientePorCPF(string CPF)
         {
            return await _context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.CPF.Valor == CPF);           
+        }
+
+        public async Task<Cliente?> GetClientePorId(string id)
+        {
+            return await _context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id.ToString() == id);
         }
     }
 }

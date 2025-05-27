@@ -1,11 +1,6 @@
-﻿using Aplicacao.Common;
+﻿using Contracts.DTO.Cliente;
 using Domain.Ports;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Cliente.BuscarPorCPF
 {
@@ -18,7 +13,7 @@ namespace Aplicacao.UseCases.Cliente.BuscarPorCPF
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<Response<ClienteDTO?>> Handler(BuscarPorCPFCommand command)
+        public async Task<Contracts.Response<ClienteDTO?>> Handler(BuscarPorCPFCommand command)
         {
             try
             {
@@ -26,16 +21,16 @@ namespace Aplicacao.UseCases.Cliente.BuscarPorCPF
 
                 ClienteDTO clienteDto = new ClienteDTO(cliente.CPF.Valor, cliente.Nome, cliente.Email, cliente.Id);
 
-                return (cliente is null) ? new Response<ClienteDTO?>(data: null, code: System.Net.HttpStatusCode.NotFound, "Cliente não encontrado.") :
-                 new Response<ClienteDTO?>(data: clienteDto, code: System.Net.HttpStatusCode.OK, "Cliente encontrado com sucesso!");
+                return (cliente is null) ? new Contracts.Response<ClienteDTO?>(data: null, code: System.Net.HttpStatusCode.NotFound, "Cliente não encontrado.") :
+                 new Contracts.Response<ClienteDTO?>(data: clienteDto, code: System.Net.HttpStatusCode.OK, "Cliente encontrado com sucesso!");
             }
             catch (ArgumentException ex)
             {
-                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
+                return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
-                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível localizar o cliente.");
+                return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível localizar o cliente.");
             }
         }
 

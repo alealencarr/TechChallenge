@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -29,7 +30,7 @@ namespace Adapters.Inbound.Controllers
             _removerHandler = removerHandler;
         }
 
-        [HttpPost("criar", Name = "Criar")]
+        [HttpPost("criar", Name = "Criar",Order = 1)]
         [Description("Inclusão do produto com base no objeto informado via Body")]
         public async Task<IActionResult> Criar(CriarCommand command)
         {
@@ -40,9 +41,9 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPut("alterar", Name = "Alterar")]
+        [HttpPut("alterar", Name = "Alterar", Order = 2)]
         [Description("Alteração do produto com base no Id informado via QueryString")]
-        public async Task<IActionResult> Alterar(AlterarCommand command, [FromQuery] string id)
+        public async Task<IActionResult> Alterar(AlterarCommand command, [FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
 
             AlterarPorIdCommand commandId = new AlterarPorIdCommand(command.Nome, command.Preco, command.Categoria, command.Imagens, command.Descricao,id, command.Ingredientes);
@@ -54,15 +55,28 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPost(Name = "Buscar por Categoria")]
+        [HttpGet(Name = "Buscar por Categoria", Order = 3)]
         [Description("Buscar produtos com base na Categoria informado no body")]
-        public async Task<IActionResult> Buscar(BuscarCommand command)
+        public async Task<IActionResult> Buscar([FromQuery] string? id = null, [FromQuery]  string? name = null)
         {
-            var result = await _buscarHandler.Handler(command);
+            var result = await _buscarHandler.Handle(id, name);
 
             return result.IsSucess ?
            Ok(result) :
            BadRequest(result);
+        }
+
+        [HttpDelete(Name ="Remover produto", Order = 4)]
+        [Description("Deletar produto com base no Id informado via QueryString")]
+
+        public async Task<IActionResult> Remover([FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        {
+            var result = await _removerHandler.Handle(id);
+
+            return result.IsSucess ?
+                Ok(result) :
+                BadRequest(result);
+
         }
 
 

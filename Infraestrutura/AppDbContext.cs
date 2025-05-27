@@ -11,6 +11,9 @@ public class AppDbContext : DbContext
     {
 
     }
+
+    public DbSet<Ingrediente> Ingredientes { get; set; } = null!;
+
     public DbSet<Cliente> Clientes { get; set; } = null!;
     public DbSet<Categoria> Categorias { get; set; } = null!;
     public DbSet<Pedido> Pedidos { get; set; } = null!;

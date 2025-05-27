@@ -31,11 +31,25 @@ namespace Adapters.Outbound.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Produto>> Buscar(Categoria? categoria)
+        public async Task<List<Produto>> Buscar(string? id, string? name)
         {
-            var query = _appDbContext.Produtos
-            .AsNoTracking()
-            .Where(x => categoria == null || x.Categoria.Id == categoria.Id);
+            var query = _appDbContext.Produtos.AsNoTracking().AsQueryable();
+
+            if (id != null ^ name != null)
+            {
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    query = query.Where(x => x.Categoria.Id.ToString() == id);
+                }
+                else if (!string.IsNullOrWhiteSpace(name))
+                {
+                    query = query.Where(x => x.Categoria.Nome.Contains(name));
+                }
+                else
+                    query = query.Where(x => true);
+            }
+            else
+                query = query.Where(x => true);
 
             return await query.ToListAsync();
         }

@@ -1,12 +1,5 @@
 using Adapters.Inbound.Controllers;
 using Adapters.Outbound.Repositories;
-using Aplicacao.UseCases.Categoria.BuscarPorId;
-using Aplicacao.UseCases.Categoria.BuscarTodos;
-using Aplicacao.UseCases.Cliente.Alterar;
-using Aplicacao.UseCases.Cliente.BuscarPorCPF;
-using Aplicacao.UseCases.Cliente.Criar;
-using Aplicacao.UseCases.Pedido.Criar;
-using Aplicacao.UseCases.Pedido.Finalizar;
 using Domain.Ports;
 using Infraestrutura;
 using Microsoft.EntityFrameworkCore;
@@ -22,23 +15,38 @@ builder.Services.AddEndpointsApiExplorer();
 
 //Cliente
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped<CriarHandler>();
-builder.Services.AddScoped<AlterarHandler>();
-builder.Services.AddScoped<BuscarPorCPFHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Cliente.Criar.CriarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Cliente.Alterar.AlterarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Cliente.BuscarPorCPF.BuscarPorCPFHandler>();
 ///
 
 //Categoria
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-builder.Services.AddScoped<BuscarPorIdHandler>();
-builder.Services.AddScoped<BuscarTodosHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarPorId.BuscarPorIdHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarTodos.BuscarTodosHandler>();
 ///
 
 //Pedido
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
-builder.Services.AddScoped<CriarHandler>();
-builder.Services.AddScoped<AlterarHandler>();
-builder.Services.AddScoped<FinalizarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Criar.CriarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Alterar.AlterarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Finalizar.FinalizarHandler>();
 ///
+
+//Pedido
+builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Criar.CriarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Alterar.AlterarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Finalizar.FinalizarHandler>();
+///
+
+//Ingrediente
+builder.Services.AddScoped<IIngredienteRepository, IngredienteRepository>();
+builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Criar.CriarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Alterar.AlterarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.BuscarPorId.BuscarPorIdHandler>();
+///
+
 
 
 builder.Services.AddSwaggerGen(x =>

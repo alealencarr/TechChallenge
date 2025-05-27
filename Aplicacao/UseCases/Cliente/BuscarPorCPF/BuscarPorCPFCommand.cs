@@ -8,6 +8,7 @@ namespace Aplicacao.UseCases.Cliente.BuscarPorCPF
 {
     public class BuscarPorCPFCommand
     {
+
         public string CPF { get; set; }
 
         public BuscarPorCPFCommand(string cpf)

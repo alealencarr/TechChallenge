@@ -1,10 +1,4 @@
 ﻿using Domain.Entidades;
-using Domain.Entidades.ItemCardapio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Ports
 {
@@ -13,6 +7,7 @@ namespace Domain.Ports
         Task Adicionar(Cliente cliente);
         Task Alterar(Cliente cliente);
 
+        Task<Cliente?> GetClientePorId(string id);
         Task<Cliente?> GetClientePorCPF(string CPF);
     }
 }

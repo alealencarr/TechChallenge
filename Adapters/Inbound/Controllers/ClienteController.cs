@@ -1,13 +1,9 @@
-﻿using Aplicacao.Common;
-using Aplicacao.UseCases.Cliente.Alterar;
+﻿using Aplicacao.UseCases.Cliente.Alterar;
 using Aplicacao.UseCases.Cliente.BuscarPorCPF;
 using Aplicacao.UseCases.Cliente.Criar;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.ComponentModel.DataAnnotations;
 
 namespace Adapters.Inbound.Controllers
 {
@@ -30,8 +26,10 @@ namespace Adapters.Inbound.Controllers
         [HttpPost("criar", Name = "Criar")]
         [Description("Inclusão do cliente com base no objeto informado via Body")]
 
-        public async Task<IActionResult> Criar(CriarCommand command)
-        {    
+        public async Task<IActionResult> Criar(Contracts.Request.Cliente.CriarRequest request)
+        {
+            CriarCommand command = new(request.Email, request.Nome, request.Email);
+
             var result = await _criarHandler.Handler(command);
 
             return result.IsSucess ?
@@ -39,11 +37,11 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPut("alterar", Name = "Alterar" )]
+        [HttpPut("alterar", Name = "Alterar")]
         [Description("Alteração do cliente com base no CPF informado via QueryString")]
-        public async Task<IActionResult> Alterar(AlterarCommand command, [FromQuery] string cpf)
+        public async Task<IActionResult> Alterar(Contracts.Request.Cliente.AlterarRequest request, [FromQuery][Required(ErrorMessage = "CPF é obrigatório.")] string cpf)
         {
-            AlterarPorCPFCommand commandCpf = new AlterarPorCPFCommand(cpf, command.Nome, command.Email);
+            AlterarPorCPFCommand commandCpf = new AlterarPorCPFCommand(cpf, request.Nome, request.Email);
 
             var result = await _alterarClienteHandler.Handler(commandCpf);
 
@@ -52,14 +50,14 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpGet( Name = "BuscarPorCPF")]
+        [HttpGet(Name = "BuscarPorCPF")]
         [Description("Buscar o cliente com base no CPF informado via QueryString")]
-        public async Task<IActionResult> BuscarPorCPF([FromQuery] string cpf)
+        public async Task<IActionResult> BuscarPorCPF([FromQuery][Required(ErrorMessage = "CPF é obrigatório.")] string cpf)
         {
             BuscarPorCPFCommand command = new(cpf);
 
             var result = await _buscarPorCPFHandler.Handler(command);
-           
+
             return result.IsSucess ?
            Ok(result) :
            BadRequest(result);

@@ -1,12 +1,6 @@
-﻿using Aplicacao.Common;
-using Aplicacao.UseCases.Cliente.Criar;
+﻿using Contracts.DTO.Cliente;
 using Domain.Ports;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Cliente.Alterar
 {
@@ -19,7 +13,7 @@ namespace Aplicacao.UseCases.Cliente.Alterar
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<Response<ClienteDTO?>> Handler(AlterarPorCPFCommand command)
+        public async Task<Contracts.Response<ClienteDTO?>> Handler(AlterarPorCPFCommand command)
         {
 
             try
@@ -27,7 +21,7 @@ namespace Aplicacao.UseCases.Cliente.Alterar
                 var cliente = await _clienteRepository.GetClientePorCPF(command.Cpf);
 
                 if (cliente is null)
-                    return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, "Cliente não encontrado com base neste CPF.");
+                    return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, "Cliente não encontrado com base neste CPF.");
 
 
                 cliente.Email = command.Email;
@@ -37,15 +31,15 @@ namespace Aplicacao.UseCases.Cliente.Alterar
 
                 ClienteDTO clienteDto = new ClienteDTO(cliente.CPF.Valor, cliente.Nome, cliente.Email, cliente.Id);
 
-                return new Response<ClienteDTO?>(data: clienteDto, code: System.Net.HttpStatusCode.OK, "Cliente alterado com sucesso.");
+                return new Contracts.Response<ClienteDTO?>(data: clienteDto, code: System.Net.HttpStatusCode.OK, "Cliente alterado com sucesso.");
             }
             catch (ArgumentException ex)
             {
-                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
+                return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
-                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível alterar o cliente.");
+                return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível alterar o cliente.");
             }
         }
     }

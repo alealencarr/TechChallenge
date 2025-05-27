@@ -1,5 +1,4 @@
 ﻿using Domain.Entidades;
-using Domain.Entidades.ItemPedido;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

@@ -1,6 +1,4 @@
-﻿using Domain.Entidades.ItemCardapio;
-using Domain.Entidades.ItemPedido;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,48 +9,29 @@ namespace Domain.Entidades
     public class Pedido
     {
 
-        public Pedido(List<LancheCardapio>? lanches, List<ItemComplementoCardapio>? complementos)
-        {
-            Id = Guid.NewGuid();
-
-            if(lanches is not null)
-            {
-                foreach (LancheCardapio lanche in lanches)
-                {
-                    this.AdicionarLanche(lanche);
-                }
-            }
-            if (complementos is not null)
-            {
-                foreach (ItemComplementoCardapio complemento in complementos)
-                {
-                    this.AdicionarComplemento(complemento);
-                }
-            }
-    
+        public Pedido(Domain.Entidades.Cliente? cliente)
+        { 
+            Cliente = cliente;
             StatusPedido = Enums.EStatusPedido.EmAberto;
+            Id = Guid.NewGuid();
         }
 
-        public Guid Id { get; }
+        private readonly List<ItemPedido> _itens = new();
+        public IReadOnlyCollection<ItemPedido> Itens => _itens;
 
-        private readonly List<LanchePedido> _lanches = new();
-        public IReadOnlyCollection<LanchePedido> Lanches => _lanches;
-
-        private readonly List<ItemComplementoPedido> _acompanhamentos = new();
-        public IReadOnlyCollection<ItemComplementoPedido> Acompanhamentos => _acompanhamentos;
-
+        public Guid Id { get; private set; }
         public Enums.EStatusPedido StatusPedido { get; set; }
 
-        public void AdicionarLanche(Domain.Entidades.ItemCardapio.LancheCardapio lancheBase)
-        {
-            var lanche = new LanchePedido(lancheBase, this.Id );
-            _lanches.Add(lanche);
-        }
+        public Cliente? Cliente { get; set; }
 
-        public void AdicionarComplemento(Domain.Entidades.ItemCardapio.ItemComplementoCardapio itemCardapioBase)
+        public decimal PrecoPedido { get; private set; } = 0M;
+        public void AdicionarItem(Domain.Entidades.ItemPedido itemBase)
         {
-            var acompanhamento = new ItemComplementoPedido(itemCardapioBase, this.Id);
-            _acompanhamentos.Add(acompanhamento);
+            PrecoPedido += itemBase.ObterPrecoTotal();
+
+            _itens.Add(itemBase);
         }
+        
+        
     }
 }

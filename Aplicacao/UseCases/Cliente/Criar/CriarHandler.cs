@@ -1,11 +1,7 @@
-﻿using Aplicacao.Common;
+﻿using Contracts.DTO.Cliente;
 using Domain.Ports;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Aplicacao.UseCases.Cliente.Criar
 {
@@ -19,7 +15,7 @@ namespace Aplicacao.UseCases.Cliente.Criar
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<Response<ClienteDTO?>> Handler(CriarCommand command)
+        public async Task<Contracts.Response<ClienteDTO?>> Handler(CriarCommand command)
         {
 
             try
@@ -34,15 +30,15 @@ namespace Aplicacao.UseCases.Cliente.Criar
                      command.Email,
                      cliente.Id);
 
-                return new Response<ClienteDTO?>(data: clienteDto, code: System.Net.HttpStatusCode.Created, "Cliente Criado com sucesso.");
+                return new Contracts.Response<ClienteDTO?>(data: clienteDto, code: System.Net.HttpStatusCode.Created, "Cliente Criado com sucesso.");
             }
             catch (ArgumentException ex)
             {
-                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
+                return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
-                return new Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível criar o cliente.");
+                return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível criar o cliente.");
             }
         }
     }
