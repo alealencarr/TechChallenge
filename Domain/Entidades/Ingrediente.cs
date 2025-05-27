@@ -14,7 +14,11 @@ namespace Domain.Entidades
             Id = Guid.NewGuid();
             Preco = preco;
         }
-        public Guid Id { get; }
+        public Guid Id { get; private set; }
+
+        public ICollection<ProdutoIngrediente> ProdutoIngredientes { get; private set; } = [];
+
+
         public string Nome { get; set; }
         public decimal Preco { get; set; }
     }

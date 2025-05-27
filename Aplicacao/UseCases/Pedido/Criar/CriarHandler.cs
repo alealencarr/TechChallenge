@@ -30,14 +30,17 @@ namespace Aplicacao.UseCases.Pedido.Criar
         {
             try
             {
-                Domain.Entidades.Cliente? clienteBase = null;
 
                 if (command.ClienteId.HasValue)
                 {
-                    clienteBase = await _clienteRepository.GetClientePorId(command.ClienteId.Value.ToString());
+                    var clienteBase = await _clienteRepository.GetClientePorId(command.ClienteId.Value.ToString());
+
+                    if (clienteBase is null)
+                        return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Cliente com ID {command.ClienteId.Value.ToString()} não encontrado.");
+
                 }
 
-                var pedido = new Domain.Entidades.Pedido(clienteBase);
+                var pedido = new Domain.Entidades.Pedido(command.ClienteId);
 
                 foreach (var item in command.Itens)
                 {
@@ -64,7 +67,7 @@ namespace Aplicacao.UseCases.Pedido.Criar
                                 ingrediente.Id,
                                 ingrediente.Adicional,
                                 ingredienteDb.Preco,
-                                itemPedido.ItemId
+                                itemPedido.Id
                             );
 
                             itemPedido.AdicionarIngrediente(_ingredienteLanche);             

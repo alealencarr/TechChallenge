@@ -23,7 +23,7 @@ namespace Adapters.Inbound.Controllers
             _buscarPorIdHandler = BuscarPorIdHandler;
         }
 
-        [HttpPost("criar", Name = "Criar")]
+        [HttpPost("criar")]
         [Description("Inclusão do Ingrediente com base no objeto informado via Body")]
 
         public async Task<IActionResult> Criar(Contracts.Request.Ingrediente.CriarRequest request)
@@ -37,7 +37,7 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPut("alterar", Name = "Alterar")]
+        [HttpPut("alterar")]
         [Description("Alteração do Ingrediente com base no Id informado via QueryString")]
         public async Task<IActionResult> Alterar(Contracts.Request.Ingrediente.AlterarRequest request, [FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
@@ -50,9 +50,9 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpGet(Name = "BuscarPorId")]
+        [HttpGet("{id}")]
         [Description("Buscar o Ingrediente com base no Id informado via QueryString")]
-        public async Task<IActionResult> BuscarPorId([FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> BuscarPorId([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
             BuscarPorIdCommand command = new(id);
 

@@ -19,7 +19,7 @@ namespace Adapters.Inbound.Controllers
             _finalizarHandler = FinalizarHandler;
         }
 
-        [HttpPost("criar", Name = "Criar")]
+        [HttpPost("criar")]
         [Description("Inclusão do Pedido com base no objeto informado via Body")]
 
         public async Task<IActionResult> Criar(Contracts.Request.Pedido.CriarRequest request)
@@ -62,7 +62,7 @@ namespace Adapters.Inbound.Controllers
             return itens;
         }
 
-        //[HttpPut("Alterar", Name = "Alterar")]
+        //[HttpPut("Alterar")]
         //[Description("Alteração do Pedido com base no CPF informado via QueryString")]
         //public async Task<IActionResult> Alterar(AlterarCommand command, [FromQuery] string cpf)
         //{

@@ -23,7 +23,7 @@ namespace Adapters.Inbound.Controllers
             _buscarPorCPFHandler = BuscarPorCPFHandler;
         }
 
-        [HttpPost("criar", Name = "Criar")]
+        [HttpPost("criar")]
         [Description("Inclusão do cliente com base no objeto informado via Body")]
 
         public async Task<IActionResult> Criar(Contracts.Request.Cliente.CriarRequest request)
@@ -37,7 +37,7 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPut("alterar", Name = "Alterar")]
+        [HttpPut("alterar")]
         [Description("Alteração do cliente com base no CPF informado via QueryString")]
         public async Task<IActionResult> Alterar(Contracts.Request.Cliente.AlterarRequest request, [FromQuery][Required(ErrorMessage = "CPF é obrigatório.")] string cpf)
         {
@@ -50,9 +50,9 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpGet(Name = "BuscarPorCPF")]
+        [HttpGet("{cpf}")]
         [Description("Buscar o cliente com base no CPF informado via QueryString")]
-        public async Task<IActionResult> BuscarPorCPF([FromQuery][Required(ErrorMessage = "CPF é obrigatório.")] string cpf)
+        public async Task<IActionResult> BuscarPorCPF([FromRoute][Required(ErrorMessage = "CPF é obrigatório.")] string cpf)
         {
             BuscarPorCPFCommand command = new(cpf);
 

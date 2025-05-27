@@ -9,7 +9,7 @@ namespace Domain.ValueObjects
 {
     public class CpfVo
     {
-        public string Valor { get; }
+        public string Valor { get; private set; }
 
         protected CpfVo() { }
 

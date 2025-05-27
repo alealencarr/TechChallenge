@@ -10,9 +10,11 @@ namespace Domain.Entidades
             Id = Guid.NewGuid();
         }
  
-        public Guid Id { get;   }
+        public Guid Id { get; private set; }
 
         public string Nome { get; set; }
+
+        public ICollection<Produto> Produtos { get; set; } = new List<Produto>();
 
         public bool IsLanche()
         {

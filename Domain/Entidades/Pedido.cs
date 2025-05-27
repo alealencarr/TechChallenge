@@ -9,15 +9,9 @@ namespace Domain.Entidades
     public class Pedido
     {
 
-        public Pedido(Domain.Entidades.Cliente? cliente)
+        public Pedido(Guid? idCliente)
         { 
-            Cliente = cliente;
-
-            if (cliente is not null)
-            {
-                IdCliente = cliente.Id!;
-                Cliente = null;
-            }
+            IdCliente = idCliente;
 
             StatusPedido = Enums.EStatusPedido.EmAberto;
             Id = Guid.NewGuid();

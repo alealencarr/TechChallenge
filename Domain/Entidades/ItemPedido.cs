@@ -15,7 +15,7 @@ namespace Domain.Entidades
         public ItemPedido(Guid pedidoId, Guid produtoId, decimal preco)
         {
             PedidoId = pedidoId;
-            ItemId = Guid.NewGuid();
+            Id = Guid.NewGuid();
             Preco = preco;
             ProdutoId = produtoId;
         }
@@ -37,7 +37,8 @@ namespace Domain.Entidades
 
         public Guid ProdutoId { get; private set; }
         public Guid PedidoId { get; private set; }
-        public Guid ItemId { get; private set; }
+        public Pedido? Pedido { get; set; }
+        public Guid Id { get; private set; }
 
     }
 

@@ -16,7 +16,7 @@ namespace Domain.Entidades
             Descricao = descricao;
             CategoriaId = categoriaId;
         }
-        public Guid Id { get; }
+        public Guid Id { get; private set; }
         public string Nome { get; set; }
 
         public decimal Preco { get; set; }

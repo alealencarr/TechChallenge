@@ -19,7 +19,7 @@ namespace Adapters.Inbound.Controllers
             _buscarTodosHandler = buscarTodosHandler;
         }
 
-        [HttpGet(Name = "Buscar todas as categorias.")]
+        [HttpGet]
         [Description("Busca todas as categorias cadastradas.")]
         public async Task<IActionResult> BuscarTodos()
         {
@@ -29,9 +29,9 @@ namespace Adapters.Inbound.Controllers
         }
 
 
-        [HttpGet(Name = "Buscar categoria por Id")]
+        [HttpGet("{id}")]
         [Description("Busca a categoria com base no ID informado via QueryString.")]
-        public async Task<IActionResult> BuscarPorId([FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> BuscarPorId([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
 
             var result = await _buscarPorIdHandler.Handler(id);

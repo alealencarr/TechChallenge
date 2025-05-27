@@ -21,9 +21,11 @@ namespace Domain.Entidades
             ClienteIdentificado = false;
         }
 
-        public Guid Id { get; }
+        public Guid Id { get; private set;  }
         public CpfVo? CPF { get; set; }
         public string Nome { get; set; } = string.Empty;
+
+        public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
      
         public string Email { get; set; } = string.Empty;
 

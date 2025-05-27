@@ -30,7 +30,7 @@ namespace Adapters.Inbound.Controllers
             _removerHandler = removerHandler;
         }
 
-        [HttpPost("criar", Name = "Criar",Order = 1)]
+        [HttpPost("criar",Order = 1)]
         [Description("Inclusão do produto com base no objeto informado via Body")]
         public async Task<IActionResult> Criar(Contracts.Request.Produto.CriarRequest request)
         {
@@ -43,7 +43,7 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPut("alterar", Name = "Alterar", Order = 2)]
+        [HttpPut("alterar", Order = 2)]
         [Description("Alteração do produto com base no Id informado via QueryString")]
         public async Task<IActionResult> Alterar(Contracts.Request.Produto.AlterarRequest request, [FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
@@ -57,7 +57,7 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpGet(Name = "Buscar por Categoria", Order = 3)]
+        [HttpGet("filtrarPorCategoria", Order = 3)]
         [Description("Buscar produtos com base na Categoria informado na QueryString")]
         public async Task<IActionResult> Buscar([FromQuery] string? id = null, [FromQuery]  string? name = null)
         {
@@ -68,10 +68,10 @@ namespace Adapters.Inbound.Controllers
            BadRequest(result);
         }
 
-        [HttpDelete(Name ="Remover produto", Order = 4)]
-        [Description("Deletar produto com base no Id informado via QueryString")]
+        [HttpDelete("{id}", Order = 4)]
+        [Description("Deletar produto com base no Id.")]
 
-        public async Task<IActionResult> Remover([FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> Remover([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
             var result = await _removerHandler.Handle(id);
 
