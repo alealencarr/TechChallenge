@@ -12,12 +12,10 @@ namespace Domain.Entidades
         public Produto Produto { get; set; }
         public Guid IdIngrediente { get; set; }
         public Ingrediente Ingrediente { get; set; }
-        public ProdutoIngrediente(Guid idProduto, Guid idIngrediente, Produto produto, Ingrediente ingrediente)
+        public ProdutoIngrediente(Guid idProduto, Guid idIngrediente)
         {
             IdProduto = idProduto;
             IdIngrediente = idIngrediente;
-            Produto = produto;
-            Ingrediente = ingrediente;
         }
     }
 }

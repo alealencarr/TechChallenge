@@ -45,10 +45,10 @@ namespace Adapters.Inbound.Controllers
 
         [HttpPut("alterar", Name = "Alterar", Order = 2)]
         [Description("Alteração do produto com base no Id informado via QueryString")]
-        public async Task<IActionResult> Alterar(Contracts.Request.Produto.AlterarRequest command, [FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> Alterar(Contracts.Request.Produto.AlterarRequest request, [FromQuery][Required(ErrorMessage = "Id é obrigatório.")] string id)
         {
 
-            AlterarPorIdCommand commandId = new AlterarPorIdCommand(command.Nome, command.Preco, command.CategoriaId, command.Imagens, command.Descricao,id, command.Ingredientes);
+            AlterarPorIdCommand commandId = new AlterarPorIdCommand(request.Nome, request.Preco, request.CategoriaId, request.Imagens, request.Descricao,id, request.Ingredientes);
             
             var result = await _alterarHandler.Handle(commandId);
 
@@ -58,7 +58,7 @@ namespace Adapters.Inbound.Controllers
         }
 
         [HttpGet(Name = "Buscar por Categoria", Order = 3)]
-        [Description("Buscar produtos com base na Categoria informado na url")]
+        [Description("Buscar produtos com base na Categoria informado na QueryString")]
         public async Task<IActionResult> Buscar([FromQuery] string? id = null, [FromQuery]  string? name = null)
         {
             var result = await _buscarHandler.Handle(id, name);

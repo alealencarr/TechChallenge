@@ -9,12 +9,12 @@ namespace Aplicacao.UseCases.Pedido.SharedCommand
     public  class ItemPedidoCommand
     {
         public Guid ProdutoId { get; set; }
-        public List<IngredienteCommand> IngredientesPersonalizados { get; set; } = new();
+        public List<IngredienteCommand> IngredientesLanche { get; set; } = new();
 
-        public ItemPedidoCommand(Guid produtoId, List<IngredienteCommand> ingredientesPersonalizados)
+        public ItemPedidoCommand(Guid produtoId, List<IngredienteCommand> ingredientesLanche)
         {
             ProdutoId = produtoId;
-            IngredientesPersonalizados = ingredientesPersonalizados;
+            IngredientesLanche = ingredientesLanche;
         }
     }
 }

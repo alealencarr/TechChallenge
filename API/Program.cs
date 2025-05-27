@@ -29,15 +29,15 @@ builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarTodos.BuscarTodosH
 //Pedido
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Alterar.AlterarHandler>();
 builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Finalizar.FinalizarHandler>();
 ///
 
 //Pedido
-builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Alterar.AlterarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Finalizar.FinalizarHandler>();
+builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddScoped<Aplicacao.UseCases.Produtos.Criar.CriarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Produtos.Alterar.AlterarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Produtos.Buscar.BuscarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Produtos.Remover.RemoverHandler>();
 ///
 
 //Ingrediente

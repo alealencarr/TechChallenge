@@ -13,10 +13,41 @@ namespace Infraestrutura.Mappings
     {
         public void Configure(EntityTypeBuilder<Pedido> builder)
         {
-            builder.ToTable("Pedidos");
+            builder.ToTable("Pedido");
 
-            builder.HasKey(p => p.Id);
- 
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Id)
+                   .HasColumnName("Id")
+                   .IsRequired();
+
+            builder.Property(x => x.IdCliente)
+                   .HasColumnName("IdCliente")
+                   .IsRequired(false);
+
+            builder.Property(x => x.StatusPedido)
+                   .HasColumnName("StatusPedido")
+                   .IsRequired()
+                   .HasConversion<string>()
+                   .HasMaxLength(50);
+
+            builder.Property(x => x.PrecoPedido)
+                   .HasColumnName("PrecoPedido")
+                   .HasColumnType("DECIMAL(18,2)")
+                   .IsRequired();
+
+            builder.HasOne(x => x.Cliente)
+                   .WithMany() // Sem navegação reversa
+                   .HasForeignKey(x => x.IdCliente)
+                   .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasMany(typeof(ItemPedido), "_itens")
+                   .WithOne()
+                   .HasForeignKey("PedidoId")
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Ignore(x => x.Itens);
         }
     }
+
 }

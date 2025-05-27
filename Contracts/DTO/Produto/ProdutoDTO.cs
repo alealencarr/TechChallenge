@@ -5,7 +5,7 @@ namespace Contracts.DTO.Produto
 {
     public class ProdutoDTO
     {
-        public ProdutoDTO(string nome, decimal preco, Domain.Entidades.Categoria categoria, List<Imagem>? imagens, string descricao, string id, List<Domain.Entidades.Ingrediente>? ingredientes = null)
+        public ProdutoDTO(string nome, decimal preco, Domain.Entidades.Categoria categoria, List<ProdutoImagemDTO> imagens, string descricao, string id, List<ProdutoIngredienteDTO> ingredientes)
         {
             Nome = nome;
             Preco = preco;
@@ -24,11 +24,11 @@ namespace Contracts.DTO.Produto
 
         public Domain.Entidades.Categoria Categoria { get; set; }
 
-        public List<Imagem>? Imagens { get; set; }
+        public List<ProdutoImagemDTO> Imagens { get; set; } = [];
 
         public string Descricao { get; set; }
-        
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public List<Domain.Entidades.Ingrediente>? Ingredientes { get; set; }
+        public List<ProdutoIngredienteDTO> Ingredientes { get; set; } = [];
     }
 }

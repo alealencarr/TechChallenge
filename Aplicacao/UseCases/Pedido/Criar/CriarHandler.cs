@@ -46,27 +46,31 @@ namespace Aplicacao.UseCases.Pedido.Criar
                     if (product is null)
                         return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Produto com ID {item.ProdutoId.ToString()} não encontrado.");
 
-                    var ingredientes = new List<IngredientePersonalizado>();
+                    var ingredientes = new List<IngredienteLanche>();
+
+                    var itemPedido = new ItemPedido(pedido.Id, product.Id, product.Preco);
 
                     if (product.Categoria.IsLanche())
                     {
-                        foreach (var ingrediente in item.IngredientesPersonalizados)
+                        foreach (var ingrediente in item.IngredientesLanche)
                         {
                             var ingredienteDb = await _ingredienteRepository.GetById(ingrediente.Id.ToString());
 
                             if (ingredienteDb is null)
                                 return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Ingrediente com ID {ingrediente.Id.ToString()} não encontrado.");
 
-                            ingredientes.Add(new IngredientePersonalizado
-                            {
-                                Id = ingrediente.Id,
-                                Adicional = ingrediente.Adicional,
-                                Preco = ingredienteDb.Preco
-                            });
+                            var _ingredienteLanche = new IngredienteLanche
+                            (
+                                ingrediente.Id,
+                                ingrediente.Adicional,
+                                ingredienteDb.Preco,
+                                itemPedido.ItemId
+                            );
+
+                            itemPedido.AdicionarIngrediente(_ingredienteLanche);             
                         }
                     }
 
-                    var itemPedido = new ItemPedido(pedido.Id, product.Preco, ingredientes);
                     pedido.AdicionarItem(itemPedido);
                 }
 

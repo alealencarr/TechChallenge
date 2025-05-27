@@ -12,6 +12,13 @@ namespace Domain.Entidades
         public Pedido(Domain.Entidades.Cliente? cliente)
         { 
             Cliente = cliente;
+
+            if (cliente is not null)
+            {
+                IdCliente = cliente.Id!;
+                Cliente = null;
+            }
+
             StatusPedido = Enums.EStatusPedido.EmAberto;
             Id = Guid.NewGuid();
         }
@@ -19,6 +26,7 @@ namespace Domain.Entidades
         private readonly List<ItemPedido> _itens = new();
         public IReadOnlyCollection<ItemPedido> Itens => _itens;
 
+        public Guid? IdCliente { get; private set; }
         public Guid Id { get; private set; }
         public Enums.EStatusPedido StatusPedido { get; set; }
 

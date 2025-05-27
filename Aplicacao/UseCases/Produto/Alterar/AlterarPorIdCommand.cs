@@ -1,4 +1,5 @@
-﻿using Domain.Entidades;
+﻿using Contracts.DTO.Produto;
+using Domain.Entidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ namespace Aplicacao.UseCases.Produtos.Alterar
 {
     public class AlterarPorIdCommand
     {
-        public AlterarPorIdCommand(string nome, decimal preco, Guid categoriaId, List<Imagem>? imagens, string descricao, string id, List<Guid>? ingredientes = null)
+        public AlterarPorIdCommand(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, string id, List<Guid>? ingredientes = null)
         {
             Nome = nome;
             Preco = preco;
@@ -26,7 +27,7 @@ namespace Aplicacao.UseCases.Produtos.Alterar
 
         public Guid CategoriaId { get; set; }
 
-        public List<Imagem>? Imagens { get; set; }
+        public List<ProdutoImagemDTO>? Imagens { get; set; }
 
         public string Descricao { get; set; }
 

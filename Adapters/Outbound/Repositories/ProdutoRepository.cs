@@ -33,23 +33,26 @@ namespace Adapters.Outbound.Repositories
 
         public async Task<List<Produto>> Buscar(string? id, string? name)
         {
-            var query = _appDbContext.Produtos.AsNoTracking().AsQueryable();
+            var query = _appDbContext.Produtos
+                .AsNoTracking()
+                .Include(p => p.Categoria)
+                .Include(p => p.ProdutoIngredientes)
+                    .ThenInclude(pi => pi.Ingrediente)
+                .Include(p => p.ProdutoImagens)
+                .AsQueryable();
 
-            if (id != null ^ name != null)
+
+            if (!string.IsNullOrWhiteSpace(id))
             {
-                if (!string.IsNullOrWhiteSpace(id))
-                {
-                    query = query.Where(x => x.Categoria.Id.ToString() == id);
-                }
-                else if (!string.IsNullOrWhiteSpace(name))
-                {
-                    query = query.Where(x => x.Categoria.Nome.Contains(name));
-                }
-                else
-                    query = query.Where(x => true);
+                query = query.Where(x => x.CategoriaId.ToString() == id);
+            }
+            else if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(x => x.Categoria.Nome.Contains(name));
             }
             else
                 query = query.Where(x => true);
+
 
             return await query.ToListAsync();
         }
@@ -57,6 +60,10 @@ namespace Adapters.Outbound.Repositories
         {
             return await _appDbContext.Produtos
             .AsNoTracking()
+            .Include(p => p.Categoria)
+                .Include(p => p.ProdutoIngredientes)
+                    .ThenInclude(pi => pi.Ingrediente)
+                .Include(p => p.ProdutoImagens)
             .FirstOrDefaultAsync(x => x.Id.ToString() == id);             
         }
         

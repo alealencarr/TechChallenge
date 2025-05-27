@@ -1,5 +1,4 @@
-﻿using Aplicacao.UseCases.Pedido.Alterar;
-using Aplicacao.UseCases.Pedido.Criar;
+﻿using Aplicacao.UseCases.Pedido.Criar;
 using Aplicacao.UseCases.Pedido.Finalizar;
 using Aplicacao.UseCases.Pedido.SharedCommand;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +12,10 @@ namespace Adapters.Inbound.Controllers
     {
 
         private readonly CriarHandler _criarHandler;
-        private readonly AlterarHandler _alterarHandler;
         private readonly FinalizarHandler _finalizarHandler;
-        public PedidoController(CriarHandler CriarHandler, AlterarHandler AlterarHandler, FinalizarHandler FinalizarHandler)
+        public PedidoController(CriarHandler CriarHandler, FinalizarHandler FinalizarHandler)
         {
             _criarHandler = CriarHandler;
-            _alterarHandler = AlterarHandler;
             _finalizarHandler = FinalizarHandler;
         }
 
@@ -77,20 +74,6 @@ namespace Adapters.Inbound.Controllers
         //        Ok(result) :
         //        BadRequest(result);
         //}
-
-        //[HttpGet(Name = "BuscarPedidoPorCPF")]
-        //[Description("Buscar o Pedido com base no CPF informado via QueryString")]
-        //public async Task<IActionResult> BuscarPorCPF([FromQuery] string cpf)
-        //{
-        //    BuscarPedidoPorCPFCommand command = new(cpf);
-
-        //    var result = await _buscarPedidoPorCPFHandler.Handler(command);
-
-        //    return result.IsSucess ?
-        //   Ok(result) :
-        //   BadRequest(result);
-        //}
-
 
     }
 }

@@ -25,7 +25,7 @@ namespace Infraestrutura.Mappings
 
             builder.Property(x => x.Preco)
                 .IsRequired(true)
-                .HasColumnType("NUMERIC(12,4)");
+                .HasColumnType("DECIMAL(12,4)");
 
             builder.Property(x => x.Descricao)
             .IsRequired(true)
@@ -35,17 +35,19 @@ namespace Infraestrutura.Mappings
             builder.Property(p => p.CategoriaId)
                 .IsRequired(true);
 
-            builder.HasOne(P => P.Categoria)
+            builder.HasOne(p => p.Categoria)
                 .WithMany()
-                .HasForeignKey(p => p.CategoriaId);
+                .HasForeignKey(p => p.CategoriaId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(p => p.Imagens)
-                .WithOne(i => i.Produto)
-                .HasForeignKey(i => i.ProdutoId);
+            builder.HasMany(p => p.ProdutoImagens)
+                    .WithOne(pi => pi.Produto)
+                    .HasForeignKey(pi => pi.IdProduto)
+                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(p => p.ProdutoIngredientes)
                 .WithOne(pi => pi.Produto)
-                .HasForeignKey(pi => pi.Produto);
+                .HasForeignKey(pi => pi.IdProduto);
         }
  
     }

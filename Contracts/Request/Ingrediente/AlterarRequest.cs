@@ -9,6 +9,8 @@ namespace Contracts.Request.Ingrediente
         public decimal Preco { get; set; }
 
         [Required(ErrorMessage = "É necessário informar o novo nome.")]
+        [MaxLength(255)]
+
         public required string Nome { get; set; }
     }
 }

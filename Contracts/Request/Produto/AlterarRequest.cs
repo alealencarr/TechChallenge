@@ -1,4 +1,5 @@
-﻿using Domain.Entidades;
+﻿using Contracts.DTO.Produto;
+using Domain.Entidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ namespace Contracts.Request.Produto
 {
     public class AlterarRequest
     {
-        public AlterarRequest(string nome, decimal preco, Guid categoriaId, List<Imagem>? imagens, string descricao, List<Guid>? ingredientes = null)
+        public AlterarRequest(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, List<Guid>? ingredientes = null)
         {
             Nome = nome;
             Preco = preco;
@@ -20,7 +21,9 @@ namespace Contracts.Request.Produto
             Ingredientes = ingredientes;
         }
         [Required(ErrorMessage = "É necessário informar o nome.")]
-        public string Nome { get; set; }
+        [MaxLength(255)]
+
+        public required string Nome { get; set; }
 
         [Required(ErrorMessage = "É necessário informar o preço.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Preço deve ser maior que zero.")]
@@ -29,10 +32,12 @@ namespace Contracts.Request.Produto
         [Required(ErrorMessage = "É necessário informar a categoria.")]
         public Guid CategoriaId { get; set; }
 
-        public List<Imagem>? Imagens { get; set; }
+        public List<ProdutoImagemDTO>? Imagens { get; set; }
 
         [Required(ErrorMessage = "É necessário informar a descrição.")]
-        public string Descricao { get; set; }
+        [MaxLength(255)]
+
+        public required string Descricao { get; set; }
 
         public List<Guid>? Ingredientes { get; set; }
     }

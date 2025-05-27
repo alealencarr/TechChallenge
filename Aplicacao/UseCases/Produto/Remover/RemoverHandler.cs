@@ -31,9 +31,19 @@ namespace Aplicacao.UseCases.Produtos.Remover
 
                 await _produtoRepository.Remover(produto);
 
-                ProdutoDTO produtoDto = new ProdutoDTO(produto.Nome, produto.Preco, produto.Categoria, produto.Imagens, produto.Descricao, produto.Id.ToString(), produto.Ingredientes);
+                ProdutoDTO produtoDto = new ProdutoDTO(produto.Nome, produto.Preco, produto.Categoria, [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
+                                                                                                    {
+                                                                                                        Nome = img.Nome,
+                                                                                                        Blob = img.Blob
+                                                                                                    })], produto.Descricao, produto.Id.ToString()
+                                                                                                    , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
+                                                                                                    {
+                                                                                                        IdProduto = ing.IdProduto,
+                                                                                                        IdIngrediente = ing.IdIngrediente
+                                                                                                    })]);
 
-                return new Contracts.Response<ProdutoDTO?>(data: produtoDto, code: System.Net.HttpStatusCode.Created, "Produto excluido com sucesso.");
+ 
+                return new Contracts.Response<ProdutoDTO?>(data: produtoDto, code: System.Net.HttpStatusCode.OK, "Produto excluido com sucesso.");
             }
             catch (ArgumentException ex)
             {

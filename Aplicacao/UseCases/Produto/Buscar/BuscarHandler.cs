@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Aplicacao.UseCases.Produtos.Buscar
 {
@@ -28,10 +29,25 @@ namespace Aplicacao.UseCases.Produtos.Buscar
 
                 var produtosDto = new List<ProdutoDTO>();
 
-                produtosDto = products
-                 .Select(x => new ProdutoDTO 
-                 { Id = x.Id.ToString(), Nome = x.Nome, Categoria = x.Categoria, Descricao = x.Descricao , Imagens = x.Imagens, Ingredientes = x.Ingredientes, Preco = x.Preco })
-                 .ToList();
+                produtosDto = [.. products
+                .Select(x => new ProdutoDTO
+                {
+                    Id = x.Id.ToString(),
+                    Nome = x.Nome,
+                    Categoria = x.Categoria,  
+                    Descricao = x.Descricao,
+                    Preco = x.Preco,
+                    Ingredientes = [.. x.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
+                    {
+                        IdProduto = ing.IdProduto,
+                        IdIngrediente = ing.IdIngrediente
+                    })],
+                    Imagens = [.. x.ProdutoImagens.Select(img => new ProdutoImagemDTO
+                    {
+                        Nome = img.Nome,
+                        Blob = img.Blob
+                    })]
+                })];
 
                 return (products.Count == 0) ? new Contracts.Response<List<ProdutoDTO>?>(data: null, code: System.Net.HttpStatusCode.BadRequest, "Nenhum produto encontrado.")
                     : new Contracts.Response<List<ProdutoDTO>?>(data: produtosDto, code: System.Net.HttpStatusCode.OK, "Produto encontrada.");

@@ -28,36 +28,70 @@ namespace Aplicacao.UseCases.Produtos.Criar
 
             try
             {
-                Domain.Entidades.Categoria _categoria = await _categoriaRepository.GetById(command.CategoriaId.ToString()) ?? throw new ArgumentException($"Categoria com ID {command.CategoriaId.ToString()} não encontrada.");
+                Domain.Entidades.Categoria _categoria = await _categoriaRepository.GetById(command.CategoriaId.ToString());
+                if(_categoria is null)
+                    return new Contracts.Response<ProdutoDTO?>(data: null, HttpStatusCode.BadRequest, message: $"Categoria com ID {command.CategoriaId.ToString()} não encontrada.");
+
                 bool _isLanche = _categoria.IsLanche();
 
-                ICollection<ProdutoIngrediente> _produtoIngredientes = null;
                 List<Domain.Entidades.Ingrediente>? _ingredientesDto = null;
-                var produto = new Domain.Entidades.Produto(command.Nome, command.Preco, command.CategoriaId,_categoria, command.Imagens, command.Descricao);
+                var produto = new Domain.Entidades.Produto(command.Nome, command.Preco, command.CategoriaId, command.Descricao);
 
                 if (_isLanche)
                 {
                     if ((command.Ingredientes?.Count ?? 0) == 0)
                         return new Contracts.Response<ProdutoDTO?>(data: null, HttpStatusCode.BadRequest, message: "É necessário informar pelo menos um ingrediente para criar um produto do tipo Lanche.");
-
-                    _produtoIngredientes = [];
+                    
+                    ICollection<ProdutoIngrediente> _produtoIngredientes = [];
                     _ingredientesDto = [];
 
                     foreach (var idIngrediente in command.Ingredientes!)
                     {
-                        var ingredienteDb = await _ingredienteRepository.GetById(idIngrediente.ToString()) ?? throw new ArgumentException($"Ingrediente com ID {idIngrediente.ToString()} não encontrado.");
+                        var ingredienteDb = await _ingredienteRepository.GetById(idIngrediente.ToString());
+                        if (ingredienteDb is null)
+                            return new Contracts.Response<ProdutoDTO?>(data: null, HttpStatusCode.BadRequest, message: $"Ingrediente com ID {idIngrediente.ToString()} não encontrado.");
+
                         _ingredientesDto.Add(ingredienteDb);
 
-                        ProdutoIngrediente _produtoIngrediente = new(produto.Id, ingredienteDb.Id, produto, ingredienteDb);
+                        ProdutoIngrediente _produtoIngrediente = new(produto.Id, ingredienteDb.Id);
                         _produtoIngredientes.Add(_produtoIngrediente);
                     }
 
                     produto.VinculaIngredientes(_produtoIngredientes);
-                }                
+                }
+
+
+                if (command.Imagens is not null)
+                {
+                    ICollection<ProdutoImagem> _produtoImagens = [];
+
+                    foreach (var imagemDto in command.Imagens)
+                    {
+                        var imagem = new ProdutoImagem(
+                            idProduto: produto.Id,
+                            blob: imagemDto.Blob,
+                            nome: imagemDto.Nome
+                        );
+
+                        _produtoImagens.Add(imagem);
+                    }
+                    produto.VinculaImagens(_produtoImagens);
+
+                }
+
 
                 await _produtoRepository.Adicionar(produto);
 
-                ProdutoDTO produtoDto = new(command.Nome, command.Preco, _categoria, command.Imagens, command.Descricao, produto.Id.ToString(), _ingredientesDto);
+                ProdutoDTO produtoDto = new ProdutoDTO(command.Nome, command.Preco, _categoria, [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
+                                                                                                    {
+                                                                                                        Nome = img.Nome,
+                                                                                                        Blob = img.Blob
+                                                                                                    })], command.Descricao, produto.Id.ToString()
+                                                                                                    , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
+                                                                                                    {
+                                                                                                        IdProduto = ing.IdProduto,
+                                                                                                        IdIngrediente = ing.IdIngrediente
+                                                                                                    })]);
 
                 return new Contracts.Response<ProdutoDTO?>(data: produtoDto, code: System.Net.HttpStatusCode.Created, "Produto criado com sucesso.");
             }

@@ -19,7 +19,7 @@ namespace Infraestrutura.Mappings
 
             builder.Property(x => x.Preco)
                 .IsRequired(true)
-                .HasColumnType("NUMERIC(12,4)");
+                .HasColumnType("DECIMAL(12,4)");
                 
         }
     }

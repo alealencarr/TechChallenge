@@ -43,11 +43,10 @@ namespace Aplicacao.UseCases.Produtos.Alterar
 
                 produto.Nome = command.Nome;
                 produto.Preco = command.Preco;
-                produto.Imagens = command.Imagens;
-                produto.Categoria = _categoria;
+                produto.CategoriaId = command.CategoriaId;
                 produto.Descricao = command.Descricao;
 
-                ICollection<ProdutoIngrediente> _produtoIngredientes = null;
+                ICollection<ProdutoIngrediente> _produtoIngredientes = [];
                 List<Domain.Entidades.Ingrediente>? _ingredientesDto = null;
 
                 if (_isLanche)
@@ -55,24 +54,57 @@ namespace Aplicacao.UseCases.Produtos.Alterar
                     if ((command.Ingredientes?.Count ?? 0) == 0)
                         return new Contracts.Response<ProdutoDTO?>(data: null, HttpStatusCode.BadRequest, message: "É necessário informar pelo menos um ingrediente para criar um produto do tipo Lanche.");
 
-                    _produtoIngredientes = [];
                     _ingredientesDto = [];
 
                     foreach (var idIngrediente in command.Ingredientes!)
                     {
-                        var ingredienteDb = await _ingredienteRepository.GetById(idIngrediente.ToString()) ?? throw new ArgumentException($"Ingrediente com ID {idIngrediente.ToString()} não encontrado.");
+                        var ingredienteDb = await _ingredienteRepository.GetById(idIngrediente.ToString());
+                        if (ingredienteDb is null)
+                            return new Contracts.Response<ProdutoDTO?>(data: null, HttpStatusCode.BadRequest, message: $"Ingrediente com ID {idIngrediente.ToString()} não encontrado.");
+
                         _ingredientesDto.Add(ingredienteDb);
 
-                        ProdutoIngrediente _produtoIngrediente = new(produto.Id, ingredienteDb.Id, produto, ingredienteDb);
+                        ProdutoIngrediente _produtoIngrediente = new(produto.Id, ingredienteDb.Id);
                         _produtoIngredientes.Add(_produtoIngrediente);
                     }
                 }
 
                 produto.VinculaIngredientes(_produtoIngredientes);
 
+
+                ICollection<ProdutoImagem> _produtoImagens = [];
+
+                if (command.Imagens is not null)
+                {
+
+                    foreach (var imagemDto in command.Imagens)
+                    {
+                        var imagem = new ProdutoImagem(
+                            idProduto: produto.Id,
+                            blob: imagemDto.Blob,
+                            nome: imagemDto.Nome
+                        );
+
+                        _produtoImagens.Add(imagem);
+                    }
+ 
+                }
+
+                produto.VinculaImagens(_produtoImagens);
+
+
                 await _produtoRepository.Alterar(produto);
 
-                ProdutoDTO produtoDto = new ProdutoDTO(command.Nome, command.Preco, _categoria, command.Imagens, command.Descricao, produto.Id.ToString(), _ingredientesDto);
+                ProdutoDTO produtoDto = new ProdutoDTO(command.Nome, command.Preco, _categoria, [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
+                                                                                                    {
+                                                                                                        Nome = img.Nome,
+                                                                                                        Blob = img.Blob
+                                                                                                    })], command.Descricao, produto.Id.ToString()
+                                                                                                   , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
+                                                                                                    {
+                                                                                                        IdProduto = ing.IdProduto,
+                                                                                                        IdIngrediente = ing.IdIngrediente
+                                                                                                    })]);
 
                 return new Contracts.Response<ProdutoDTO?>(data: produtoDto, code: System.Net.HttpStatusCode.OK, "Produto alterado com sucesso.");
             }
