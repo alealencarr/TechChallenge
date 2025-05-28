@@ -70,5 +70,6 @@ Após subir a aplicação, acesse a documentação interativa no navegador. Acom
 
 📄 Licença
 
-Este projeto está licenciado sob a MIT License.
+Este projeto está licenciado sob os termos da licença MIT.  
+Consulte o arquivo [LICENSE](./LICENSE) para mais detalhes.
 
