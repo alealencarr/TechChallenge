@@ -1,4 +1,5 @@
-﻿using Contracts.DTO.Cliente;
+﻿using Aplicacao.Common;
+using Contracts.DTO.Cliente;
 using Domain.Ports;
 using System.Net;
 
@@ -20,13 +21,22 @@ namespace Aplicacao.UseCases.Cliente.Criar
 
             try
             {
+                var clienteCadastrado = await _clienteRepository.GetByCPF(command.CPF);
+
+                if (clienteCadastrado is not null)
+                    return new Contracts.Response<ClienteDTO?>(data: new ClienteDTO(
+                     clienteCadastrado.CPF.Valor,
+                                   clienteCadastrado.Nome,
+                     clienteCadastrado.Email,
+                     clienteCadastrado.Id), code: System.Net.HttpStatusCode.OK, "Cliente já cadastrado.");
+
                 var cliente = new Domain.Entidades.Cliente(command.CPF, command.Nome, command.Email);
 
                 await _clienteRepository.Adicionar(cliente);
 
-                var clienteDto = new ClienteDTO(
-                     command.Nome,
+                var clienteDto = new ClienteDTO(                     
                      command.CPF,
+                     command.Nome,
                      command.Email,
                      cliente.Id);
 

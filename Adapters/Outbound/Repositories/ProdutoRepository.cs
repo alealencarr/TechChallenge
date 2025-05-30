@@ -1,4 +1,4 @@
-﻿using Domain.Entidades;
+﻿using Domain.Entidades.Agregados.AgregadoProduto;
 using Domain.Ports;
 using Infraestrutura;
 using Microsoft.EntityFrameworkCore;
@@ -65,7 +65,7 @@ namespace Adapters.Outbound.Repositories
             }
             else if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Categoria.Nome.Contains(name));
+                query = query.Where(x => x.Categoria.Nome.ToUpper().Contains(name.ToUpper()));
             }
             else
                 query = query.Where(x => true);
@@ -90,6 +90,18 @@ namespace Adapters.Outbound.Repositories
             _appDbContext.Produtos.Remove(produto);
 
             await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<Produto>> GetByIds(List<Guid> ids)
+        {
+            return await _appDbContext.Set<Produto>()
+                .AsNoTracking()
+            .Include(p => p.Categoria)
+                .Include(p => p.ProdutoIngredientes)
+                    .ThenInclude(pi => pi.Ingrediente)
+                .Include(p => p.ProdutoImagens)
+                .Where(p => ids.Contains(p.Id))
+                .ToListAsync();
         }
     }
 }

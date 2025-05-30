@@ -32,16 +32,16 @@ namespace Adapters.Inbound.Controllers
 
             var result = await _criarHandler.Handler(command);
 
-            return result.IsSucess ?
+            return result.IsSucess?
                 Created($"/{result.Data?.Id}", result) :
                 BadRequest(result);
         }
 
-        [HttpPut("alterar")]
+        [HttpPut("alterar/{id}")]
         [Description("Alteração do cliente com base no Id.")]
-        public async Task<IActionResult> Alterar(Contracts.Request.Cliente.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> Alterar([FromBody] Contracts.Request.Cliente.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] Guid id)
         {
-            AlterarPorIdCommand commandId = new AlterarPorIdCommand(id, request.Nome, request.Email);
+            AlterarPorIdCommand commandId = new AlterarPorIdCommand(id.ToString(), request.Nome, request.Email);
 
             var result = await _alterarClienteHandler.Handler(commandId);
 
@@ -62,6 +62,7 @@ namespace Adapters.Inbound.Controllers
            Ok(result) :
            BadRequest(result);
         }
+
 
 
     }

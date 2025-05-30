@@ -1,4 +1,4 @@
-﻿using Domain.Entidades;
+﻿using Domain.Entidades.Agregados.AgregadoPedido;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,7 @@ namespace Domain.Ports
     public interface IPedidoRepository
     {
         Task Adicionar(Pedido pedido);
-         Task Finalizar(Pedido pedido);
+        Task AlterarStatus(Pedido pedido);
+        Task<Pedido?> GetById (string id);
     }
 }

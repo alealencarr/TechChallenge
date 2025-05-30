@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entidades
+namespace Domain.Entidades.Agregados.AgregadoPedido
 {
     public class ItemPedido 
     {
@@ -12,16 +12,21 @@ namespace Domain.Entidades
 
         private readonly List<IngredienteLanche>? _ingredientes = new();
         public IReadOnlyCollection<IngredienteLanche>? Ingredientes => _ingredientes?.AsReadOnly();
-        public ItemPedido(Guid pedidoId, Guid produtoId, decimal preco)
+
+        public int Quantidade { get; set; }
+
+        protected ItemPedido() { }
+        public ItemPedido(Guid pedidoId, Guid produtoId, decimal preco, int quantidade)
         {
             PedidoId = pedidoId;
             Id = Guid.NewGuid();
-            Preco = preco;
+            Preco = preco * quantidade;
             ProdutoId = produtoId;
+            Quantidade = quantidade;
         }
         internal decimal ObterPrecoTotal()
         {
-            var adicionais = Ingredientes?.Where(x => x.Adicional == true).Sum(x => x.Preco) ?? 0;
+            var adicionais = Ingredientes?.Where(x => x.Adicional == true).Sum(x => x.Preco * x.Quantidade) ?? 0;
             return Preco + adicionais;
         }
         public void RemoverIngrediente(IngredienteLanche? ingrediente)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entidades
+namespace Domain.Entidades.Agregados.AgregadoProduto
 {
     public class Produto
     {
@@ -15,7 +15,11 @@ namespace Domain.Entidades
             Preco = preco;
             Descricao = descricao;
             CategoriaId = categoriaId;
+            CreatedAt = DateTime.Now;
         }
+
+        protected Produto() { }
+        public DateTime CreatedAt { get; private set; }
         public Guid Id { get; private set; }
         public string Nome { get; set; }
 

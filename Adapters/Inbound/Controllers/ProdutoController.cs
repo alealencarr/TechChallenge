@@ -1,15 +1,12 @@
-﻿using Aplicacao.Common;
-using Aplicacao.UseCases.Produtos.Alterar;
-using Aplicacao.UseCases.Produtos.Buscar;
-using Aplicacao.UseCases.Produtos.Criar;
-using Aplicacao.UseCases.Produtos.Remover;
+﻿using Aplicacao.UseCases.Produto;
+using Aplicacao.UseCases.Produto.Alterar;
+using Aplicacao.UseCases.Produto.BuscarPorCategoria;
+using Aplicacao.UseCases.Produto.BuscarPorId;
+using Aplicacao.UseCases.Produto.Criar;
+using Aplicacao.UseCases.Produto.Remover;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Adapters.Inbound.Controllers
 {
@@ -19,22 +16,32 @@ namespace Adapters.Inbound.Controllers
     {
 
         private readonly CriarHandler _criarHandler;
-        private readonly AlterarHandler _alterarHandler;
-        private readonly BuscarHandler _buscarHandler; 
+        private readonly AlterarPorIdHandler _alterarHandler;
+        private readonly BuscarHandler _buscarHandler;
         private readonly RemoverHandler _removerHandler;
-        public ProdutoController(CriarHandler criarHandler, AlterarHandler alterarHandler, BuscarHandler buscarHandler, RemoverHandler removerHandler)
+        private readonly BuscarPorIdHandler _buscarPorIdHandler;
+        public ProdutoController(CriarHandler criarHandler, AlterarPorIdHandler alterarHandler, BuscarHandler buscarHandler, RemoverHandler removerHandler, BuscarPorIdHandler buscarPorIdHandler)
         {
             _criarHandler = criarHandler;
             _alterarHandler = alterarHandler;
             _buscarHandler = buscarHandler;
             _removerHandler = removerHandler;
+            _buscarPorIdHandler = buscarPorIdHandler;
         }
 
-        [HttpPost("criar",Order = 1)]
+        [HttpPost("criar", Order = 1)]
         [Description("Inclusão do produto com base no objeto informado via Body")]
-        public async Task<IActionResult> Criar(Contracts.Request.Produto.CriarRequest request)
+        public async Task<IActionResult> Create(Contracts.Request.Produto.CriarRequest request)
         {
-            CriarCommand command = new(request.Nome, request.Preco, request.CategoriaId, request.Imagens, request.Descricao, request.Ingredientes);
+            CriarCommand command = new(request.Nome, request.Preco, request.CategoriaId, request.Imagens, request.Descricao,
+                request.Ingredientes is null ? null :
+                request.Ingredientes.GroupBy(i => i.Id)
+                .Select(g => new IngredienteCommand
+                {
+                    Id = g.Key,
+                    Quantidade = g.Sum(i => i.Quantidade)
+                })
+                .ToList());
 
             var result = await _criarHandler.Handle(command);
 
@@ -43,13 +50,21 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPut("alterar", Order = 2)]
+        [HttpPut("alterar/{id}", Order = 2)]
         [Description("Alteração do produto com base no Id.")]
-        public async Task<IActionResult> Alterar(Contracts.Request.Produto.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> Alterar(Contracts.Request.Produto.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] Guid id)
         {
 
-            AlterarPorIdCommand commandId = new AlterarPorIdCommand(request.Nome, request.Preco, request.CategoriaId, request.Imagens, request.Descricao,id, request.Ingredientes);
-            
+            AlterarPorIdCommand commandId = new AlterarPorIdCommand(request.Nome, request.Preco, request.CategoriaId, request.Imagens, request.Descricao, id.ToString(),
+                request.Ingredientes is null ? null :
+                request.Ingredientes.GroupBy(i => i.Id)
+                .Select(g => new IngredienteCommand
+                {
+                    Id = g.Key,
+                    Quantidade = g.Sum(i => i.Quantidade)
+                })
+                .ToList());
+
             var result = await _alterarHandler.Handle(commandId);
 
             return result.IsSucess ?
@@ -57,11 +72,11 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpGet("filtrarPorCategoria", Order = 3)]
-        [Description("Buscar produtos com base na Categoria informado na QueryString")]
-        public async Task<IActionResult> Buscar([FromQuery] string? id = null, [FromQuery]  string? name = null)
+        [HttpGet("{id}", Order = 3)]
+        [Description("Buscar produtos com base no Id.")]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var result = await _buscarHandler.Handle(id, name);
+            var result = await _buscarPorIdHandler.Handle(id.ToString());
 
             return result.IsSucess ?
            Ok(result) :
@@ -71,9 +86,9 @@ namespace Adapters.Inbound.Controllers
         [HttpDelete("{id}", Order = 4)]
         [Description("Deletar produto com base no Id.")]
 
-        public async Task<IActionResult> Remover([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> Remover([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] Guid id)
         {
-            var result = await _removerHandler.Handle(id);
+            var result = await _removerHandler.Handle(id.ToString());
 
             return result.IsSucess ?
                 Ok(result) :
@@ -81,6 +96,15 @@ namespace Adapters.Inbound.Controllers
 
         }
 
+        [HttpGet(Order = 5)]
+        [Description("Buscar produtos com base na categoria informado na QueryString")]
+        public async Task<IActionResult> Buscar([FromQuery] Guid? idCategoria = null, [FromQuery] string? nomeCategoria = null)
+        {
+            var result = await _buscarHandler.Handle(idCategoria.ToString(), nomeCategoria);
 
+            return result.IsSucess ?
+           Ok(result) :
+           BadRequest(result);
+        }
     }
 }

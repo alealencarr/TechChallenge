@@ -41,7 +41,7 @@ namespace Adapters.Inbound.Controllers
         [HttpPost("criar")]
         [Description("Inclusão do Ingrediente com base no objeto informado via Body")]
 
-        public async Task<IActionResult> Criar(Contracts.Request.Ingrediente.CriarRequest request)
+        public async Task<IActionResult> Criar([FromBody] Contracts.Request.Ingrediente.CriarRequest request)
         {
             CriarCommand command = new(request.Preco, request.Nome);
 
@@ -52,11 +52,11 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPut("alterar")]
+        [HttpPut("alterar/{id}")]
         [Description("Alteração do Ingrediente com base no Id.")]
-        public async Task<IActionResult> Alterar(Contracts.Request.Ingrediente.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> Alterar([FromBody]Contracts.Request.Ingrediente.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] Guid id)
         {
-            AlterarPorIdCommand commandId = new AlterarPorIdCommand(id, request.Nome, request.Preco);
+            AlterarPorIdCommand commandId = new AlterarPorIdCommand(id.ToString(), request.Nome, request.Preco);
 
             var result = await _alterarIngredienteHandler.Handler(commandId);
 
@@ -67,9 +67,9 @@ namespace Adapters.Inbound.Controllers
 
         [HttpGet("{id}")]
         [Description("Buscar o Ingrediente com base no Id.")]
-        public async Task<IActionResult> BuscarPorId([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> BuscarPorId([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] Guid id)
         {
-            BuscarPorIdCommand command = new(id);
+            BuscarPorIdCommand command = new(id.ToString());
 
             var result = await _buscarPorIdHandler.Handler(command);
 

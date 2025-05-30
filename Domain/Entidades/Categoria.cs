@@ -1,5 +1,7 @@
 ﻿
 
+using Domain.Entidades.Agregados.AgregadoProduto;
+
 namespace Domain.Entidades
 {
     public class Categoria
@@ -8,8 +10,10 @@ namespace Domain.Entidades
         {
             Nome = nome;
             Id = Guid.NewGuid();
+            CreatedAt = DateTime.Now;
         }
 
+        public DateTime CreatedAt { get; private set; }
         public Categoria() { }
  
         public Guid Id { get; set; }

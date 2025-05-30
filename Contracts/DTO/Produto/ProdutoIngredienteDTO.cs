@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Contracts.DTO.Produto;
 
-namespace Contracts.DTO.Produto
+public class ProdutoIngredienteDTO
 {
-    public class ProdutoIngredienteDTO
-    {
-        public Guid IdProduto { get; set; }
+    public int Quantidade { get; set; } 
 
-        public Guid IdIngrediente { get; set; }
-
+ 
+    public string Id { get; set; } 
+    public ProdutoIngredienteDTO(string id, int quantidade )
+    { 
+        Quantidade = quantidade;
+        Id = id;
     }
+
+    public ProdutoIngredienteDTO() { }
 }

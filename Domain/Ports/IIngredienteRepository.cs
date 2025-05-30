@@ -17,5 +17,8 @@ namespace Domain.Ports
 
         Task<List<Ingrediente>?> GetAll();
 
+        Task<List<Ingrediente>> GetByIds(List<Guid> ids);
+
+
     }
 }

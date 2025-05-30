@@ -2,6 +2,8 @@
 using Domain;
 using System.Reflection;
 using Domain.Entidades;
+using Domain.Entidades.Agregados.AgregadoPedido;
+using Domain.Entidades.Agregados.AgregadoProduto;
 
 namespace Infraestrutura;
 

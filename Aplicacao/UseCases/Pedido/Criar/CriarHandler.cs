@@ -1,7 +1,8 @@
 ﻿using Aplicacao.Common;
 using Aplicacao.UseCases.Cliente;
 using Contracts.DTO.Pedido;
-using Domain.Entidades;
+using Domain.Entidades.Agregados.AgregadoProduto;
+using Domain.Entidades.Agregados.AgregadoPedido;
 using Domain.Ports;
 using System;
 using System.Collections.Generic;
@@ -26,52 +27,136 @@ namespace Aplicacao.UseCases.Pedido.Criar
             _produtoRepository = produtoRepository;
         }
 
-        public async Task<Contracts.Response<PedidoDTO?>> Handler(CriarCommand command)
+        public async Task<Contracts.Response<CriacaoPedidoDTO?>> Handle(CriarCommand command)
         {
             try
             {
+                if (!command.Itens.Any()) //Verifica se tem algum item                  
+                    return new Contracts.Response<CriacaoPedidoDTO?>(null, HttpStatusCode.BadRequest, $"Para criar um pedido é necessário pelo menos 1 item.");
 
-                if (command.ClienteId.HasValue)
+                if (command.ClienteId.HasValue)//Verifica se tem o cliente foi informado
                 {
                     var clienteBase = await _clienteRepository.GetById(command.ClienteId.Value.ToString());
 
                     if (clienteBase is null)
-                        return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Cliente com ID {command.ClienteId.Value.ToString()} não encontrado.");
+                        return new Contracts.Response<CriacaoPedidoDTO?>(null, HttpStatusCode.BadRequest, $"Cliente com ID {command.ClienteId.Value.ToString()} não encontrado.");
 
                 }
 
-                var pedido = new Domain.Entidades.Pedido(command.ClienteId);
+                //Cria o objeto do pedido
+                var pedido = new Domain.Entidades.Agregados.AgregadoPedido.Pedido(command.ClienteId);
+
+                #region Verifica se produtos informados existem 
+                List<Guid> produtosIds = command.Itens
+                    .Select(i => i.ProdutoId)
+                    .Distinct()
+                    .ToList();
+
+                var produtos = await _produtoRepository.GetByIds(produtosIds); 
+                var produtosDict = produtos.ToDictionary(p => p.Id, p => p);
+                var produtosEncontrados = produtosDict.Keys.ToHashSet();
+                var produtosNaoEncontrados = produtosIds
+                    .Where(id => !produtosEncontrados.Contains(id))
+                    .ToList();
+
+                if (produtosNaoEncontrados.Any())
+                {
+                    var idsFaltando = string.Join(", ", produtosNaoEncontrados);
+                    return new Contracts.Response<CriacaoPedidoDTO?>(null, HttpStatusCode.BadRequest,
+                        $"Os seguintes produtos não foram encontrados: {idsFaltando}");
+                }
+                #endregion
+
+                #region Verifica se os ingredientes informados existem
+
+                List<Guid> ingredientesIds = command.Itens
+                    .SelectMany(i => i.IngredientesLanche)
+                    .Select(i => i.Id)
+                    .Distinct()
+                    .ToList();
+
+                var ingredientesDb = await _ingredienteRepository.GetByIds(ingredientesIds);
+                var ingredientesDict = ingredientesDb.ToDictionary(i => i.Id, i => i);
+                var ingredientesEncontrados = ingredientesDict.Keys.ToHashSet();
+                var ingredientesNaoEncontrados = ingredientesIds
+                    .Where(id => !ingredientesEncontrados.Contains(id))
+                    .ToList();
+
+                if (ingredientesNaoEncontrados.Any())
+                {
+                    var idsFaltando = string.Join(", ", ingredientesNaoEncontrados);
+                    return new Contracts.Response<CriacaoPedidoDTO?>(null, HttpStatusCode.BadRequest,
+                        $"Os seguintes ingredientes não foram encontrados: {idsFaltando}");
+                }
+
+                #endregion
+
 
                 foreach (var item in command.Itens)
                 {
-                    var product = await _produtoRepository.GetById(item.ProdutoId.ToString());
+                    if (!produtosDict.TryGetValue(item.ProdutoId, out var product))
+                        return new Contracts.Response<CriacaoPedidoDTO?>(null, HttpStatusCode.BadRequest, $"Produto com ID {item.ProdutoId} não encontrado.");
 
-                    if (product is null)
-                        return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Produto com ID {item.ProdutoId.ToString()} não encontrado.");
-
-                    var ingredientes = new List<IngredienteLanche>();
-
-                    var itemPedido = new ItemPedido(pedido.Id, product.Id, product.Preco);
+                    var itemPedido = new ItemPedido(pedido.Id, product.Id, product.Preco, item.Quantidade);
 
                     if (product.Categoria!.IsLanche())
                     {
-                        foreach (var ingrediente in item.IngredientesLanche)
+                        var ingredientesAgrupados = item.IngredientesLanche
+                            .GroupBy(i => i.Id)
+                            .Select(group => new
+                            {
+                                Id = group.Key,
+                                QuantidadeSolicitada = group.Sum(x => x.Quantidade)
+                            });
+
+                        var ingredientesPadrao = product.ProdutoIngredientes
+                        .GroupBy(pi => pi.IngredienteId)
+                        .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantidade));
+
+
+                        foreach (var grupo in ingredientesAgrupados)
                         {
-                            var ingredienteDb = await _ingredienteRepository.GetById(ingrediente.Id.ToString());
+                            if (!ingredientesDict.TryGetValue(grupo.Id, out var ingredienteDb))
+                                return new Contracts.Response<CriacaoPedidoDTO?>(null, HttpStatusCode.BadRequest, $"Ingrediente com ID {grupo.Id} não encontrado.");
 
-                            if (ingredienteDb is null)
-                                return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, $"Ingrediente com ID {ingrediente.Id.ToString()} não encontrado.");
+                            var preco = ingredienteDb.Preco;
+                            var quantidadePadrao = ingredientesPadrao.ContainsKey(grupo.Id) ? ingredientesPadrao[grupo.Id] : 0;
 
-                            var _ingredienteLanche = new IngredienteLanche
-                            (
-                                ingrediente.Id,
-                                ingrediente.Adicional,
-                                ingredienteDb.Preco,
-                                itemPedido.Id
-                            );
 
-                            itemPedido.AdicionarIngrediente(_ingredienteLanche);             
+                            int quantidadeSolicitada = grupo.QuantidadeSolicitada;
+
+                            int qtdPadraoUsada = Math.Min(quantidadePadrao, quantidadeSolicitada);
+                            if (qtdPadraoUsada > 0)
+                            {
+                                var ingredienteLanchePadrao = new IngredienteLanche(
+                                    grupo.Id,
+                                    adicional: false,
+                                    preco,
+                                    itemPedido.Id,
+                                    qtdPadraoUsada
+                                );
+                                itemPedido.AdicionarIngrediente(ingredienteLanchePadrao);
+                            }
+
+                             
+                            int qtdAdicional = quantidadeSolicitada - quantidadePadrao;
+                            if (qtdAdicional > 0)
+                            {
+                                var ingredienteLancheAdicional = new IngredienteLanche(
+                                    grupo.Id,
+                                    adicional: true,
+                                    preco,
+                                    itemPedido.Id,
+                                    qtdAdicional
+                                );
+                                itemPedido.AdicionarIngrediente(ingredienteLancheAdicional);
+                            }
+
+
                         }
+
+                        if (!itemPedido.Ingredientes!.Any())
+                            return new Contracts.Response<CriacaoPedidoDTO?>(null, HttpStatusCode.BadRequest, "Um lanche deve ter ao menos um ingrediente.");
                     }
 
                     pedido.AdicionarItem(itemPedido);
@@ -79,21 +164,22 @@ namespace Aplicacao.UseCases.Pedido.Criar
 
                 await _pedidoRepository.Adicionar(pedido);
 
-                var pedidoDto = new PedidoDTO
+                var pedidoDto = new CriacaoPedidoDTO
                 {
                     Id = pedido.Id,
-                    ValorPedido = pedido.PrecoPedido
+                    ValorPedido = pedido.Valor,
+                    StatusPedido = pedido.StatusPedido.ToString()
                 };
 
-                return new Contracts.Response<PedidoDTO?>(pedidoDto, HttpStatusCode.Created, "Pedido criado com sucesso.");
+                return new Contracts.Response<CriacaoPedidoDTO?>(pedidoDto, HttpStatusCode.Created, "Pedido criado com sucesso.");
             }
             catch (ArgumentException ex)
             {
-                return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.BadRequest, ex.Message);
+                return new Contracts.Response<CriacaoPedidoDTO?>(null, HttpStatusCode.BadRequest, ex.Message);
             }
             catch  
             {
-                return new Contracts.Response<PedidoDTO?>(null, HttpStatusCode.InternalServerError, "Não foi possível criar o pedido.");
+                return new Contracts.Response<CriacaoPedidoDTO?>(null, HttpStatusCode.InternalServerError, "Não foi possível criar o pedido.");
             }
         }
 

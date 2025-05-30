@@ -1,9 +1,12 @@
-﻿using Aplicacao.UseCases.Pedido.Criar;
+﻿using Aplicacao.UseCases.Pedido.AlterarStatus;
+using Aplicacao.UseCases.Pedido.BuscarPorId;
+using Aplicacao.UseCases.Pedido.Criar;
 using Aplicacao.UseCases.Pedido.Finalizar;
 using Aplicacao.UseCases.Pedido.SharedCommand;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
- 
+using System.ComponentModel.DataAnnotations;
+
 namespace Adapters.Inbound.Controllers
 {
     [ApiController]
@@ -13,10 +16,14 @@ namespace Adapters.Inbound.Controllers
 
         private readonly CriarHandler _criarHandler;
         private readonly FinalizarHandler _finalizarHandler;
-        public PedidoController(CriarHandler CriarHandler, FinalizarHandler FinalizarHandler)
+        private readonly BuscarPorIdHandler _buscarPorIdHandler;
+        private readonly AlterarStatusHandler _alterarStatusHandler;
+        public PedidoController(CriarHandler criarHandler, FinalizarHandler finalizarHandler, BuscarPorIdHandler buscarPorIdHandler, AlterarStatusHandler alterarStatusHandler)
         {
-            _criarHandler = CriarHandler;
-            _finalizarHandler = FinalizarHandler;
+            _criarHandler = criarHandler;
+            _finalizarHandler = finalizarHandler;
+            _buscarPorIdHandler = buscarPorIdHandler;
+            _alterarStatusHandler = alterarStatusHandler;
         }
 
         [HttpPost("criar")]
@@ -26,7 +33,7 @@ namespace Adapters.Inbound.Controllers
         {
             CriarCommand command = new(request.ClienteId, MapRequestToCommand(request.Itens));
 
-            var result = await _criarHandler.Handler(command);
+            var result = await _criarHandler.Handle(command);
 
             return result.IsSucess ?
                 Created($"/{result.Data?.Id}", result) :
@@ -47,14 +54,14 @@ namespace Adapters.Inbound.Controllers
                         IngredienteCommand _ingrediente = new IngredienteCommand()
                         {
                             Id = ingrediente.Id,
-                            Adicional = ingrediente.Adicional
+                            Quantidade = ingrediente.Quantidade
                         };
 
                         ingredientes.Add(_ingrediente);
                     }
 
                 }
-                ItemPedidoCommand itemPedidoCommand = new ItemPedidoCommand(item.Id, ingredientes);
+                ItemPedidoCommand itemPedidoCommand = new ItemPedidoCommand(item.Id, ingredientes, item.Quantidade);
 
                 itens.Add(itemPedidoCommand);
             }
@@ -62,18 +69,38 @@ namespace Adapters.Inbound.Controllers
             return itens;
         }
 
-        //[HttpPut("Alterar")]
-        //[Description("Alteração do Pedido com base no CPF.")]
-        //public async Task<IActionResult> Alterar(AlterarCommand command, [FromQuery] string cpf)
-        //{
-        //    AlterarPorCPFCommand commandCpf = new AlterarPorCPFCommand(cpf, command.Nome, command.Email);
+        [HttpPatch("finalizarpedido/{id}")]
+        public async Task<IActionResult> Finalizar([FromRoute][Required(ErrorMessage = "Favor informar o id do pedido")] Guid id)
+        {
+            var result = await _finalizarHandler.Handle(id.ToString());
 
-        //    var result = await _alterarHandler.Handler(commandCpf);
+            return result.IsSucess ? 
+                Ok(result) :
+                BadRequest(result);
+        }
 
-        //    return result.IsSucess ?
-        //        Ok(result) :
-        //        BadRequest(result);
-        //}
+        [HttpPost("alterarstatus/{id}")]
+        public async Task<IActionResult> Alterar([FromRoute][Required(ErrorMessage = "Favor informar o id do pedido")] Guid id)
+        {
+            var result = await _alterarStatusHandler.Handle(id.ToString());
+
+            return result.IsSucess ?
+                Ok(result) :
+                BadRequest(result);
+        }
+
+        [HttpGet("{id}")]
+        [Description("Busca o pedido com base no ID informado.")]
+        public async Task<IActionResult> BuscarPorId([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] Guid id)
+        {
+
+            var result = await _buscarPorIdHandler.Handle(id.ToString());
+
+
+            return result.IsSucess ? Ok(result) : BadRequest(result);
+
+
+        }
 
     }
 }

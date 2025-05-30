@@ -7,10 +7,12 @@
         public string Nome { get; set; }
 
         public CategoriaDTO() { }
-        public CategoriaDTO(string id, string nome)
+        public CategoriaDTO(string id, string nome )
         {
             Nome = nome;
             Id = id;
+    
         }
-    }
+
+     }
 }

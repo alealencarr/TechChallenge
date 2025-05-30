@@ -11,7 +11,6 @@ namespace Aplicacao.UseCases.Pedido.SharedCommand
     {
         public Guid Id { get; set; }
 
-        public bool Adicional { get; set; } = false;
-
+        public int Quantidade { get; set; }
     }
 }

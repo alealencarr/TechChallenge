@@ -6,7 +6,7 @@
 
         public string Nome { get; set; } = string.Empty;
 
-        public string Id { get; set; } 
+        public string Id { get; set; }
         public IngredienteDTO(string id, decimal preco, string nome)
         {
             Nome = nome;
@@ -14,6 +14,7 @@
             Id = id;
         }
 
+ 
         public IngredienteDTO() { }
     }
 }

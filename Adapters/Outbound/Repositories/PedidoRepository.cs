@@ -1,6 +1,7 @@
-﻿using Domain.Entidades;
+﻿using Domain.Entidades.Agregados.AgregadoPedido;
 using Domain.Ports;
 using Infraestrutura;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,20 @@ namespace Adapters.Outbound.Repositories
 
       
 
-        public async Task Finalizar(Pedido pedido)
+        public async Task AlterarStatus(Pedido pedido)
         {
-            throw new NotImplementedException();
+            _appDbContext.Pedidos.Update(pedido);
+
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task<Pedido?> GetById(string id)
+        {
+            return await _appDbContext.Pedidos
+                       .Include(p => p.Cliente)
+                .Include(p => p.Itens)
+                    .ThenInclude(pi => pi.Ingredientes) 
+                .FirstOrDefaultAsync(x => x.Id.ToString() == id);
         }
     }
 }

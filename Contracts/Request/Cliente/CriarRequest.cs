@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Aplicacao.Common;
 
 namespace Contracts.Request.Cliente
 {
@@ -11,11 +12,12 @@ namespace Contracts.Request.Cliente
 
         public string Nome { get; set; } = string.Empty;
 
+        [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
         public CriarRequest(string cpf, string nome, string email)
         {
-            CPF = cpf;
+            CPF = cpf.FormataCpfSemPontuacao();
             Nome = nome;
             Email = email;
         }

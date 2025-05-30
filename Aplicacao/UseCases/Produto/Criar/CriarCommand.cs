@@ -1,4 +1,5 @@
-﻿using Contracts.DTO.Produto;
+﻿
+using Contracts.DTO.Produto;
 using Domain.Entidades;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
  
-namespace Aplicacao.UseCases.Produtos.Criar
+namespace Aplicacao.UseCases.Produto.Criar
 {
     public class CriarCommand
     {
-        public CriarCommand(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, List<Guid>? ingredientes = null)
+        public CriarCommand(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, List<IngredienteCommand>? ingredientes = null)
         {
             Nome = nome;
             Preco = preco;
@@ -29,7 +30,7 @@ namespace Aplicacao.UseCases.Produtos.Criar
  
         public string Descricao { get; set; }
 
-        public List<Guid>? Ingredientes { get; set; }
+        public List<IngredienteCommand>? Ingredientes { get; set; }
 
         public List<ProdutoImagemDTO>? Imagens { get; set; }
 

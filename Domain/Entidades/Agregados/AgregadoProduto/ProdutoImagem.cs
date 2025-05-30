@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entidades
+namespace Domain.Entidades.Agregados.AgregadoProduto
 {
     public class ProdutoImagem
     {
@@ -20,5 +20,6 @@ namespace Domain.Entidades
             Blob = blob;
             Nome = nome;
         }
+        protected ProdutoImagem() { }
     }
 }

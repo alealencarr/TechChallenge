@@ -1,4 +1,4 @@
-﻿using Domain.Entidades;
+﻿using Domain.Entidades.Agregados.AgregadoProduto;
 
 
 namespace Domain.Ports
@@ -13,5 +13,6 @@ namespace Domain.Ports
 
         Task<Produto?> GetById (string id);
 
+        Task<List<Produto>> GetByIds(List<Guid> ids);
     }
 }

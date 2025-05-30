@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplicacao.UseCases.Pedido.Finalizar
+namespace Aplicacao.Services.QRCode
 {
-    public class FinalizarCommand
+    public interface IQRCodeService
     {
+        Task<byte[]> GerarQrCodeAsync(string qrCodeString);
     }
 }

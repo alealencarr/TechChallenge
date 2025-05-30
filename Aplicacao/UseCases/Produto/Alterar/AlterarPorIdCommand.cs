@@ -1,17 +1,10 @@
 ﻿using Contracts.DTO.Produto;
-using Domain.Entidades;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Aplicacao.UseCases.Produtos.Alterar
+namespace Aplicacao.UseCases.Produto.Alterar
 {
     public class AlterarPorIdCommand
     {
-        public AlterarPorIdCommand(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, string id, List<Guid>? ingredientes = null)
+        public AlterarPorIdCommand(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, string id, List<IngredienteCommand>? ingredientes = null)
         {
             Nome = nome;
             Preco = preco;
@@ -32,6 +25,6 @@ namespace Aplicacao.UseCases.Produtos.Alterar
 
         public string Descricao { get; set; }
 
-        public List<Guid>? Ingredientes { get; set; }
+        public List<IngredienteCommand>? Ingredientes { get; set; }
     }
 }

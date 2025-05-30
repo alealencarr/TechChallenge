@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Aplicacao.UseCases.Produtos.Buscar
+namespace Aplicacao.UseCases.Produto.BuscarPorCategoria
 {
     public class BuscarHandler
     {
@@ -34,13 +34,13 @@ namespace Aplicacao.UseCases.Produtos.Buscar
                 {
                     Id = x.Id.ToString(),
                     Nome = x.Nome,
-                    Categoria = x.Categoria,  
+                    Categoria =  new Contracts.DTO.Categoria.CategoriaDTO(x.Categoria.Id.ToString(), x.Categoria.Nome),  
                     Descricao = x.Descricao,
                     Preco = x.Preco,
                     Ingredientes = [.. x.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
                     {
-                        IdProduto = ing.ProdutoId,
-                        IdIngrediente = ing.IngredienteId
+                       Quantidade = ing.Quantidade,
+                        Id = ing.IngredienteId.ToString()
                     })],
                     Imagens = [.. x.ProdutoImagens.Select(img => new ProdutoImagemDTO
                     {
@@ -49,8 +49,9 @@ namespace Aplicacao.UseCases.Produtos.Buscar
                     })]
                 })];
 
+               
                 return (products.Count == 0) ? new Contracts.Response<List<ProdutoDTO>?>(data: null, code: System.Net.HttpStatusCode.BadRequest, "Nenhum produto encontrado.")
-                    : new Contracts.Response<List<ProdutoDTO>?>(data: produtosDto, code: System.Net.HttpStatusCode.OK, "Produto encontrada.");
+                    : new Contracts.Response<List<ProdutoDTO>?>(data: produtosDto, code: System.Net.HttpStatusCode.OK, "Produto encontrado com sucesso.");
 
             }
             catch (ArgumentException ex)
@@ -59,7 +60,7 @@ namespace Aplicacao.UseCases.Produtos.Buscar
             }
             catch
             {
-                return new Contracts.Response<List<ProdutoDTO>?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível localizar a Produto.");
+                return new Contracts.Response<List<ProdutoDTO>?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível localizar este Produto.");
             }
 
         }

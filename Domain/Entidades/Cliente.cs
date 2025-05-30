@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Entidades.Agregados.AgregadoPedido;
+using Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entidades
@@ -13,13 +14,17 @@ namespace Domain.Entidades
             ClienteIdentificado = true;
             Id = Guid.NewGuid();
 
+            CreatedAt = DateTime.Now;
         }
 
-        public Cliente()
+        public DateTime CreatedAt { get; private set; }
+
+        protected Cliente()
         {
-            Id = Guid.NewGuid();
-            ClienteIdentificado = false;
+
         }
+
+ 
 
         public Guid Id { get; set;  }
         public CpfVo? CPF { get; set; }

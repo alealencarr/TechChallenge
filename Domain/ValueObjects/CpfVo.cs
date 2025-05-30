@@ -23,7 +23,7 @@ namespace Domain.ValueObjects
             if (!IsValid(valor))
                 throw new ArgumentException("CPF inválido.");
 
-            Valor = valor.FormataCpf();
+            Valor = valor.FormataCpfSemPontuacao();
         }
 
         public override string ToString()

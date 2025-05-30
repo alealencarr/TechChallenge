@@ -31,10 +31,10 @@ namespace Adapters.Inbound.Controllers
 
         [HttpGet("{id}")]
         [Description("Busca a categoria com base no ID informado.")]
-        public async Task<IActionResult> BuscarPorId([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] string id)
+        public async Task<IActionResult> BuscarPorId([FromRoute][Required(ErrorMessage = "Id é obrigatório.")] Guid id)
         {
 
-            var result = await _buscarPorIdHandler.Handler(id);
+            var result = await _buscarPorIdHandler.Handler(id.ToString());
 
             return result.IsSucess ? Ok(result) : BadRequest(result);
 

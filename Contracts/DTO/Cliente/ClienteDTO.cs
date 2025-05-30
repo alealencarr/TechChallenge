@@ -9,12 +9,13 @@
         public string Email { get; set; } = string.Empty;
 
         public Guid Id { get; set; } 
-        public ClienteDTO(string cpf, string nome, string email, Guid id)
+        public ClienteDTO(string cpf, string nome, string email, Guid id )
         {
             CPF = cpf;
             Nome = nome;
             Email = email;
             Id = id;
-        }
-    }
+         }
+
+     }
 }

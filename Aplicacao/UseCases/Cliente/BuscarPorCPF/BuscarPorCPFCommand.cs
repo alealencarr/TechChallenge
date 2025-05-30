@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aplicacao.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Aplicacao.UseCases.Cliente.BuscarPorCPF
 
         public BuscarPorCPFCommand(string cpf)
         { 
-            this.CPF = cpf; 
+            this.CPF = cpf.FormataCpfSemPontuacao(); 
         }
     }
 }

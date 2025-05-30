@@ -39,5 +39,12 @@ namespace Adapters.Outbound.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
+        public async Task<List<Ingrediente>> GetByIds(List<Guid> ids)
+        {
+            return await _appDbContext.Set<Ingrediente>()
+                .AsNoTracking()
+                .Where(p => ids.Contains(p.Id))
+                .ToListAsync();
+        }
     }
 }

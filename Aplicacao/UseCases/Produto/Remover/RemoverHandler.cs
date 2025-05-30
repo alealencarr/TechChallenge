@@ -1,5 +1,6 @@
 ﻿using Aplicacao.Common;
 using Contracts.DTO.Produto;
+using Domain.Entidades;
 using Domain.Ports;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplicacao.UseCases.Produtos.Remover
+namespace Aplicacao.UseCases.Produto.Remover
 {
     public class RemoverHandler
     {
@@ -31,18 +32,19 @@ namespace Aplicacao.UseCases.Produtos.Remover
 
                 await _produtoRepository.Remover(produto);
 
-                ProdutoDTO produtoDto = new ProdutoDTO(produto.Nome, produto.Preco, produto.Categoria, [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
+                ProdutoDTO produtoDto = new ProdutoDTO(produto.Nome, produto.Preco, new Contracts.DTO.Categoria.CategoriaDTO(produto.Categoria.Id.ToString(), produto.Categoria.Nome),
+                                                                                         [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
                                                                                                     {
                                                                                                         Nome = img.Nome,
                                                                                                         Blob = img.Blob
                                                                                                     })], produto.Descricao, produto.Id.ToString()
-                                                                                                    , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
+                                                                                                     , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
                                                                                                     {
-                                                                                                        IdProduto = ing.ProdutoId,
-                                                                                                        IdIngrediente = ing.IngredienteId
+                                                                                                        Quantidade = ing.Quantidade,
+                                                                                                        Id = ing.IngredienteId.ToString()
                                                                                                     })]);
 
- 
+
                 return new Contracts.Response<ProdutoDTO?>(data: produtoDto, code: System.Net.HttpStatusCode.OK, "Produto excluido com sucesso.");
             }
             catch (ArgumentException ex)
