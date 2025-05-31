@@ -4,7 +4,6 @@ using API.Service;
 using Aplicacao.Services;
 using Aplicacao.Services.Pagamento;
 using Aplicacao.Services.QRCode;
-using Aplicacao.UseCases.Pedido.AlterarStatus;
 using Domain.Ports;
 using Infraestrutura;
 using Microsoft.EntityFrameworkCore;
@@ -71,7 +70,7 @@ builder.Services.AddSwaggerGen(x =>
 {
     x.CustomSchemaIds(n => n.FullName);
 });
- 
+
 
 var cnnStr = builder.Configuration.GetConnectionString("minhaconnectionstring") ?? string.Empty;
 

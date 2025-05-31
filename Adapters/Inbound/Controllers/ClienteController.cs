@@ -32,7 +32,7 @@ namespace Adapters.Inbound.Controllers
 
             var result = await _criarHandler.Handler(command);
 
-            return result.IsSucess?
+            return result.IsSucess ?
                 Created($"/{result.Data?.Id}", result) :
                 BadRequest(result);
         }

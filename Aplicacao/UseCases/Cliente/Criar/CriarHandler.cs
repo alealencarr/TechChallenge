@@ -1,5 +1,4 @@
-﻿using Aplicacao.Common;
-using Contracts.DTO.Cliente;
+﻿using Contracts.DTO.Cliente;
 using Domain.Ports;
 using System.Net;
 
@@ -34,7 +33,7 @@ namespace Aplicacao.UseCases.Cliente.Criar
 
                 await _clienteRepository.Adicionar(cliente);
 
-                var clienteDto = new ClienteDTO(                     
+                var clienteDto = new ClienteDTO(
                      command.CPF,
                      command.Nome,
                      command.Email,
@@ -46,7 +45,7 @@ namespace Aplicacao.UseCases.Cliente.Criar
             {
                 return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.BadRequest, ex.Message);
             }
-            catch 
+            catch
             {
                 return new Contracts.Response<ClienteDTO?>(data: null, code: HttpStatusCode.InternalServerError, "Não foi possível criar o cliente.");
             }

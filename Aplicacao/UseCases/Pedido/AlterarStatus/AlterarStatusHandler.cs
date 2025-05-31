@@ -1,26 +1,17 @@
-﻿using Aplicacao.Services;
-using Aplicacao.Services.Pagamento;
-using Aplicacao.Services.QRCode;
-using Contracts.DTO.Pedido;
+﻿using Contracts.DTO.Pedido;
 using Domain.Ports;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Pedido.AlterarStatus
 {
     public class AlterarStatusHandler
     {
         private readonly IPedidoRepository _pedidoRepository;
- 
-        public AlterarStatusHandler(IPedidoRepository pedidoRepository  )
+
+        public AlterarStatusHandler(IPedidoRepository pedidoRepository)
         {
             _pedidoRepository = pedidoRepository;
-         }
+        }
 
         public async Task<Contracts.Response<AlteracaoStatusPedidoDTO?>> Handle(string id)
         {
@@ -45,7 +36,7 @@ namespace Aplicacao.UseCases.Pedido.AlterarStatus
 
                 await _pedidoRepository.AlterarStatus(pedido);
 
-                AlteracaoStatusPedidoDTO alteracao = new AlteracaoStatusPedidoDTO(pedido.Id.ToString(),  pedido.StatusPedido.ToString());
+                AlteracaoStatusPedidoDTO alteracao = new AlteracaoStatusPedidoDTO(pedido.Id.ToString(), pedido.StatusPedido.ToString());
 
                 return new Contracts.Response<AlteracaoStatusPedidoDTO?>(data: alteracao, code: HttpStatusCode.OK, "Status do pedido foi alterado com sucesso.");
             }
