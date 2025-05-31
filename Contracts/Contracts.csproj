@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\Campanhas\" />
-    <Folder Include="Request\Campanha\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="DTO\Ingrediente\IngredienteDTO.cs" />
   </ItemGroup>
 

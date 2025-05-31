@@ -34,6 +34,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<ProdutoIngrediente>()
         .HasKey(pi => new { pi.ProdutoId, pi.IngredienteId });
 
+        modelBuilder.Entity<ProdutoImagem>()
+        .HasKey(pi => new { pi.ProdutoId, pi.Id });
+
         modelBuilder.Entity<Cliente>().OwnsOne(c => c.CPF, cpf =>
         {
             cpf.Property(c => c.Valor)

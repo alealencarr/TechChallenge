@@ -11,7 +11,7 @@ namespace Contracts.Request.Produto
 {
     public class AlterarRequest
     {
-        public AlterarRequest(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, List<IngredienteRequest>? ingredientes = null)
+        public AlterarRequest(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemRequest>? imagens, string descricao, List<IngredienteRequest>? ingredientes = null)
         {
             Nome = nome;
             Preco = preco;
@@ -32,7 +32,7 @@ namespace Contracts.Request.Produto
         [Required(ErrorMessage = "É necessário informar a categoria.")]
         public Guid CategoriaId { get; set; }
 
-        public List<ProdutoImagemDTO>? Imagens { get; set; }
+        public List<ProdutoImagemRequest>? Imagens { get; set; }
 
         [Required(ErrorMessage = "É necessário informar a descrição.")]
         [MaxLength(255)]

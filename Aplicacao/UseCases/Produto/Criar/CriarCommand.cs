@@ -1,5 +1,6 @@
 ﻿
 using Contracts.DTO.Produto;
+using Contracts.Request.Produto;
 using Domain.Entidades;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Aplicacao.UseCases.Produto.Criar
 {
     public class CriarCommand
     {
-        public CriarCommand(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, List<IngredienteCommand>? ingredientes = null)
+        public CriarCommand(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemRequest>? imagens, string descricao, List<IngredienteCommand>? ingredientes = null)
         {
             Nome = nome;
             Preco = preco;
@@ -32,7 +33,7 @@ namespace Aplicacao.UseCases.Produto.Criar
 
         public List<IngredienteCommand>? Ingredientes { get; set; }
 
-        public List<ProdutoImagemDTO>? Imagens { get; set; }
+        public List<ProdutoImagemRequest>? Imagens { get; set; }
 
     }
 }

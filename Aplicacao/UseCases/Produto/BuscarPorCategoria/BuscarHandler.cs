@@ -2,6 +2,7 @@
 using Contracts.DTO.Produto;
 using Domain.Entidades;
 using Domain.Ports;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,12 @@ namespace Aplicacao.UseCases.Produto.BuscarPorCategoria
     public class BuscarHandler
     {
         private readonly IProdutoRepository _produtoRepository;
-
-        public BuscarHandler(IProdutoRepository ProdutoRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public BuscarHandler(IProdutoRepository ProdutoRepository, IHttpContextAccessor httpContextAccessor)
         {
             _produtoRepository = ProdutoRepository;
+            _httpContextAccessor = httpContextAccessor;
+
         }
 
         public async Task<Contracts.Response<List<ProdutoDTO>?>> Handle(string? id, string? name)
@@ -44,9 +47,11 @@ namespace Aplicacao.UseCases.Produto.BuscarPorCategoria
                     })],
                     Imagens = [.. x.ProdutoImagens.Select(img => new ProdutoImagemDTO
                     {
-                        Nome = img.Nome,
-                        Blob = img.Blob
+                        Url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{img.ImagePath}/{img.FileName}",
+                                                                                                        Nome = img.Nome,
+                                                                                                        Mimetype = img.MimeType
                     })]
+ 
                 })];
 
                

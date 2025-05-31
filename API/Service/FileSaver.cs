@@ -21,5 +21,15 @@ namespace API.Service
             var caminhoArquivo = Path.Combine(pastaDestino, nomeArquivo);
             await File.WriteAllBytesAsync(caminhoArquivo, dados);
         }
+
+        public void LimparPasta(string pasta)
+        {
+            var pastaCompleta = Path.Combine(_env.WebRootPath, pasta);
+
+            if (Directory.Exists(pastaCompleta))
+            {
+                Directory.Delete(pastaCompleta, true);
+            }
+        }
     }
 }

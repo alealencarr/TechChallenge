@@ -1,6 +1,8 @@
-﻿using Contracts.DTO.Produto;
+﻿using Aplicacao.Services;
+using Contracts.DTO.Produto;
 using Domain.Entidades.Agregados.AgregadoProduto;
 using Domain.Ports;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 
 namespace Aplicacao.UseCases.Produto.Alterar
@@ -10,11 +12,16 @@ namespace Aplicacao.UseCases.Produto.Alterar
         private readonly IProdutoRepository _produtoRepository;
         private readonly ICategoriaRepository _categoriaRepository;
         private readonly IIngredienteRepository _ingredienteRepository;
-        public AlterarPorIdHandler(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository, IIngredienteRepository ingredienteRepository)
+        private readonly IFileSaver _fileSaver;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public AlterarPorIdHandler(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository, IIngredienteRepository ingredienteRepository, IFileSaver fileSaver, IHttpContextAccessor httpContextAccessor)
         {
             _produtoRepository = produtoRepository;
             _categoriaRepository = categoriaRepository;
             _ingredienteRepository = ingredienteRepository;
+            _fileSaver = fileSaver;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Contracts.Response<ProdutoDTO?>> Handle(AlterarPorIdCommand command)
@@ -77,20 +84,32 @@ namespace Aplicacao.UseCases.Produto.Alterar
 
                 ICollection<ProdutoImagem> _produtoImagens = [];
 
+                var imagePath = $"produtos/imagens/produto-{produto.Id.ToString()}";
+
+                _fileSaver.LimparPasta(imagePath);
+
                 if (command.Imagens is not null)
                 {
-
                     foreach (var imagemDto in command.Imagens)
                     {
+                        var mimeType = $"data:image/png;base64,{Convert.ToBase64String(imagemDto.Blob)}";
+                        var fileName = $"imagem-{imagemDto.Nome}-{Guid.NewGuid().ToString()}.png";
+
+
                         var imagem = new ProdutoImagem(
-                            idProduto: produto.Id,
+                            produtoId: produto.Id,
                             blob: imagemDto.Blob,
-                            nome: imagemDto.Nome
+                            nome: imagemDto.Nome,
+                            imagePath: imagePath,
+                            mimeType: mimeType,
+                            fileName: fileName
                         );
+
+
+                        await _fileSaver.SalvarArquivo(imagemDto.Blob, fileName, imagePath);
 
                         _produtoImagens.Add(imagem);
                     }
-
                 }
 
                 produto.VinculaImagens(_produtoImagens);
@@ -101,8 +120,9 @@ namespace Aplicacao.UseCases.Produto.Alterar
                 ProdutoDTO produtoDto = new ProdutoDTO(command.Nome, command.Preco, new Contracts.DTO.Categoria.CategoriaDTO(_categoria.Id.ToString(), _categoria.Nome),
                                                                                         [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
                                                                                                     {
+                                                                                                        Url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{img.ImagePath}/{img.FileName}",
                                                                                                         Nome = img.Nome,
-                                                                                                        Blob = img.Blob
+                                                                                                        Mimetype = img.MimeType
                                                                                                     })], command.Descricao, produto.Id.ToString()
                                                                                                     , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
                                                                                                     {

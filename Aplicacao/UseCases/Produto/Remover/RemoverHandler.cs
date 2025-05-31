@@ -1,7 +1,9 @@
 ﻿using Aplicacao.Common;
+using Aplicacao.Services;
 using Contracts.DTO.Produto;
 using Domain.Entidades;
 using Domain.Ports;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,13 @@ namespace Aplicacao.UseCases.Produto.Remover
     public class RemoverHandler
     {
         private readonly IProdutoRepository _produtoRepository;
-
-        public RemoverHandler(IProdutoRepository produtoRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IFileSaver _fileSaver;
+        public RemoverHandler(IProdutoRepository produtoRepository, IHttpContextAccessor httpContextAccessor, IFileSaver fileSaver)
         {
             _produtoRepository = produtoRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _fileSaver = fileSaver;
         }
 
         public async Task<Contracts.Response<ProdutoDTO?>> Handle(string id)
@@ -30,13 +35,18 @@ namespace Aplicacao.UseCases.Produto.Remover
                 if (produto is null)
                     return new Contracts.Response<ProdutoDTO?>(data: null, code: HttpStatusCode.BadRequest, "Produto não encontrado com base neste Id.");
 
+                var imagePath = $"produtos/imagens/produto-{produto.Id.ToString()}";
+
+                _fileSaver.LimparPasta(imagePath);
+
                 await _produtoRepository.Remover(produto);
 
                 ProdutoDTO produtoDto = new ProdutoDTO(produto.Nome, produto.Preco, new Contracts.DTO.Categoria.CategoriaDTO(produto.Categoria.Id.ToString(), produto.Categoria.Nome),
                                                                                          [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
                                                                                                     {
+                                                                                                        Url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{img.ImagePath}/{img.FileName}",
                                                                                                         Nome = img.Nome,
-                                                                                                        Blob = img.Blob
+                                                                                                        Mimetype = img.MimeType
                                                                                                     })], produto.Descricao, produto.Id.ToString()
                                                                                                      , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
                                                                                                     {

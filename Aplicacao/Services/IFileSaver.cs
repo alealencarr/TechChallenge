@@ -11,6 +11,7 @@ namespace Aplicacao.Services
     public interface IFileSaver
     {
         Task SalvarArquivo(byte[] dados, string nomeArquivo, string subpasta);
+        void LimparPasta(string pasta);
 
     }
 }

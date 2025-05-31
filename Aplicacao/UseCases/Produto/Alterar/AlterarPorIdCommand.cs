@@ -1,10 +1,11 @@
 ﻿using Contracts.DTO.Produto;
+using Contracts.Request.Produto;
 
 namespace Aplicacao.UseCases.Produto.Alterar
 {
     public class AlterarPorIdCommand
     {
-        public AlterarPorIdCommand(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, string id, List<IngredienteCommand>? ingredientes = null)
+        public AlterarPorIdCommand(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemRequest>? imagens, string descricao, string id, List<IngredienteCommand>? ingredientes = null)
         {
             Nome = nome;
             Preco = preco;
@@ -21,7 +22,7 @@ namespace Aplicacao.UseCases.Produto.Alterar
 
         public Guid CategoriaId { get; set; }
 
-        public List<ProdutoImagemDTO>? Imagens { get; set; }
+        public List<ProdutoImagemRequest>? Imagens { get; set; }
 
         public string Descricao { get; set; }
 

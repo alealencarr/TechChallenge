@@ -11,7 +11,7 @@ namespace Contracts.Request.Produto
 {
     public class CriarRequest
     {
-        public CriarRequest(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemDTO>? imagens, string descricao, List<IngredienteRequest>? ingredientes = null)
+        public CriarRequest(string nome, decimal preco, Guid categoriaId, List<ProdutoImagemRequest>? imagens, string descricao, List<IngredienteRequest>? ingredientes = null)
         {
             Nome = nome;
             Preco = preco;
@@ -38,6 +38,6 @@ namespace Contracts.Request.Produto
 
         public List<IngredienteRequest>? Ingredientes { get; set; }
 
-        public List<ProdutoImagemDTO>? Imagens { get; set; }   
+        public List<ProdutoImagemRequest>? Imagens { get; set; }   
     }
 }

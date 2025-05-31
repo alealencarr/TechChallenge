@@ -1,11 +1,14 @@
 ﻿using Aplicacao.Common;
+using Aplicacao.Services;
 using Contracts.DTO.Ingrediente;
 using Contracts.DTO.Produto;
 using Contracts.Request.Pedido;
 using Domain.Entidades.Agregados.AgregadoProduto;
 using Domain.Ports;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -18,11 +21,15 @@ namespace Aplicacao.UseCases.Produto.Criar
         private readonly IProdutoRepository _produtoRepository;
         private readonly ICategoriaRepository _categoriaRepository;
         private readonly IIngredienteRepository _ingredienteRepository;
-        public CriarHandler(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository, IIngredienteRepository ingredienteRepository)
+        private readonly IFileSaver _fileSaver;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public CriarHandler(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository, IIngredienteRepository ingredienteRepository, IFileSaver fileSaver, IHttpContextAccessor httpContextAccessor)
         {
             _produtoRepository = produtoRepository;
             _categoriaRepository = categoriaRepository;
             _ingredienteRepository = ingredienteRepository;
+            _fileSaver = fileSaver;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Contracts.Response<ProdutoDTO?>> Handle(CriarCommand command)
@@ -80,15 +87,27 @@ namespace Aplicacao.UseCases.Produto.Criar
 
                     foreach (var imagemDto in command.Imagens)
                     {
+                        var imagePath = $"produtos/imagens/produto-{produto.Id.ToString()}";
+                        var mimeType = $"data:image/png;base64,{Convert.ToBase64String(imagemDto.Blob)}";
+                        var fileName = $"imagem-{imagemDto.Nome}-{Guid.NewGuid().ToString()}.png";
+
+
                         var imagem = new ProdutoImagem(
-                            idProduto: produto.Id,
+                            produtoId: produto.Id,
                             blob: imagemDto.Blob,
-                            nome: imagemDto.Nome
+                            nome: imagemDto.Nome,
+                            imagePath: imagePath,
+                            mimeType : mimeType,
+                            fileName : fileName
                         );
+
+
+                        await _fileSaver.SalvarArquivo(imagemDto.Blob, fileName, imagePath);
 
                         _produtoImagens.Add(imagem);
                     }
                     produto.VinculaImagens(_produtoImagens);
+
 
                 }
 
@@ -99,8 +118,9 @@ namespace Aplicacao.UseCases.Produto.Criar
                 ProdutoDTO produtoDto = new ProdutoDTO(command.Nome, command.Preco, new Contracts.DTO.Categoria.CategoriaDTO(_categoria.Id.ToString(),_categoria.Nome) , 
                                                                                         [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
                                                                                                     {
+                                                                                                        Url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{img.ImagePath}/{img.FileName}",
                                                                                                         Nome = img.Nome,
-                                                                                                        Blob = img.Blob
+                                                                                                        Mimetype = img.MimeType
                                                                                                     })], command.Descricao, produto.Id.ToString()
                                                                                                     , [.. produto.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
                                                                                                     {

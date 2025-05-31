@@ -11,7 +11,8 @@ namespace Contracts.DTO.Pedido
         public string Id { get; set; }
         public string Url { get; set; }
 
-        public string Mimetype { get; set; }
+        //Comentado porque a resposta fica muito grande na visualização do Swagger
+        public string Mimetype; //{ get; set; }
 
         public QRCodeDTO(string id, string url, string mimetype)
         {
