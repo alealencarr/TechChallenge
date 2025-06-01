@@ -49,16 +49,10 @@ Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria
   ```bash
    git clone https://github.com/alealencarr/TechChallenge.git
    ```
-3. Configure o banco de dados no appsettings.Development.json da API, sugiro que use user-secrets.
-
-4. Execute as migrations (navegue até API): 
-  ```bash
-  cd API
-  dotnet ef database update --project ../Infraestrutura --startup-project .
    ```
-4. Rode a aplicação:
+2. Abra o docker desktop, navegue até a raiz do projeto e rode:
   ```bash
-  dotnet run --project API
+  docker-compose up --build
    ```
 📦 Testes
 

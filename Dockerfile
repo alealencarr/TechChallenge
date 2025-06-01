@@ -8,5 +8,5 @@ RUN dotnet publish "API/API.csproj" -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-EXPOSE 5000
+EXPOSE 7057
 ENTRYPOINT ["dotnet", "API.dll"]

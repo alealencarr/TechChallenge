@@ -10,7 +10,7 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:7057
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__Default=Server=db;Database=TechChallenge;User=sa;Password=2025@_Futuro;Encrypt=False;TrustServerCertificate=True;
+      - ConnectionStrings__Default=Server=db;Database=TechChallenge;User=sa;Password=TechChalleng@_Fase1;Encrypt=False;TrustServerCertificate=True;
     depends_on:
       - db
 
@@ -18,7 +18,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: techchallenge_sqlserver
     environment:
-      SA_PASSWORD: "2025@_Futuro"
+      SA_PASSWORD: "TechChalleng@_Fase1"
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"

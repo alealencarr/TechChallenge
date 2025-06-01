@@ -1,35 +1,34 @@
-# Build results
+# Arquivos de Build 
 bin/
 obj/
 
-# Visual Studio cache files
+# Arquivos de cache
 .vs/
 
-# User-specific files
+# Arquivos especificos do user
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
-# Auto generated files
+# Arquivos auto gerados
 *.generated.cs
 
 # Rider IDE
 .idea/
 
-# Logs
+# Arquivos de Logs
 *.log
 
-# NuGet Packages
+# Arquivos dos pacotes do NuGet 
 *.nupkg
-# The packages folder can be ignored because of Package Restore
 **/packages/*
 
 # ASP.NET Core
 #  wwwroot/
 #  appsettings.Development.json
 
-# Entity Framework Core Migrations
+# EF Core, precisa gerar para o build do docker-compose
 #Migrations/
 
 # Docker
