@@ -72,7 +72,7 @@ builder.Services.AddSwaggerGen(x =>
 });
 
 
-var cnnStr = builder.Configuration.GetConnectionString("minhaconnectionstring") ?? string.Empty;
+var cnnStr = builder.Configuration.GetConnectionString("Default") ?? string.Empty;
 
 builder.Services.AddDbContext<AppDbContext>(x => { x.UseSqlServer(cnnStr); });
 
@@ -100,10 +100,40 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+
+    var retryCount = 0;
+    var maxRetries = 10;
+    var delay = TimeSpan.FromSeconds(5);
+
+    while (true)
+    {
+        try
+        {
+            context.Database.Migrate();
+            break;
+        }
+        catch (Exception ex)
+        {
+            retryCount++;
+            Console.WriteLine($"Erro ao aplicar migrations (tentativa {retryCount}): {ex.Message}");
+
+            if (retryCount >= maxRetries)
+                throw;
+
+            Thread.Sleep(delay);
+        }
+    }
+}
 
 app.Run();

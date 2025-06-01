@@ -26,11 +26,11 @@ obj/
 **/packages/*
 
 # ASP.NET Core
-wwwroot/
-appsettings.Development.json
+#  wwwroot/
+#  appsettings.Development.json
 
 # Entity Framework Core Migrations
-Migrations/
+#Migrations/
 
 # Docker
 docker-compose.override.yml
