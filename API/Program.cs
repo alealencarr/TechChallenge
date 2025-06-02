@@ -19,41 +19,45 @@ builder.Services.AddEndpointsApiExplorer();
 
 //Cliente
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Cliente.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Cliente.Alterar.AlterarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Cliente.BuscarPorCPF.BuscarPorCPFHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Cliente.Criar.ICriarHandler, Aplicacao.UseCases.Cliente.Criar.CriarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Cliente.Alterar.IAlterarHandler, Aplicacao.UseCases.Cliente.Alterar.AlterarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Cliente.BuscarPorCPF.IBuscarPorCPFHandler, Aplicacao.UseCases.Cliente.BuscarPorCPF.BuscarPorCPFHandler>();
+
 ///
 
 //Categoria
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarPorId.BuscarPorIdHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarTodos.BuscarTodosHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarPorId.IBuscarPorIdHandler, Aplicacao.UseCases.Categoria.BuscarPorId.BuscarPorIdHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarTodos.IBuscarTodosHandler, Aplicacao.UseCases.Categoria.BuscarTodos.BuscarTodosHandler>();
+
 ///
 
 //Pedido
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Finalizar.FinalizarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.BuscarPorId.BuscarPorIdHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.AlterarStatus.AlterarStatusHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Criar.ICriarHandler, Aplicacao.UseCases.Pedido.Criar.CriarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Finalizar.IFinalizarHandler, Aplicacao.UseCases.Pedido.Finalizar.FinalizarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.BuscarPorId.IBuscarPorIdHandler, Aplicacao.UseCases.Pedido.BuscarPorId.BuscarPorIdHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.AlterarStatus.IAlterarStatusHandler, Aplicacao.UseCases.Pedido.AlterarStatus.AlterarStatusHandler>();
 
 ///
 
 //produto
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.Alterar.AlterarPorIdHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.BuscarPorCategoria.BuscarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.Remover.RemoverHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.BuscarPorId.BuscarPorIdHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Produto.Criar.ICriarHandler, Aplicacao.UseCases.Produto.Criar.CriarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Produto.Alterar.IAlterarPorIdHandler, Aplicacao.UseCases.Produto.Alterar.AlterarPorIdHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Produto.BuscarPorCategoria.IBuscarHandler, Aplicacao.UseCases.Produto.BuscarPorCategoria.BuscarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Produto.Remover.IRemoverHandler, Aplicacao.UseCases.Produto.Remover.RemoverHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Produto.BuscarPorId.IBuscarPorIdHandler, Aplicacao.UseCases.Produto.BuscarPorId.BuscarPorIdHandler>();
+
 ///
 
 //Ingrediente
 builder.Services.AddScoped<IIngredienteRepository, IngredienteRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Alterar.AlterarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.BuscarPorId.BuscarPorIdHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.BuscarTodos.BuscarTodosHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Criar.ICriarHandler, Aplicacao.UseCases.Ingrediente.Criar.CriarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Alterar.IAlterarHandler, Aplicacao.UseCases.Ingrediente.Alterar.AlterarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.BuscarPorId.IBuscarPorIdHandler, Aplicacao.UseCases.Ingrediente.BuscarPorId.BuscarPorIdHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.BuscarTodos.IBuscarTodosHandler, Aplicacao.UseCases.Ingrediente.BuscarTodos.BuscarTodosHandler>();
+
 ///
 
 ///Services 
@@ -100,7 +104,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+#if DEBUG
+app.UseHttpsRedirection();
+#endif
+
 
 app.UseAuthorization();
 
@@ -120,7 +127,7 @@ using (var scope = app.Services.CreateScope())
     {
         try
         {
-            context.Database.Migrate();
+            await context.Database.MigrateAsync();
             break;
         }
         catch (Exception ex)
@@ -136,4 +143,4 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.Run();
+await app.RunAsync();

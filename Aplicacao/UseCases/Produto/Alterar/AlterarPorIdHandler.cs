@@ -7,7 +7,7 @@ using System.Net;
 
 namespace Aplicacao.UseCases.Produto.Alterar
 {
-    public class AlterarPorIdHandler
+    public class AlterarPorIdHandler : IAlterarPorIdHandler
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly ICategoriaRepository _categoriaRepository;

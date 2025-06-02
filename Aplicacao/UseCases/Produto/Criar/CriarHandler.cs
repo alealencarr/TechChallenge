@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Produto.Criar
 {
-    public class CriarHandler
+    public class CriarHandler : ICriarHandler
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly ICategoriaRepository _categoriaRepository;
@@ -118,7 +118,7 @@ namespace Aplicacao.UseCases.Produto.Criar
                 ProdutoDTO produtoDto = new ProdutoDTO(command.Nome, command.Preco, new Contracts.DTO.Categoria.CategoriaDTO(_categoria.Id.ToString(),_categoria.Nome) , 
                                                                                         [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
                                                                                                     {
-                                                                                                        Url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{img.ImagePath}/{img.FileName}",
+                                                                                                        Url = $"{_httpContextAccessor?.HttpContext.Request.Scheme}://{_httpContextAccessor?.HttpContext.Request.Host}/{img.ImagePath}/{img.FileName}",
                                                                                                         Nome = img.Nome,
                                                                                                         Mimetype = img.MimeType
                                                                                                     })], command.Descricao, produto.Id.ToString()

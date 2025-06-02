@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Aplicacao.UseCases.Pedido.AlterarStatus
 {
-    public class AlterarStatusHandler
+    public class AlterarStatusHandler : IAlterarStatusHandler
     {
         private readonly IPedidoRepository _pedidoRepository;
 

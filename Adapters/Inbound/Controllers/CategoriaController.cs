@@ -10,10 +10,10 @@ namespace Adapters.Inbound.Controllers
     [Route("api/categoria")]
     public class CategoriaController : ControllerBase
     {
-        private readonly BuscarTodosHandler _buscarTodosHandler;
-        private readonly BuscarPorIdHandler _buscarPorIdHandler;
+        private readonly IBuscarTodosHandler _buscarTodosHandler;
+        private readonly IBuscarPorIdHandler _buscarPorIdHandler;
 
-        public CategoriaController(BuscarPorIdHandler buscarPorIdHandler, BuscarTodosHandler buscarTodosHandler)
+        public CategoriaController(IBuscarPorIdHandler buscarPorIdHandler, IBuscarTodosHandler buscarTodosHandler)
         {
             _buscarPorIdHandler = buscarPorIdHandler;
             _buscarTodosHandler = buscarTodosHandler;

@@ -12,7 +12,7 @@ namespace Contracts.Request.Cliente
 
         public string Nome { get; set; } = string.Empty;
 
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Favor informar um e-mail válido.")]
         public string Email { get; set; } = string.Empty;
 
         public CriarRequest(string cpf, string nome, string email)

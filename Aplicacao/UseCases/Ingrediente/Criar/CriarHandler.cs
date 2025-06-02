@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Ingrediente.Criar
 {
-    public class CriarHandler
+    public class CriarHandler : ICriarHandler
     {
 
         private readonly IIngredienteRepository _ingredienteRepository;

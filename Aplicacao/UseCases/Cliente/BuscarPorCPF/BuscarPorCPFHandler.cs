@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Aplicacao.UseCases.Cliente.BuscarPorCPF
 {
-    public class BuscarPorCPFHandler
+    public class BuscarPorCPFHandler : IBuscarPorCPFHandler
     {
         private readonly IClienteRepository _clienteRepository;
         

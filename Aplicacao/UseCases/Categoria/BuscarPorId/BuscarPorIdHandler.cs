@@ -5,7 +5,7 @@ using Domain.Ports;
  
 namespace Aplicacao.UseCases.Categoria.BuscarPorId
 {
-    public class BuscarPorIdHandler
+    public class BuscarPorIdHandler : IBuscarPorIdHandler
     {
         private readonly ICategoriaRepository _categoriaRepository;
 

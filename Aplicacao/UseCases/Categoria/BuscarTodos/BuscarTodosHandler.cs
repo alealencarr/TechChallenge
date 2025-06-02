@@ -7,7 +7,7 @@ using System.Net;
 
 namespace Aplicacao.UseCases.Categoria.BuscarTodos
 {
-    public class BuscarTodosHandler
+    public class BuscarTodosHandler  : IBuscarTodosHandler
     {
         private ICategoriaRepository _categoriaRepository;
 

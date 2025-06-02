@@ -14,11 +14,11 @@ namespace Adapters.Inbound.Controllers
     public class PedidoController : ControllerBase
     {
 
-        private readonly CriarHandler _criarHandler;
-        private readonly FinalizarHandler _finalizarHandler;
-        private readonly BuscarPorIdHandler _buscarPorIdHandler;
-        private readonly AlterarStatusHandler _alterarStatusHandler;
-        public PedidoController(CriarHandler criarHandler, FinalizarHandler finalizarHandler, BuscarPorIdHandler buscarPorIdHandler, AlterarStatusHandler alterarStatusHandler)
+        private readonly ICriarHandler _criarHandler;
+        private readonly IFinalizarHandler _finalizarHandler;
+        private readonly IBuscarPorIdHandler _buscarPorIdHandler;
+        private readonly IAlterarStatusHandler _alterarStatusHandler;
+        public PedidoController(ICriarHandler criarHandler, IFinalizarHandler finalizarHandler, IBuscarPorIdHandler buscarPorIdHandler, IAlterarStatusHandler alterarStatusHandler)
         {
             _criarHandler = criarHandler;
             _finalizarHandler = finalizarHandler;

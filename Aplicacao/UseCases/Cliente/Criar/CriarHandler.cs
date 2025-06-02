@@ -5,7 +5,7 @@ using System.Net;
 
 namespace Aplicacao.UseCases.Cliente.Criar
 {
-    public class CriarHandler
+    public class CriarHandler : ICriarHandler
     {
 
         private readonly IClienteRepository _clienteRepository;

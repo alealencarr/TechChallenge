@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Ingrediente.BuscarTodos
 {
-    public class BuscarTodosHandler
+    public class BuscarTodosHandler : IBuscarTodosHandler
     {
         private readonly IIngredienteRepository _ingredienteRepository;
 

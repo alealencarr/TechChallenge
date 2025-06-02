@@ -13,12 +13,12 @@ namespace Adapters.Inbound.Controllers
     public class IngredienteController : ControllerBase
     {
 
-        private readonly CriarHandler _criarHandler;
-        private readonly AlterarHandler _alterarIngredienteHandler;
-        private readonly BuscarPorIdHandler _buscarPorIdHandler;
-        private readonly BuscarTodosHandler _buscarTodosHandler;
+        private readonly ICriarHandler _criarHandler;
+        private readonly IAlterarHandler _alterarIngredienteHandler;
+        private readonly IBuscarPorIdHandler _buscarPorIdHandler;
+        private readonly IBuscarTodosHandler _buscarTodosHandler;
 
-        public IngredienteController(CriarHandler CriarHandler, AlterarHandler alterarIngredienteHandler, BuscarPorIdHandler buscarPorIdHandler, BuscarTodosHandler buscarTodosHandler)
+        public IngredienteController(ICriarHandler CriarHandler, IAlterarHandler alterarIngredienteHandler, IBuscarPorIdHandler buscarPorIdHandler, IBuscarTodosHandler buscarTodosHandler)
         {
             _criarHandler = CriarHandler;
             _alterarIngredienteHandler = alterarIngredienteHandler;

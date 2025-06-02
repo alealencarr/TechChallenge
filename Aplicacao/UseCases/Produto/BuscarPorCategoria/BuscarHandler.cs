@@ -1,19 +1,11 @@
-﻿using Aplicacao.Common;
-using Contracts.DTO.Produto;
-using Domain.Entidades;
+﻿using Contracts.DTO.Produto;
 using Domain.Ports;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Aplicacao.UseCases.Produto.BuscarPorCategoria
 {
-    public class BuscarHandler
+    public class BuscarHandler : IBuscarHandler
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -28,7 +20,7 @@ namespace Aplicacao.UseCases.Produto.BuscarPorCategoria
         {
             try
             {
-                var products = await _produtoRepository.Buscar(id, name); 
+                var products = await _produtoRepository.Buscar(id, name);
 
                 var produtosDto = new List<ProdutoDTO>();
 
@@ -37,7 +29,7 @@ namespace Aplicacao.UseCases.Produto.BuscarPorCategoria
                 {
                     Id = x.Id.ToString(),
                     Nome = x.Nome,
-                    Categoria =  new Contracts.DTO.Categoria.CategoriaDTO(x.Categoria.Id.ToString(), x.Categoria.Nome),  
+                    Categoria =  new Contracts.DTO.Categoria.CategoriaDTO(x.Categoria.Id.ToString(), x.Categoria.Nome),
                     Descricao = x.Descricao,
                     Preco = x.Preco,
                     Ingredientes = [.. x.ProdutoIngredientes.Select(ing => new ProdutoIngredienteDTO
@@ -51,10 +43,10 @@ namespace Aplicacao.UseCases.Produto.BuscarPorCategoria
                                                                                                         Nome = img.Nome,
                                                                                                         Mimetype = img.MimeType
                     })]
- 
+
                 })];
 
-               
+
                 return (products.Count == 0) ? new Contracts.Response<List<ProdutoDTO>?>(data: null, code: System.Net.HttpStatusCode.BadRequest, "Nenhum produto encontrado.")
                     : new Contracts.Response<List<ProdutoDTO>?>(data: produtosDto, code: System.Net.HttpStatusCode.OK, "Produto encontrado com sucesso.");
 

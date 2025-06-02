@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Ingrediente.Alterar
 {
-    public class AlterarHandler
+    public class AlterarHandler : IAlterarHandler
     {
         private readonly IIngredienteRepository _ingredienteRepository;
 

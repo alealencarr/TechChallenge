@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Pedido.Finalizar
 {
-    public class FinalizarHandler
+    public class FinalizarHandler : IFinalizarHandler
     {
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IPagamentoService _pagamentoService;

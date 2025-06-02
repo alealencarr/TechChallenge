@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Aplicacao.UseCases.Cliente.Alterar
 {
-    public class AlterarHandler
+    public class AlterarHandler : IAlterarHandler
     {
         private readonly IClienteRepository _clienteRepository;
 

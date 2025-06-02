@@ -12,11 +12,11 @@ namespace Adapters.Inbound.Controllers
     public class ClienteController : ControllerBase
     {
 
-        private readonly CriarHandler _criarHandler;
-        private readonly AlterarHandler _alterarClienteHandler;
-        private readonly BuscarPorCPFHandler _buscarPorCPFHandler;
+        private readonly ICriarHandler _criarHandler;
+        private readonly IAlterarHandler _alterarClienteHandler;
+        private readonly IBuscarPorCPFHandler _buscarPorCPFHandler;
 
-        public ClienteController(CriarHandler CriarHandler, AlterarHandler alterarClienteHandler, BuscarPorCPFHandler BuscarPorCPFHandler)
+        public ClienteController(ICriarHandler CriarHandler, IAlterarHandler alterarClienteHandler, IBuscarPorCPFHandler BuscarPorCPFHandler)
         {
             _criarHandler = CriarHandler;
             _alterarClienteHandler = alterarClienteHandler;
@@ -37,7 +37,7 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPut("alterar/{id}")]
+        [HttpPatch("alterar/{id}")]
         [Description("Alteração do cliente com base no Id.")]
         public async Task<IActionResult> Alterar([FromBody] Contracts.Request.Cliente.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] Guid id)
         {
@@ -50,7 +50,7 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpGet("{cpf}")]
+        [HttpGet("cpf/{cpf}")]
         [Description("Buscar o cliente com base no CPF.")]
         public async Task<IActionResult> BuscarPorCPF([FromRoute][Required(ErrorMessage = "CPF é obrigatório.")] string cpf)
         {

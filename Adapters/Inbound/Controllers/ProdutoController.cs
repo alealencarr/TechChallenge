@@ -15,12 +15,12 @@ namespace Adapters.Inbound.Controllers
     public class ProdutoController : ControllerBase
     {
 
-        private readonly CriarHandler _criarHandler;
-        private readonly AlterarPorIdHandler _alterarHandler;
-        private readonly BuscarHandler _buscarHandler;
-        private readonly RemoverHandler _removerHandler;
-        private readonly BuscarPorIdHandler _buscarPorIdHandler;
-        public ProdutoController(CriarHandler criarHandler, AlterarPorIdHandler alterarHandler, BuscarHandler buscarHandler, RemoverHandler removerHandler, BuscarPorIdHandler buscarPorIdHandler)
+        private readonly ICriarHandler _criarHandler;
+        private readonly IAlterarPorIdHandler _alterarHandler;
+        private readonly IBuscarHandler _buscarHandler;
+        private readonly IRemoverHandler _removerHandler;
+        private readonly IBuscarPorIdHandler _buscarPorIdHandler;
+        public ProdutoController(ICriarHandler criarHandler, IAlterarPorIdHandler alterarHandler, IBuscarHandler buscarHandler, IRemoverHandler removerHandler, IBuscarPorIdHandler buscarPorIdHandler)
         {
             _criarHandler = criarHandler;
             _alterarHandler = alterarHandler;

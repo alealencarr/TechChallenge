@@ -13,7 +13,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Aplicacao.UseCases.Produto.BuscarPorId
 {
-    public class BuscarPorIdHandler
+    public class BuscarPorIdHandler : IBuscarPorIdHandler
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;

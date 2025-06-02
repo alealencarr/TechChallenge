@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Pedido.BuscarPorId
 {
-    public class BuscarPorIdHandler
+    public class BuscarPorIdHandler : IBuscarPorIdHandler
     {
         private readonly IPedidoRepository _pedidoRepository;
 

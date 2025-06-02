@@ -16,7 +16,7 @@ namespace Domain.ValueObjects
         public CpfVo(string valor)
         {
             if (string.IsNullOrWhiteSpace(valor))
-                throw new ArgumentException("CPF não pode ser vazio.");
+                throw new ArgumentException("CPF precisa ser informado.");
 
             valor = new string(valor.Where(char.IsDigit).ToArray());
 

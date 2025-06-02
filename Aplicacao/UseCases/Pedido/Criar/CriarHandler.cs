@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Pedido.Criar
 {
-    public class CriarHandler
+    public class CriarHandler : ICriarHandler
     {
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IClienteRepository _clienteRepository;

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacao.UseCases.Produto.Remover
 {
-    public class RemoverHandler
+    public class RemoverHandler : IRemoverHandler
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
