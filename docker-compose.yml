@@ -8,7 +8,7 @@ services:
     ports:
       - "7057:7057"
     volumes:
-      - ./tech-challenge-imgens:app/wwwroot
+      - ./tech-challenge-imagens:/app/wwwroot
     environment:
       - ASPNETCORE_URLS=http://+:7057
       - ASPNETCORE_ENVIRONMENT=Development
