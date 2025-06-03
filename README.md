@@ -54,10 +54,6 @@ Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria
   ```bash
   docker-compose up --build
    ```
-📦 Testes
-
-A camada de testes será adicionada em breve, utilizando xUnit e Moq, com cobertura para casos de uso e regras de domínio.
-
 🧪 API e Swagger
 
 Após subir a aplicação, acesse a documentação interativa no navegador. Acompanhe também a WIKI.
