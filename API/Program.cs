@@ -35,7 +35,7 @@ builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarTodos.IBuscarTodos
 //Pedido
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Criar.ICriarHandler, Aplicacao.UseCases.Pedido.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Finalizar.IFinalizarHandler, Aplicacao.UseCases.Pedido.Finalizar.FinalizarHandler>();
+builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Checkout.ICheckoutHandler, Aplicacao.UseCases.Pedido.Checkout.CheckoutHandler>();
 builder.Services.AddScoped<Aplicacao.UseCases.Pedido.BuscarPorId.IBuscarPorIdHandler, Aplicacao.UseCases.Pedido.BuscarPorId.BuscarPorIdHandler>();
 builder.Services.AddScoped<Aplicacao.UseCases.Pedido.AlterarStatus.IAlterarStatusHandler, Aplicacao.UseCases.Pedido.AlterarStatus.AlterarStatusHandler>();
 
