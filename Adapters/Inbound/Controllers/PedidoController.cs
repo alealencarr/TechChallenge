@@ -1,7 +1,7 @@
 ﻿using Aplicacao.UseCases.Pedido.AlterarStatus;
 using Aplicacao.UseCases.Pedido.BuscarPorId;
 using Aplicacao.UseCases.Pedido.Criar;
-using Aplicacao.UseCases.Pedido.Finalizar;
+using Aplicacao.UseCases.Pedido.Checkout;
 using Aplicacao.UseCases.Pedido.SharedCommand;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -15,10 +15,10 @@ namespace Adapters.Inbound.Controllers
     {
 
         private readonly ICriarHandler _criarHandler;
-        private readonly IFinalizarHandler _finalizarHandler;
+        private readonly ICheckoutHandler _finalizarHandler;
         private readonly IBuscarPorIdHandler _buscarPorIdHandler;
         private readonly IAlterarStatusHandler _alterarStatusHandler;
-        public PedidoController(ICriarHandler criarHandler, IFinalizarHandler finalizarHandler, IBuscarPorIdHandler buscarPorIdHandler, IAlterarStatusHandler alterarStatusHandler)
+        public PedidoController(ICriarHandler criarHandler, ICheckoutHandler finalizarHandler, IBuscarPorIdHandler buscarPorIdHandler, IAlterarStatusHandler alterarStatusHandler)
         {
             _criarHandler = criarHandler;
             _finalizarHandler = finalizarHandler;
@@ -69,8 +69,8 @@ namespace Adapters.Inbound.Controllers
             return itens;
         }
 
-        [HttpPatch("finalizarpedido/{id}")]
-        public async Task<IActionResult> Finalizar([FromRoute][Required(ErrorMessage = "Favor informar o id do pedido")] Guid id)
+        [HttpPatch("checkoutpedido/{id}")]
+        public async Task<IActionResult> Checkout([FromRoute][Required(ErrorMessage = "Favor informar o id do pedido")] Guid id)
         {
             var result = await _finalizarHandler.Handle(id.ToString());
 

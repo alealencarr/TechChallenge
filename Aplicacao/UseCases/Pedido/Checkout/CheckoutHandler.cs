@@ -11,9 +11,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplicacao.UseCases.Pedido.Finalizar
+namespace Aplicacao.UseCases.Pedido.Checkout
 {
-    public class FinalizarHandler : IFinalizarHandler
+    public class CheckoutHandler : ICheckoutHandler
     {
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IPagamentoService _pagamentoService;
@@ -21,7 +21,7 @@ namespace Aplicacao.UseCases.Pedido.Finalizar
         private readonly IFileSaver _fileSaver;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public FinalizarHandler(IPedidoRepository pedidoRepository, IPagamentoService pagamentoService, IFileSaver fileSaver, IQRCodeService qrCodeService, IHttpContextAccessor httpContextAccessor)
+        public CheckoutHandler(IPedidoRepository pedidoRepository, IPagamentoService pagamentoService, IFileSaver fileSaver, IQRCodeService qrCodeService, IHttpContextAccessor httpContextAccessor)
         {
             _pedidoRepository = pedidoRepository;
             _pagamentoService = pagamentoService;

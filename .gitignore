@@ -24,9 +24,7 @@ obj/
 *.nupkg
 **/packages/*
 
-# ASP.NET Core
-#  wwwroot/
-#  appsettings.Development.json
+ 
 
 # EF Core, precisa gerar para o build do docker-compose
 #Migrations/

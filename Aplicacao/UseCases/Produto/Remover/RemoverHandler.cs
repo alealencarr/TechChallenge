@@ -41,10 +41,13 @@ namespace Aplicacao.UseCases.Produto.Remover
 
                 await _produtoRepository.Remover(produto);
 
+                var urlRoot = _httpContextAccessor == null ? $"http://localhost:7057" :
+             $"{_httpContextAccessor?.HttpContext.Request.Scheme}://{_httpContextAccessor?.HttpContext.Request.Host}";
+
                 ProdutoDTO produtoDto = new ProdutoDTO(produto.Nome, produto.Preco, new Contracts.DTO.Categoria.CategoriaDTO(produto.Categoria.Id.ToString(), produto.Categoria.Nome),
                                                                                          [.. produto.ProdutoImagens.Select(img => new ProdutoImagemDTO
                                                                                                     {
-                                                                                                        Url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{img.ImagePath}/{img.FileName}",
+                                                                                                        Url = $"{urlRoot}/{img.ImagePath}/{img.FileName}",
                                                                                                         Nome = img.Nome,
                                                                                                         Mimetype = img.MimeType
                                                                                                     })], produto.Descricao, produto.Id.ToString()

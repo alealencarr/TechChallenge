@@ -35,6 +35,9 @@ namespace Aplicacao.UseCases.Produto.BuscarPorId
                 if (product is null)
                     return new Contracts.Response<ProdutoDTO?>(data: null, code: System.Net.HttpStatusCode.BadRequest, $"Produto não encontrado com base neste Id: {id}.");
 
+                var urlRoot = _httpContextAccessor == null ? $"http://localhost:7057" :
+                $"{_httpContextAccessor?.HttpContext.Request.Scheme}://{_httpContextAccessor?.HttpContext.Request.Host}";
+
                 var produtoDto =  new ProdutoDTO
                 {
                     Id = product.Id.ToString(),
@@ -49,7 +52,7 @@ namespace Aplicacao.UseCases.Produto.BuscarPorId
                     })],
                     Imagens = [..product.ProdutoImagens.Select(img => new ProdutoImagemDTO
                     {
-                        Url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{img.ImagePath}/{img.FileName}",
+                        Url = $"{urlRoot}/{img.ImagePath}/{img.FileName}",
                         Nome = img.Nome,
                         Mimetype = img.MimeType
                     })]

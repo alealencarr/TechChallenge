@@ -23,6 +23,9 @@ namespace Aplicacao.UseCases.Produto.BuscarPorCategoria
                 var products = await _produtoRepository.Buscar(id, name);
 
                 var produtosDto = new List<ProdutoDTO>();
+                
+                var urlRoot = _httpContextAccessor == null ? $"http://localhost:7057" :
+$"{_httpContextAccessor?.HttpContext.Request.Scheme}://{_httpContextAccessor?.HttpContext.Request.Host}";
 
                 produtosDto = [.. products
                 .Select(x => new ProdutoDTO
@@ -39,7 +42,7 @@ namespace Aplicacao.UseCases.Produto.BuscarPorCategoria
                     })],
                     Imagens = [.. x.ProdutoImagens.Select(img => new ProdutoImagemDTO
                     {
-                        Url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{img.ImagePath}/{img.FileName}",
+                        Url = $"{urlRoot}/{img.ImagePath}/{img.FileName}",
                                                                                                         Nome = img.Nome,
                                                                                                         Mimetype = img.MimeType
                     })]

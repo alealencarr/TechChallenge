@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplicacao.UseCases.Pedido.Finalizar
+namespace Aplicacao.UseCases.Pedido.Checkout
 {
-    public interface IFinalizarHandler
+    public interface ICheckoutHandler
     {
         Task<Contracts.Response<QRCodeDTO?>> Handle(string id);
     }
