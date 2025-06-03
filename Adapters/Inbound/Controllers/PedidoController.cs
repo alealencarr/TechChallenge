@@ -79,7 +79,7 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPost("alterarstatus/{id}")]
+        [HttpPatch("alterarstatus/{id}")]
         public async Task<IActionResult> Alterar([FromRoute][Required(ErrorMessage = "Favor informar o id do pedido")] Guid id)
         {
             var result = await _alterarStatusHandler.Handle(id.ToString());

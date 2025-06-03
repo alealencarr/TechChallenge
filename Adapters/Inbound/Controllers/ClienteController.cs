@@ -37,7 +37,7 @@ namespace Adapters.Inbound.Controllers
                 BadRequest(result);
         }
 
-        [HttpPatch("alterar/{id}")]
+        [HttpPut("alterar/{id}")]
         [Description("Alteração do cliente com base no Id.")]
         public async Task<IActionResult> Alterar([FromBody] Contracts.Request.Cliente.AlterarRequest request, [FromRoute][Required(ErrorMessage = "Id é obrigatório.")] Guid id)
         {

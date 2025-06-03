@@ -27,7 +27,8 @@ namespace Domain.Entidades.Agregados.AgregadoPedido
         internal decimal ObterPrecoTotal()
         {
             var adicionais = Ingredientes?.Where(x => x.Adicional == true).Sum(x => x.Preco * x.Quantidade) ?? 0;
-            return Preco + adicionais;
+            this.Preco = Preco + adicionais;
+            return Preco;
         }
         public void RemoverIngrediente(IngredienteLanche? ingrediente)
         {
