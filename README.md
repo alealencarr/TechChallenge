@@ -1,32 +1,28 @@
-# 🚀 TechChallenge
+# 🚀 TechChallenge - HUNGRY 
 
-Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria, utilizando **DDD**, **arquitetura hexagonal** e boas práticas modernas de desenvolvimento backend em .NET.
+Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria, utilizando **DDD**, **Clean ARCH** e boas práticas modernas de desenvolvimento backend em .NET.
  
 ## 🧱 Estrutura da Solução
 
 | TechChallenge
 - ├── API             → Ponto de entrada da aplicação (autenticação)
-- ├── Aplicacao       → Casos de uso (Use Cases) com Handlers e Commands
-- ├── Adapters        → Adaptações de inbounds (controllers) e outbounds (repositories)
-- ├── Contracts       → DTOs, Requests e Responses
-- ├── Domain          → Entidades, Ports (Interfaces), Aggregates, Regras de Negócio (DDD puro)
-- ├── Infraestrutura  → Implementações concretas (EF Core, Repositórios, Unit of Work, etc.)
+- ├── Application     → Casos de uso (Use Cases), Controllers, Gateways, Presenter e Interfaces de Data Sources
+- ├── Shared          → DTOs, Helpers, Results, Requests e Responses
+- ├── Domain          → Entidades, Aggregates, Regras de Negócio (DDD puro)
+- ├── Infrastructure  → Implementações concretas (EF Core, Repositórios, serviços, implementações de Data Sources, etc.)
 
 
 ---
 
 ## ✨ Tecnologias Utilizadas
 
-- .NET 8
+- .NET 9
 - ASP.NET Core
 - Entity Framework Core
 - C# 12
-- Injeção de dependência nativa
-- Arquitetura Hexagonal (Ports & Adapters)
+- Injeção de dependência manual
+- Arquitetura Limpa (Seguida a risca)
 - Domain-Driven Design (DDD)
-- CQRS com Commands e Handlers
-- JWT para autenticação
-- RESTful APIs
 - Swagger para documentação
 
 ---
@@ -39,7 +35,6 @@ Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria
 - Pagamento e alteração de status dos pedidos
 - Separação clara de responsabilidades entre camadas
 - Documentação via Swagger/OpenAPI
-- Suporte a testes automatizados 
 
 ---
 
