@@ -1,4 +1,4 @@
-﻿using Aplicacao.Common;
+﻿using Application.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +16,12 @@ namespace Domain.ValueObjects
         public CpfVo(string valor)
         {
             if (string.IsNullOrWhiteSpace(valor))
-                throw new ArgumentException("CPF precisa ser informado.");
+                throw new ArgumentException("Cpf precisa ser informado.");
 
             valor = new string(valor.Where(char.IsDigit).ToArray());
 
             if (!IsValid(valor))
-                throw new ArgumentException("CPF inválido.");
+                throw new ArgumentException("Cpf inválido.");
 
             Valor = valor.FormataCpfSemPontuacao();
         }
