@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment-tc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-tc
+  template:
+    metadata:
+      labels:
+        app: api-tc
+    spec:
+      containers:
+      - name: api-container-tc
+        image: api-k8s:v1
+        imagePullPolicy: IfNotPresent  
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: "100m" 
+          limits:
+            cpu: "250m"  
+        envFrom:
+        - secretRef:
+            name: api-secret-tc
+        - configMapRef:
+            name: api-configmap-tc
