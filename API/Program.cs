@@ -1,73 +1,21 @@
-using Adapters.Inbound.Controllers;
-using Adapters.Outbound.Repositories;
-using API.Service;
-using Aplicacao.Services;
-using Aplicacao.Services.Pagamento;
-using Aplicacao.Services.QRCode;
-using Domain.Ports;
-using Infraestrutura;
+using Api.Extensions;
+using Application.Common;
+using Application.Interfaces.Services;
+using Infrastructure.Configurations;
+using Infrastructure.DbContexts;
+using Infrastructure.Persistence;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+ 
 
-// Add services to the container.
-
-builder.Services.AddControllers()
-    .PartManager.ApplicationParts.Add(new Microsoft.AspNetCore.Mvc.ApplicationParts.AssemblyPart(typeof(ClienteController).Assembly));
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-//Cliente
-builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Cliente.Criar.ICriarHandler, Aplicacao.UseCases.Cliente.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Cliente.Alterar.IAlterarHandler, Aplicacao.UseCases.Cliente.Alterar.AlterarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Cliente.BuscarPorCPF.IBuscarPorCPFHandler, Aplicacao.UseCases.Cliente.BuscarPorCPF.BuscarPorCPFHandler>();
 
-///
-
-//Categoria
-builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarPorId.IBuscarPorIdHandler, Aplicacao.UseCases.Categoria.BuscarPorId.BuscarPorIdHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Categoria.BuscarTodos.IBuscarTodosHandler, Aplicacao.UseCases.Categoria.BuscarTodos.BuscarTodosHandler>();
-
-///
-
-//Pedido
-builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Criar.ICriarHandler, Aplicacao.UseCases.Pedido.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.Checkout.ICheckoutHandler, Aplicacao.UseCases.Pedido.Checkout.CheckoutHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.BuscarPorId.IBuscarPorIdHandler, Aplicacao.UseCases.Pedido.BuscarPorId.BuscarPorIdHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Pedido.AlterarStatus.IAlterarStatusHandler, Aplicacao.UseCases.Pedido.AlterarStatus.AlterarStatusHandler>();
-
-///
-
-//produto
-builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.Criar.ICriarHandler, Aplicacao.UseCases.Produto.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.Alterar.IAlterarPorIdHandler, Aplicacao.UseCases.Produto.Alterar.AlterarPorIdHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.BuscarPorCategoria.IBuscarHandler, Aplicacao.UseCases.Produto.BuscarPorCategoria.BuscarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.Remover.IRemoverHandler, Aplicacao.UseCases.Produto.Remover.RemoverHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Produto.BuscarPorId.IBuscarPorIdHandler, Aplicacao.UseCases.Produto.BuscarPorId.BuscarPorIdHandler>();
-
-///
-
-//Ingrediente
-builder.Services.AddScoped<IIngredienteRepository, IngredienteRepository>();
-builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Criar.ICriarHandler, Aplicacao.UseCases.Ingrediente.Criar.CriarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.Alterar.IAlterarHandler, Aplicacao.UseCases.Ingrediente.Alterar.AlterarHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.BuscarPorId.IBuscarPorIdHandler, Aplicacao.UseCases.Ingrediente.BuscarPorId.BuscarPorIdHandler>();
-builder.Services.AddScoped<Aplicacao.UseCases.Ingrediente.BuscarTodos.IBuscarTodosHandler, Aplicacao.UseCases.Ingrediente.BuscarTodos.BuscarTodosHandler>();
-
-///
-
-///Services 
-///Pagamento
-builder.Services.AddScoped<IPagamentoService, PagamentoService>();
-builder.Services.AddScoped<IQRCodeService, QRCodeService>();
 builder.Services.AddScoped<HttpClient>();
-builder.Services.AddScoped<IFileSaver, FileSaver>();
 builder.Services.AddHttpContextAccessor();
-///
 
 
 builder.Services.AddSwaggerGen(x =>
@@ -75,8 +23,12 @@ builder.Services.AddSwaggerGen(x =>
     x.CustomSchemaIds(n => n.FullName);
 });
 
+var baseUrl = builder.Configuration["ApiUrls:Base"];
+Utils.Configure(baseUrl);
 
-var cnnStr = builder.Configuration.GetConnectionString("Default") ?? string.Empty;
+builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+
+var cnnStr = builder.Configuration.GetConnectionString(Configuration.ConnectionString);
 
 builder.Services.AddDbContext<AppDbContext>(x => { x.UseSqlServer(cnnStr); });
 
@@ -92,27 +44,27 @@ builder.Services.AddDbContext<AppDbContext>(x =>
     });
 });
 
+var fileStorageSettings = new FileStorageSettings();
+fileStorageSettings.FileBasePath = builder.Environment.WebRootPath;
+builder.Services.AddSingleton(fileStorageSettings);
 
 var app = builder.Build();
 
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+
 #if DEBUG
 app.UseHttpsRedirection();
 #endif
 
 
-app.UseAuthorization();
-
-app.MapControllers();
-
+app.MapEndpoints();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -142,5 +94,9 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
+
+
+
+
 
 await app.RunAsync();
