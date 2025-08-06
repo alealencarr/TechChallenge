@@ -25,4 +25,5 @@ spec:
         - secretRef:
             name: api-secret-tc
         - configMapRef:
-            name: api-configmap-tc
+            name: worker-configmap-tc
+ 

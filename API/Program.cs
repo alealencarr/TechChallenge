@@ -29,6 +29,7 @@ Utils.Configure(baseUrl);
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 var cnnStr = builder.Configuration.GetConnectionString(Configuration.ConnectionString);
+builder.Services.AddTransient<DataSeeder>();
 
 builder.Services.AddDbContext<AppDbContext>(x => { x.UseSqlServer(cnnStr); });
 
@@ -70,6 +71,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
+    var seeder = services.GetRequiredService<DataSeeder>();
 
     var retryCount = 0;
     var maxRetries = 10;
@@ -80,6 +82,7 @@ using (var scope = app.Services.CreateScope())
         try
         {
             await context.Database.MigrateAsync();
+            await seeder.Initialize();  
             break;
         }
         catch (Exception ex)

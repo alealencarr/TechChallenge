@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação da API – Sistema de Pedidos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Amber -->
+    <!-- Application Structure Plan: The SPA is designed with a fixed sidebar navigation and a main content area. This classic documentation layout was chosen over a simple linear page because it allows users to both read the guide sequentially and instantly jump to a specific resource (e.g., "Pedidos") for quick reference. The flow starts with a general overview, then dives into each API resource, and concludes with business rules and examples. This structure organizes the information by topic, which is more intuitive for a developer who needs to solve a specific problem, enhancing usability and speed. -->
+    <!-- Visualization & Content Choices: Report Info: API endpoints & business rules. Goal: Inform & Organize. Viz/Presentation Method: Structured HTML with styled sections, code blocks, and tables. Interaction: Sidebar navigation with smooth scroll and active section highlighting; copy-to-clipboard buttons for code blocks. Justification: Since the source is textual, the focus is on clear typography, scannability, and ease of use. The dependency table clearly organizes complex information. Unicode icons provide quick visual cues for each section. Library/Method: Vanilla JS for all interactions. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #475569; /* slate-600 */
+        }
+        code, pre {
+            font-family: 'Fira Code', monospace;
+        }
+        .code-block {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: #475569; /* slate-600 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            opacity: 0.3;
+            transition: all 0.2s ease-in-out;
+        }
+        .code-block:hover .copy-btn {
+            opacity: 1;
+            background-color: #334155; /* slate-700 */
+        }
+        .nav-link.active {
+            color: #f59e0b; /* amber-500 */
+            background-color: #f1f5f9; /* slate-100 */
+            border-right: 3px solid #f59e0b;
+        }
+        section {
+            scroll-margin-top: 5rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside class="fixed top-0 left-0 h-screen w-64 bg-white shadow-md hidden lg:block">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-slate-800">📘 API de Pedidos</h1>
+            </div>
+            <nav id="sidebar-nav" class="mt-4 flex flex-col space-y-1">
+                <a href="#visao-geral" class="nav-link block px-6 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-amber-500 font-medium transition-colors duration-200">🧩 Visão Geral</a>
+                <a href="#recursos" class="nav-link block px-6 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-amber-500 font-medium transition-colors duration-200">📚 Recursos da API</a>
+                <a href="#regras-negocio" class="nav-link block px-6 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-amber-500 font-medium transition-colors duration-200">⚖️ Regras de Negócio</a>
+                <a href="#validacoes" class="nav-link block px-6 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-amber-500 font-medium transition-colors duration-200">🧪 Validações</a>
+                <a href="#ordem-execucao" class="nav-link block px-6 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-amber-500 font-medium transition-colors duration-200">🧭 Ordem de Execução</a>
+                <a href="#exemplos" class="nav-link block px-6 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-amber-500 font-medium transition-colors duration-200">🛠️ Exemplos Práticos</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="w-full lg:ml-64 p-6 md:p-10">
+            
+            <section id="visao-geral">
+                <h2 class="text-4xl font-bold text-slate-800 mb-4">🧩 Visão Geral</h2>
+                <p class="text-lg mb-6">Esta documentação detalha os recursos da API do Sistema de Pedidos. A API foi projetada para ser consumida de forma sequencial e intuitiva, com recursos para gerenciar todo o fluxo de um pedido de fast food, desde o cadastro de produtos até a finalização do pedido.</p>
+                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
+                    <h3 class="font-bold text-amber-800">Utilizando a Collection do Postman</h3>
+                    <p class="text-amber-700 mt-2">A coleção do Postman fornecida é a maneira recomendada de testar. Ela está organizada de forma sequencial para que as variáveis (como `{{idCliente}}`) sejam preenchidas automaticamente. Lembre-se de configurar a variável de ambiente `{{url}}` com a URL base da sua API.</p>
+                </div>
+            </section>
+
+            <section id="recursos" class="mt-12">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">📚 Recursos da API</h2>
+                <p class="text-lg mb-6">A API é organizada em torno de recursos RESTful. Abaixo está uma descrição de cada recurso principal. Para a lista completa de endpoints, métodos HTTP, parâmetros e exemplos de `request`/`response`, consulte a <span class="font-semibold">documentação interativa do Swagger</span> ou a <span class="font-semibold">collection do Postman</span> fornecida.</p>
+                <div class="space-y-10 mt-8">
+                    
+                    <article id="categorias">
+                        <h3 class="text-2xl font-semibold text-slate-700 mb-3">📁 Categorias</h3>
+                        <p>Representa os tipos de produto (ex: Lanche, Bebida). As categorias são pré-cadastradas no sistema e não podem ser manipuladas via API, servindo como base para a criação de produtos.</p>
+                    </article>
+
+                    <article id="clientes">
+                        <h3 class="text-2xl font-semibold text-slate-700 mb-3">👤 Clientes</h3>
+                        <p>Gerencia os dados do cliente final. A identificação do cliente é opcional na criação de um pedido.</p>
+                    </article>
+
+                    <article id="ingredientes">
+                        <h3 class="text-2xl font-semibold text-slate-700 mb-3">🧂 Ingredientes</h3>
+                        <p>Representa os ingredientes disponíveis para montagem de lanches. Possui dados pré-carregados, mas também podem ser gerenciados via API.</p>
+                    </article>
+
+                    <article id="produtos">
+                        <h3 class="text-2xl font-semibold text-slate-700 mb-3">🍔 Produtos</h3>
+                        <p>Produtos que podem ser solicitados no pedido. A lógica de ingredientes é estritamente ligada à categoria do produto.</p>
+                    </article>
+
+                    <article id="pedidos">
+                        <h3 class="text-2xl font-semibold text-slate-700 mb-3">🧾 Pedidos</h3>
+                        <p>Representa um pedido feito com base nos produtos disponíveis, com regras específicas para cálculo de preço com base em ingredientes adicionais.</p>
+                    </article>
+
+                </div>
+            </section>
+            
+            <section id="regras-negocio" class="mt-12">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">⚖️ Regras de Negócio Chave</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h4 class="font-bold text-lg text-slate-800 mb-2">Produtos e Categorias</h4>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Se a categoria for <span class="font-semibold bg-yellow-100 px-1 rounded">'Lanche'</span>, ingredientes podem ser incluídos.</li>
+                            <li>Lanches devem ter <span class="font-semibold">pelo menos um</span> ingrediente.</li>
+                            <li>Para outras categorias (Bebida, Acompanhamento), ingredientes enviados na requisição serão <span class="font-semibold text-red-600">ignorados</span>.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h4 class="font-bold text-lg text-slate-800 mb-2">Pedidos e Ingredientes</h4>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Ingredientes já cadastrados no produto servem como base.</li>
+                            <li>Ingredientes <span class="font-semibold text-green-600">adicionais</span> no pedido terão seu preço somado ao valor total.</li>
+                            <li>Ingredientes <span class="font-semibold text-red-600">removidos</span> do lanche <span class="font-semibold">não geram desconto</span> no valor final.</li>
+                             <li>Um pedido deve conter pelo menos um produto.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="validacoes" class="mt-12">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">🧪 Validações e Casos de Erro</h2>
+                <p class="mb-4">A coleção do Postman inclui exemplos para todos os cenários, tanto de sucesso (status 2xx) quanto de falha (status 4xx). Os erros de validação são retornados com mensagens claras indicando o problema.</p>
+                 <ul class="list-disc list-inside space-y-2 bg-white p-6 rounded-lg shadow">
+                    <li><span class="font-semibold">Sucesso:</span> Retornos com status `200 OK`, `201 Created`, ou `204 No Content`.</li>
+                    <li><span class="font-semibold text-red-600">Erros Comuns:</span></li>
+                    <li class="ml-6">Criar um lanche sem ingredientes.</li>
+                    <li class="ml-6">Tentar associar ingredientes a um produto que não é um lanche.</li>
+                    <li class="ml-6">Criar um pedido sem nenhum produto.</li>
+                    <li class="ml-6">Informar IDs de ingredientes ou categorias inválidos.</li>
+                </ul>
+            </section>
+
+            <section id="ordem-execucao" class="mt-12">
+                <h2 class="text-4xl font-bold text-slate-800 mb-8">🧭 Ordem de Execução e Dependências</h2>
+                <p class="mb-4">Para garantir o funcionamento correto ao testar a criação de entidades, siga a ordem de dependência abaixo. A coleção do Postman já está organizada desta forma.</p>
+                <div class="overflow-x-auto bg-white rounded-lg shadow">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-100">
+                            <tr>
+                                <th class="p-4 font-semibold text-slate-600">Ordem</th>
+                                <th class="p-4 font-semibold text-slate-600">Entidade</th>
+                                <th class="p-4 font-semibold text-slate-600">Dependência</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-mono">1</td>
+                                <td class="p-4 font-semibold text-slate-800">Categorias</td>
+                                <td class="p-4">Nenhuma (Dados pré-cadastrados)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-mono">2</td>
+                                <td class="p-4 font-semibold text-slate-800">Clientes</td>
+                                <td class="p-4">Nenhuma</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-mono">3</td>
+                                <td class="p-4 font-semibold text-slate-800">Ingredientes</td>
+                                <td class="p-4">Nenhuma</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-mono">4</td>
+                                <td class="p-4 font-semibold text-slate-800">Produtos</td>
+                                <td class="p-4">Categoria e Ingredientes (se for lanche)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-mono">5</td>
+                                <td class="p-4 font-semibold text-slate-800">Pedidos</td>
+                                <td class="p-4">Produtos (obrigatório), Cliente (opcional)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <section id="exemplos" class="mt-12">
+                 <h2 class="text-4xl font-bold text-slate-800 mb-8">🛠️ Exemplos Práticos de Casos de Negócio</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                     <div class="bg-white p-6 rounded-lg shadow border-t-4 border-green-400">
+                        <h4 class="font-bold text-lg text-slate-800 mb-2">Cenário Válido</h4>
+                        <p>Criar um produto do tipo 'Lanche' com 3 ingredientes cadastrados.</p>
+                        <p class="mt-2 text-sm font-semibold text-green-600">Resultado: Sucesso ✅</p>
+                     </div>
+                      <div class="bg-white p-6 rounded-lg shadow border-t-4 border-yellow-400">
+                        <h4 class="font-bold text-lg text-slate-800 mb-2">Cenário Ignorado</h4>
+                        <p>Criar um produto do tipo 'Bebida' e enviar uma lista de ingredientes no corpo da requisição.</p>
+                        <p class="mt-2 text-sm font-semibold text-yellow-600">Resultado: Sucesso, mas os ingredientes são ignorados 🤷</p>
+                     </div>
+                      <div class="bg-white p-6 rounded-lg shadow border-t-4 border-red-400">
+                        <h4 class="font-bold text-lg text-slate-800 mb-2">Cenário Inválido</h4>
+                        <p>Criar um produto do tipo 'Lanche' sem enviar nenhum ingrediente.</p>
+                        <p class="mt-2 text-sm font-semibold text-red-600">Resultado: Erro de Validação ❌</p>
+                     </div>
+                      <div class="bg-white p-6 rounded-lg shadow border-t-4 border-green-400">
+                        <h4 class="font-bold text-lg text-slate-800 mb-2">Pedido com Adicionais</h4>
+                        <p>Criar um pedido com um lanche e informar ingredientes que não estão na sua composição original.</p>
+                        <p class="mt-2 text-sm font-semibold text-green-600">Resultado: Sucesso, e o valor dos ingredientes extras é somado ao total ✅</p>
+                     </div>
+                      <div class="bg-white p-6 rounded-lg shadow border-t-4 border-yellow-400">
+                        <h4 class="font-bold text-lg text-slate-800 mb-2">Pedido com Remoção</h4>
+                        <p>Criar um pedido com um lanche e remover um de seus ingredientes base.</p>
+                        <p class="mt-2 text-sm font-semibold text-yellow-600">Resultado: Sucesso, mas o valor do pedido não muda (sem desconto) 🤷</p>
+                     </div>
+                 </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const codeBlock = button.previousElementSibling;
+                    const textToCopy = codeBlock.innerText;
+                    
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        button.innerText = 'Copiado!';
+                        button.style.backgroundColor = '#10b981'; // green-500
+                        setTimeout(() => {
+                            button.innerText = 'Copiar';
+                            button.style.backgroundColor = '#475569'; // slate-600
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Falha ao copiar texto: ', err);
+                    });
+                });
+            });
+
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('#sidebar-nav a');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
