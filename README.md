@@ -2,9 +2,9 @@
 
 # 📚 Documentação & Recursos
 
-- 📄 [Documentação da API](docs/api.html)
-- 🌐 [Como rodar o projeto (index.html)](docs/index.html)
-- 🧪 [Download da Collection Postman](postman/TechChallenge.postman_collection.json)
+<a href="docs/index.html" target="_blank">🌐 Como rodar o projeto (index.html)</a> 
+<a href="docs/api.html" target="_blank">📄 Documentação da API (api.html)</a>
+[Collection Postman](postman/TechChallenge.postman_collection.json)
 
 ## 🧭 Diagramas
 
