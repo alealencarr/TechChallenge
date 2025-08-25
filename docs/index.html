@@ -445,23 +445,23 @@ kubectl get hpa -w</code></pre>
                         <h2 class="text-3xl font-bold text-slate-800 border-b-2 border-amber-400 pb-2 mb-8">1. Diagrama de Infraestrutura</h2>
                         <div class="bg-white p-6 rounded-lg shadow-lg flex justify-center">
                             
-                            <img src="./infraestrutura.png" alt="🧱 Diagrama de Infraestrutura" class="max-w-4xl w-full h-auto rounded-md border border-slate-200" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/e2e8f0/475569?text=Diagrama+Nao+Encontrado';">
+                            <img src="./infraestrutura.png" alt="🧱 Diagrama de Infraestrutura" class="diagram-image max-w-4xl w-full h-auto rounded-md border border-slate-200 cursor-pointer hover:opacity-80 transition-opacity" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/e2e8f0/475569?text=Diagrama+Nao+Encontrado';">
                         </div>
                     </section>
 
                     <section id="diagrama-negocio" class="mt-12">
                         <h2 class="text-3xl font-bold text-slate-800 border-b-2 border-amber-400 pb-2 mb-8">2. Diagrama de Negócio</h2>
                         <div class="bg-white p-6 rounded-lg shadow-lg flex justify-center">
-                             <!-- Substitua 'docs/seu-diagrama-2.png' pelo caminho real da sua imagem -->
-                            <img src="negocio.png" alt="🧠 Diagrama de Negócio" class="max-w-4xl w-full h-auto rounded-md border border-slate-200" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/e2e8f0/475569?text=Diagrama+Nao+Encontrado';">
+                             
+                            <img src="negocio.png" alt="🧠 Diagrama de Negócio" class="diagram-image max-w-4xl w-full h-auto rounded-md border border-slate-200 cursor-pointer hover:opacity-80 transition-opacity" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/e2e8f0/475569?text=Diagrama+Nao+Encontrado';">
                         </div>
                     </section>
 
                      <section id="diagrama-problema" class="mt-12">
                         <h2 class="text-3xl font-bold text-slate-800 border-b-2 border-amber-400 pb-2 mb-8">3. Diagrama de Resolução de Problema</h2>
                         <div class="bg-white p-6 rounded-lg shadow-lg flex justify-center">
-                             <!-- Substitua 'docs/seu-diagrama-2.png' pelo caminho real da sua imagem -->
-                            <img src="resolucao.png" alt="🛠️ Resolução de Problema" class="max-w-4xl w-full h-auto rounded-md border border-slate-200" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/e2e8f0/475569?text=Diagrama+Nao+Encontrado';">
+                             
+                            <img src="resolucao.png" alt="🛠️ Resolução de Problema" class="diagram-image max-w-4xl w-full h-auto rounded-md border border-slate-200 cursor-pointer hover:opacity-80 transition-opacity" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/e2e8f0/475569?text=Diagrama+Nao+Encontrado';">
                         </div>
                     </section>
                 </main>
@@ -470,6 +470,11 @@ kubectl get hpa -w</code></pre>
         </div>
     </div>
 
+       <!-- Modal for Image Preview -->
+    <div id="image-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4 transition-opacity duration-300">
+        <span id="close-modal" class="absolute top-4 right-6 text-white text-5xl font-bold cursor-pointer hover:text-slate-300">&times;</span>
+        <img id="modal-image" src="" alt="Diagrama em tamanho grande" class="max-w-[95vw] max-h-[95vh] object-contain">
+    </div>    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const mainNavLinks = document.querySelectorAll('.main-nav-link');
@@ -555,6 +560,43 @@ kubectl get hpa -w</code></pre>
                     observer.observe(section);
                 });
             }
+
+            // --- Image Modal Logic ---
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            const closeModalBtn = document.getElementById('close-modal');
+            const diagramImages = document.querySelectorAll('.diagram-image');
+
+            diagramImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    modalImg.src = img.src;
+                    document.body.classList.add('modal-open');
+                });
+            });
+
+            const closeModal = () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.classList.remove('modal-open');
+            };
+
+            closeModalBtn.addEventListener('click', closeModal);
+            
+            // Close modal if user clicks on the background overlay
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape" && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
         });
     </script>
 </body>
