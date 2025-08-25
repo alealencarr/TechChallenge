@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment-tc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker-tc
+  template:
+    metadata:
+      labels:
+        app: worker-tc
+    spec:
+      containers:
+      - name: worker-container-tc
+        image: worker-k8s:v1
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "50m"
+          limits:
+            cpu: "100m"
+        envFrom:
+        - secretRef:
+            name: api-secret-tc
+        - configMapRef:
+            name: worker-configmap-tc
+ 

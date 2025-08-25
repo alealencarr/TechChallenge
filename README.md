@@ -1,6 +1,8 @@
 # 🚀 TechChallenge - HUNGRY 
 
-Documentação da API e Setup de Execução: https://alealencarr.github.io/TechChallenge/
+# 📚 Documentação & Recursos
+
+- 📄 Documentação da API, Setup de Execução, Diagramas e Download da Collection: https://alealencarr.github.io/TechChallenge/
 
 Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria, utilizando **DDD**, **Clean ARCH** e boas práticas modernas de desenvolvimento backend em .NET.
  
@@ -12,7 +14,6 @@ Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria
 - ├── Shared          → DTOs, Helpers, Results, Requests e Responses
 - ├── Domain          → Entidades, Aggregates, Regras de Negócio (DDD puro)
 - ├── Infrastructure  → Implementações concretas (EF Core, Repositórios, serviços, implementações de Data Sources, etc.)
-
 
 ---
 
@@ -38,19 +39,6 @@ Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria
 - Separação clara de responsabilidades entre camadas
 - Documentação via Swagger/OpenAPI
 
----
-
-## 🛠️ Como rodar o projeto
-
-1. Clone o repositório:
-  ```bash
-   git clone https://github.com/alealencarr/TechChallenge.git
-   ```
-   ```
-2. Abra o docker desktop, navegue até a raiz do projeto e rode:
-  ```bash
-  docker-compose up --build
-   ```
 🧪 API e Swagger
 
 Após subir a aplicação, acesse a documentação interativa no navegador. Acompanhe também a WIKI.
@@ -59,4 +47,3 @@ Após subir a aplicação, acesse a documentação interativa no navegador. Acom
 
 Este projeto está licenciado sob os termos da licença MIT.  
 Consulte o arquivo [LICENSE](./LICENSE) para mais detalhes.
-
