@@ -2,18 +2,7 @@
 
 # 📚 Documentação & Recursos
 
-- 📄 Documentação da API e Setup de Execução: https://alealencarr.github.io/TechChallenge/
-- 🧪 [Download da Collection Postman](postman/TechChallenge.postman_collection.json)
-
-## 🧭 Diagramas
-
-| Tipo                        | Visualização                                                  |
-|-----------------------------|---------------------------------------------------------------|
-| 🧠 Diagrama de Negócio      | ![Negócio](docs/negocio.png)                                  |
-| 🧱 Diagrama de Infraestrutura | ![Infraestrutura](docs/infraestrutura.png)                  |
-| 🛠️ Resolução de Problema     | ![Resolução do Problema levantado](docs/resolucao.png)                             |
-
----
+- 📄 Documentação da API, Setup de Execução, Diagramas e Download da Collection: https://alealencarr.github.io/TechChallenge/
 
 Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria, utilizando **DDD**, **Clean ARCH** e boas práticas modernas de desenvolvimento backend em .NET.
  
@@ -25,7 +14,6 @@ Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria
 - ├── Shared          → DTOs, Helpers, Results, Requests e Responses
 - ├── Domain          → Entidades, Aggregates, Regras de Negócio (DDD puro)
 - ├── Infrastructure  → Implementações concretas (EF Core, Repositórios, serviços, implementações de Data Sources, etc.)
-
 
 ---
 
