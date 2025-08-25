@@ -1,5 +1,7 @@
 # 🚀 TechChallenge - HUNGRY 
 
+Documentação da API e Setup de Execução: https://alealencarr.github.io/TechChallenge/
+
 Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria, utilizando **DDD**, **Clean ARCH** e boas práticas modernas de desenvolvimento backend em .NET.
  
 ## 🧱 Estrutura da Solução
