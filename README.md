@@ -2,8 +2,7 @@
 
 # 📚 Documentação & Recursos
 
-- 📄 [Documentação da API](docs/api.html)
-- 🌐 [Como rodar o projeto (index.html)](docs/index.html)
+- 📄 Documentação da API e Setup de Execução: https://alealencarr.github.io/TechChallenge/
 - 🧪 [Download da Collection Postman](postman/TechChallenge.postman_collection.json)
 
 ## 🧭 Diagramas
