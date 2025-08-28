@@ -1,6 +1,6 @@
 # 🚀 TechChallenge - HUNGRY 
 
-# 📚 Documentação & Recursos
+# 📚 Documentação 
 
 - 📄 Documentação da API, Setup de Execução, Diagramas e Download da Collection: https://alealencarr.github.io/TechChallenge/
 
