@@ -48,8 +48,8 @@ Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria
 1. Clone o repositório:
   ```bash
    git clone https://github.com/alealencarr/TechChallenge.git
-   ```
-   ```
+ ```
+ 
 2. Abra o docker desktop, navegue até a raiz do projeto e rode:
   ```bash
   docker-compose up --build
