@@ -27,10 +27,10 @@ namespace Infrastructure.Persistence
             {
                 var categoriesMock = new List<CategorieDbModel>()
                 {
-                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000001"), "Lanche"),
-                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000002"), "Acompanhamento"),
-                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000003"), "Bebida"),
-                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000004"), "Sobremesa")
+                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000001"), "Lanche",true),
+                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000002"), "Acompanhamento",false),
+                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000003"), "Bebida",false),
+                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000004"), "Sobremesa",false)
                 };
 
                 await _context.Categories.AddRangeAsync(categoriesMock);

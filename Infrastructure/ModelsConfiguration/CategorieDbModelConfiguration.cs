@@ -22,6 +22,9 @@ namespace Infrastructure.ModelsConfiguration
             entity.Property(x => x.CreatedAt)
                 .IsRequired();
 
+            entity.Property(x => x.IsEditavel).HasDefaultValue(false);
+            
+
             // Relação 1:N Categorie -> Products
             entity.HasMany(x => x.Products)
                 .WithOne(p => p.Categorie)

@@ -20,12 +20,22 @@ namespace Application.Presenter.Categories
 
         public CategorieOutputDto Transform(Categorie categorie)
         {
-            return new CategorieOutputDto(categorie.Id , categorie.Name);
+            return new CategorieOutputDto(categorie.Id, categorie.Name, categorie.IsEditavel);
         }
 
         public ICommandResult<T> Error<T>(string message)
         {
             return CommandResult<T>.Fail(message);
+        }
+
+        public ICommandResult<T> Conflict<T>(string message)
+        {
+            return CommandResult<T>.ConflictReturn(message);
+        }
+
+        public ICommandResult RetornoSucess()
+        {
+            return CommandResult.Success(_message);
         }
 
     }

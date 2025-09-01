@@ -77,7 +77,7 @@ namespace Infrastructure.DataSources
         {
             var productDb = await _appDbContext.Product.Where(x => x.Id == id).FirstOrDefaultAsync() ?? throw new Exception("Product not find by Id.");
 
-            _appDbContext.Remove(productDb);
+            _appDbContext.Product.Remove(productDb);
             await _appDbContext.SaveChangesAsync();
         }
 
@@ -91,7 +91,8 @@ namespace Infrastructure.DataSources
 
             return product is not null ? new ProductInputDto(product.Id, product.CreatedAt, product.Name, product.Description, product.Price, product.CategorieId,
                 product.ProductImages.Select(x => new ProductImageInputDto(x.Id, x.FileName, x.MimeType, x.ImagePath, x.Name, x.Blob, x.ProductId)).ToList(),
-                product.ProductIngredients.Select(x => new ProductIngredientInputDto(x.IngredientId, x.Quantity, x.ProductId)).ToList(), new Shared.DTO.Categorie.Input.CategorieInputDto(product.Categorie.Id, product.Categorie.Name, product.Categorie.CreatedAt)) : null;
+                product.ProductIngredients.Select(x => new ProductIngredientInputDto(x.IngredientId, x.Quantity, x.ProductId)).ToList(), new Shared.DTO.Categorie.Input.CategorieInputDto
+                (product.Categorie.Id, product.Categorie.Name, product.Categorie.IsEditavel, product.Categorie.CreatedAt)) : null;
         }
 
         public async Task<List<ProductInputDto>> GetByCategorie(string? id, string? name)
@@ -120,7 +121,7 @@ namespace Infrastructure.DataSources
             var products = await query.ToListAsync();
 
             return products.Select(x => new ProductInputDto(x.Id, x.CreatedAt, x.Name, x.Description, x.Price, x.CategorieId, x.ProductImages.Select(k => new ProductImageInputDto(k.Id, k.FileName, k.MimeType, k.ImagePath, k.Name, k.Blob, k.ProductId)).ToList(),
-             x.ProductIngredients.Select(o => new ProductIngredientInputDto(o.IngredientId, o.Quantity, o.ProductId)).ToList(), new Shared.DTO.Categorie.Input.CategorieInputDto(x.Categorie.Id, x.Categorie.Name, x.Categorie.CreatedAt)
+             x.ProductIngredients.Select(o => new ProductIngredientInputDto(o.IngredientId, o.Quantity, o.ProductId)).ToList(), new Shared.DTO.Categorie.Input.CategorieInputDto(x.Categorie.Id, x.Categorie.Name,x.Categorie.IsEditavel, x.Categorie.CreatedAt)
              )).ToList();
 
         }
@@ -136,7 +137,7 @@ namespace Infrastructure.DataSources
                 .ToListAsync();
 
             return products.Select(x => new ProductInputDto(x.Id, x.CreatedAt, x.Name, x.Description, x.Price, x.CategorieId, x.ProductImages.Select(k => new ProductImageInputDto(k.Id, k.FileName, k.MimeType, k.ImagePath, k.Name, k.Blob, k.ProductId)).ToList(),
-                x.ProductIngredients.Select(o => new ProductIngredientInputDto(o.IngredientId, o.Quantity, o.ProductId)).ToList(), new Shared.DTO.Categorie.Input.CategorieInputDto(x.Categorie.Id,x.Categorie.Name,x.Categorie.CreatedAt)
+                x.ProductIngredients.Select(o => new ProductIngredientInputDto(o.IngredientId, o.Quantity, o.ProductId)).ToList(), new Shared.DTO.Categorie.Input.CategorieInputDto(x.Categorie.Id,x.Categorie.Name, x.Categorie.IsEditavel, x.Categorie.CreatedAt)
                 )).ToList();
         }
  

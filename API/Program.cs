@@ -1,10 +1,12 @@
 using Api.Extensions;
 using Application.Common;
 using Application.Interfaces.Services;
+using HealthChecks.UI.Client;
 using Infrastructure.Configurations;
 using Infrastructure.DbContexts;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -48,6 +50,7 @@ builder.Services.AddDbContext<AppDbContext>(x =>
 var fileStorageSettings = new FileStorageSettings();
 fileStorageSettings.FileBasePath = builder.Environment.WebRootPath;
 builder.Services.AddSingleton(fileStorageSettings);
+//builder.Services.AddHealthChecks();  
 
 var app = builder.Build();
 
@@ -66,6 +69,15 @@ app.UseHttpsRedirection();
 
 
 app.MapEndpoints();
+
+//app.MapHealthChecks("/health", new HealthCheckOptions
+//{
+//    // Usa o pacote que instalamos para gerar uma resposta JSON bonita.
+//    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+//});
+
+//// Endpoint principal da sua aplicação (só para exemplo)
+//app.MapGet("/", () => "Minha API .NET está funcionando!");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -97,9 +109,6 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
-
-
-
 
 
 await app.RunAsync();
