@@ -19,7 +19,7 @@ namespace Application.Controllers.Categories
         }
 
         public async Task<ICommandResult> DeleteCategorie(Guid id)
-        {
+        { 
             CategoriePresenter categoriePresenter = new("Categoria excluida!");
 
             try
