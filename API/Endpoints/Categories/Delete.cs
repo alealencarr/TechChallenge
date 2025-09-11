@@ -2,6 +2,7 @@
 using Application.Interfaces.DataSources;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Result;
 
@@ -23,7 +24,8 @@ namespace API.Endpoints.Categories
                })
                .WithTags("Categories")
                .Produces<ICommandResult>()
-               .WithName("Categorie.Delete");
+               .WithName("Categorie.Delete")
+               .RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" });
         }
     }
 }

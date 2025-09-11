@@ -3,6 +3,7 @@ using Application.Interfaces.DataSources;
 using Domain.Entities;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniValidation;
 using Shared.DTO.Categorie.Output;
@@ -30,7 +31,8 @@ namespace API.Endpoints.Customers
                })
                .WithTags("Customers")
                .Produces<ICommandResult<CustomerOutputDto?>>()
-               .WithName("Customer.Create");
+               .WithName("Customer.Create")
+               .RequireAuthorization();
         }
     }
 }

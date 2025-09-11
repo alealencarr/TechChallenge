@@ -24,7 +24,8 @@ namespace API.Endpoints.Orders
                })
                .WithTags("Orders")
                .Produces<ICommandResult<OrderOutputDto?>>()
-               .WithName("Order.GetPaymentStatusOrder");
+               .WithName("Order.GetPaymentStatusOrder")
+               .RequireAuthorization();
         }
     }
 

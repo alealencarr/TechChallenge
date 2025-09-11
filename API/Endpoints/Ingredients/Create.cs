@@ -2,6 +2,7 @@
 using Application.Interfaces.DataSources;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniValidation;
 using Shared.DTO.Ingredient.Output;
@@ -29,6 +30,6 @@ internal sealed class Create : IEndpoint
            })
            .WithTags("Ingredients")
            .Produces<ICommandResult<IngredientOutputDto?>>()
-           .WithName("Ingredient.Create");
+           .WithName("Ingredient.Create").RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" });
     }
 }

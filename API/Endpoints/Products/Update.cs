@@ -5,6 +5,7 @@ using Infrastructure.Configurations;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniValidation;
 using Shared.DTO.Product.Output;
@@ -35,6 +36,7 @@ internal sealed class Update : IEndpoint
            })
            .WithTags("Products")
            .Produces<ICommandResult<ProductOutputDto?>>()
-           .WithName("Product.Update");
+           .WithName("Product.Update")
+           .RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" });
     }
 }

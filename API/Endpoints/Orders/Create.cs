@@ -33,6 +33,7 @@ internal sealed class Create : IEndpoint
            })
            .WithTags("Orders")
            .Produces<ICommandResult<OrderSummaryOutputDto?>>()
-           .WithName("Order.Create");
+           .WithName("Order.Create")
+           .RequireAuthorization();
     }
 }
