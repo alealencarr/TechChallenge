@@ -54,9 +54,9 @@ public static class DependencyInjection
 
         services.AddSwaggerGen(x =>
         {
-            
+
             x.CustomSchemaIds(n => n.FullName);
-            x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Tech Challenge - Alexandre Alencar RM364893", Version = "v1" , Description = "API o projeto da Pós-Tech em Arquitetura de Software na FIAP, hamburg"});
+            x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Tech Challenge - Alexandre Alencar RM364893", Version = "v1", Description = "API o projeto da Pós-Tech em Arquitetura de Software na FIAP, hamburg" });
             var securitySchema = new OpenApiSecurityScheme
             {
                 Description = "Autorização efetuada via JWT token (Digite 'Bearer {seu_token}' para autenticar).",
@@ -79,7 +79,7 @@ public static class DependencyInjection
                             { securitySchema, new[] { "Bearer" } }
                         };
 
-            x.AddSecurityRequirement(securityRequirement);            
+            x.AddSecurityRequirement(securityRequirement);
         });
 
         services.AddScoped<IPasswordService, PasswordService>();
@@ -183,7 +183,7 @@ public static class DependencyInjection
             .AddHttpAuthentication("Bearer", options =>
             {
                 options.Token = "teste";
-            });            
+            });
         });
     }
 
