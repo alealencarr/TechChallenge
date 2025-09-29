@@ -5,6 +5,7 @@ using Infrastructure.Configurations;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Order.Output.CheckoutOrder;
 using Shared.Result;
@@ -32,7 +33,8 @@ internal sealed class CheckoutOrder : IEndpoint
            })
            .WithTags("Orders")
            .Produces<ICommandResult<QrCodeOrderOutputDto?>>()
-           .WithName("Order.Checkout");
+           .WithName("Order.Checkout")
+           .RequireAuthorization();
     }
 }
 

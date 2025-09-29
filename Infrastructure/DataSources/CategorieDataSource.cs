@@ -28,7 +28,7 @@ namespace Infrastructure.DataSources
 
         public async Task UpdateCategorie(CategorieInputDto categorie)
         {
-            var categorieDb = await _appDbContext.Categories.Where(x => x.Id == categorie.Id).FirstOrDefaultAsync() ?? throw new Exception("Customer not find by Id.");
+            var categorieDb = await _appDbContext.Categorie.Where(x => x.Id == categorie.Id).FirstOrDefaultAsync() ?? throw new Exception("Customer not find by Id.");
             categorieDb.Name = categorie.Name;
             categorieDb.IsEditavel = categorie.IsEditavel;
 
@@ -37,30 +37,30 @@ namespace Infrastructure.DataSources
         }
         public async Task<List<CategorieInputDto>> GetAllCategories()
         {
-            var categories = await _appDbContext.Categories.AsNoTracking().ToListAsync();
+            var categories = await _appDbContext.Categorie.AsNoTracking().ToListAsync();
 
             return categories.Select(x => new CategorieInputDto(x.Id , x.Name, x.IsEditavel, x.CreatedAt)).ToList();
         }
 
         public async Task<CategorieInputDto?> GetByName(string name)
         {
-            var categorie = await _appDbContext.Categories.AsNoTracking().Where(x => x.Name == name).FirstOrDefaultAsync();
+            var categorie = await _appDbContext.Categorie.AsNoTracking().Where(x => x.Name == name).FirstOrDefaultAsync();
             return categorie is not null ? new CategorieInputDto(categorie.Id, categorie.Name, categorie.IsEditavel, categorie.CreatedAt) : null;
         }
 
         public async Task<CategorieInputDto?> GetCategorieById(Guid id)
         {
 
-            var categorie = await _appDbContext.Categories.AsNoTracking().Where(x => x.Id  == id).FirstOrDefaultAsync();
+            var categorie = await _appDbContext.Categorie.AsNoTracking().Where(x => x.Id  == id).FirstOrDefaultAsync();
             return categorie is not null ? new CategorieInputDto(categorie.Id , categorie.Name, categorie.IsEditavel, categorie.CreatedAt) : null;
         }
 
         public async Task Delete(Guid id)
         {
 
-            var categorieDb = await _appDbContext.Categories.Where(x => x.Id == id).FirstOrDefaultAsync() ?? throw new Exception("Categorie not find by Id.");
+            var categorieDb = await _appDbContext.Categorie.Where(x => x.Id == id).FirstOrDefaultAsync() ?? throw new Exception("Categorie not find by Id.");
 
-            _appDbContext.Categories.Remove(categorieDb);
+            _appDbContext.Categorie.Remove(categorieDb);
             await _appDbContext.SaveChangesAsync();
         }
     }

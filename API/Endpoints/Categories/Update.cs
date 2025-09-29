@@ -2,6 +2,7 @@
 using Application.Interfaces.DataSources;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Categorie.Output;
 using Shared.DTO.Categorie.Request;
@@ -25,7 +26,8 @@ namespace API.Endpoints.Categories
                })
                .WithTags("Categories")
                .Produces<ICommandResult<CategorieOutputDto?>>()
-               .WithName("Categorie.Update");
+               .WithName("Categorie.Update").RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" });
+
         }
     }
 }

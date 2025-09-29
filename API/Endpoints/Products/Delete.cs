@@ -5,6 +5,7 @@ using Infrastructure.Configurations;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Result;
 
@@ -28,6 +29,7 @@ internal sealed class Delete : IEndpoint
            })
            .WithTags("Products")
            .Produces<ICommandResult>()
-           .WithName("Product.Delete");
+           .WithName("Product.Delete").RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" });
+
     }
 }

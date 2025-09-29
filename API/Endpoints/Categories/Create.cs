@@ -2,6 +2,7 @@
 using Application.Interfaces.DataSources;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniValidation;
 using Shared.DTO.Categorie.Output;
@@ -29,7 +30,8 @@ namespace API.Endpoints.Categories
                })
                .WithTags("Categories")
                .Produces<ICommandResult<CategorieOutputDto?>>()
-               .WithName("Categorie.Create");
+               .WithName("Categorie.Create")
+               .RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" });               
         }
     }
 }
