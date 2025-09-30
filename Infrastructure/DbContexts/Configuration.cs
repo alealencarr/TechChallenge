@@ -2,6 +2,6 @@
 
 public class Configuration
 {
-    public const string ConnectionString = "DB_CONNECTION_STRING";
+    public const string ConnectionString = "Default";
 
 }
