@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: api-service-tc
 spec:
-  type: NodePort  
+  type: LoadBalancer  
   selector:
     app: api-tc
   ports:

@@ -14,17 +14,26 @@ spec:
     spec:
       containers:
       - name: api-container-tc
-        image: api-k8s:v1
-        imagePullPolicy: IfNotPresent  
+     
+        image: __ACR_LOGIN_SERVER__/lanchonete-api:__IMAGE_TAG__
+        
+
+        imagePullPolicy: Always
+        
         ports:
         - containerPort: 8080
+        
+  
         resources:
           requests:
             cpu: "100m" 
           limits:
-            cpu: "250m"  
+            cpu: "250m"
+            
         envFrom:
         - secretRef:
-            name: api-secret-tc
+         
+            name: api-secrets
         - configMapRef:
+         
             name: api-configmap-tc

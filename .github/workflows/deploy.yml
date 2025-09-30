@@ -1,0 +1,48 @@
+# .github/workflows/deploy.yml
+
+name: Build and Deploy API to AKS
+
+# Gatilho: Roda sempre que houver um push ou merge na branch 'main'
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    # 1. Baixa o código do seu repositório
+    - name: 'Checkout'
+      uses: actions/checkout@v4
+
+    # 2. Autentica no Azure usando o segredo que criamos
+    - name: 'Azure Login'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # 3. Builda a imagem Docker e envia para o ACR.
+    # A tag da imagem será única (o hash do commit), garantindo que cada versão seja nova.
+    - name: 'Build and push image to ACR'
+      run: |
+        az acr build --registry ${{ secrets.ACR_LOGIN_SERVER }} --image tchungry-api:${{ github.sha }} .
+
+    # 4. Conecta a ferramenta 'kubectl' ao nosso cluster AKS na nuvem
+    - name: 'Set AKS context'
+      uses: azure/aks-set-context@v3
+      with:
+        resource-group: ${{ secrets.RESOURCE_GROUP_NAME }}
+        cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+
+    # 5. Faz o deploy da aplicação no AKS
+    - name: 'Deploy to AKS'
+      run: |
+        kubectl create secret generic api-secrets \
+          --from-literal=ConnectionStrings__Default='${{ secrets.DB_CONNECTION_STRING }}' \
+          --from-literal=AZURE_STORAGE_CONNECTION_STRING='${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}' \
+          --dry-run=client -o yaml | kubectl apply -f -
+
+        find ./k8s -type f -name "*.yaml" -exec sed -i 's|__ACR_LOGIN_SERVER__|${{ secrets.ACR_LOGIN_SERVER }}|g' {} +
+        find ./k8s -type f -name "*.yaml" -exec sed -i 's|__IMAGE_TAG__|${{ github.sha }}|g' {} +
+        
+        kubectl apply -f k8s/

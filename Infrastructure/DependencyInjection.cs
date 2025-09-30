@@ -18,7 +18,7 @@ namespace Infrastructure
 
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            var cnnStr = configuration.GetConnectionString(Configuration.ConnectionString);
+            var cnnStr = configuration.GetConnectionString(Configuration.ConnectionString) ?? configuration.GetConnectionString("Default");
             services.AddTransient<DataSeeder>();
 
             services.AddDbContext<AppDbContext>(x =>
