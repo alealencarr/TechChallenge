@@ -21,20 +21,38 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # 3. Builda a imagem Docker e envia para o ACR.
-    # A tag da imagem será única (o hash do commit), garantindo que cada versão seja nova.
-    - name: 'Build and push image to ACR'
-      run: |
-        az acr build --registry ${{ secrets.ACR_LOGIN_SERVER }} --image tchungry-api:${{ github.sha }} .
+  # --- SEÇÃO ALTERADA ABAIXO ---
 
-    # 4. Conecta a ferramenta 'kubectl' ao nosso cluster AKS na nuvem
+    # 3. Autentica o Docker no seu Azure Container Registry
+    - name: 'Docker Login to ACR'
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+        username: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
+        password: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
+
+    # 4. Constrói e Tagueia a imagem Docker
+    # Agora estamos usando o comando 'docker build' padrão
+    - name: 'Build and tag Docker image'
+      run: |
+        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/lanchonete-api:${{ github.sha }} .
+
+    # 5. Envia a imagem para o ACR
+    # Agora estamos usando o comando 'docker push' padrão
+    - name: 'Push Docker image to ACR'
+      run: |
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/lanchonete-api:${{ github.sha }}
+
+    # --- FIM DA SEÇÃO ALTERADA ---
+
+    # 6. Conecta a ferramenta 'kubectl' ao nosso cluster AKS na nuvem
     - name: 'Set AKS context'
       uses: azure/aks-set-context@v3
       with:
         resource-group: ${{ secrets.RESOURCE_GROUP_NAME }}
         cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
-    # 5. Faz o deploy da aplicação no AKS
+    # 7. Faz o deploy da aplicação no AKS
     - name: 'Deploy to AKS'
       run: |
         kubectl create secret generic api-secrets \
