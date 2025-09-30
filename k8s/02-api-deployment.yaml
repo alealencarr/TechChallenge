@@ -15,7 +15,7 @@ spec:
       containers:
       - name: api-container-tc
      
-        image: __ACR_LOGIN_SERVER__/tchungry-api:__IMAGE_TAG__
+        image: __ACR_LOGIN_SERVER__/lanchonete-api:__IMAGE_TAG__
         
 
         imagePullPolicy: Always
