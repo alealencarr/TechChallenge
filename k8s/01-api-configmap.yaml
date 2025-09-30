@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: api-configmap-tc
 data:
-  ASPNETCORE_ENVIRONMENT: "Production" 
+  ASPNETCORE_ENVIRONMENT: "Development" 
   Logging__LogLevel__Default: "Information"
