@@ -35,13 +35,13 @@ jobs:
     # Agora estamos usando o comando 'docker build' padrão
     - name: 'Build and tag Docker image'
       run: |
-        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/tchungry-api:${{ github.sha }} .
+        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/lanchonete-api:${{ github.sha }} .
 
     # 5. Envia a imagem para o ACR
     # Agora estamos usando o comando 'docker push' padrão
     - name: 'Push Docker image to ACR'
       run: |
-        docker push ${{ secrets.ACR_LOGIN_SERVER }}/tchungry-api:${{ github.sha }}
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/lanchonete-api:${{ github.sha }}
 
     # --- FIM DA SEÇÃO ALTERADA ---
 
