@@ -88,7 +88,7 @@ namespace Application.Controllers.Products
             {
                 var productGateway = ProductGateway.Create(_dataSource);
 
-                var useCaseCreate = DeleteProductUseCase.Create(productGateway);
+                var useCaseCreate = DeleteProductUseCase.Create(productGateway, _fileStorage);
 
                 await useCaseCreate.Run(id);
 

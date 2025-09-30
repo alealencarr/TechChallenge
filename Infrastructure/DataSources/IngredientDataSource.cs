@@ -17,7 +17,7 @@ namespace Infrastructure.DataSources
 
         public async Task Update(IngredientInputDto ingredient)
         {
-            var ingredientDb = await _appDbContext.Ingredients.Where(x => x.Id == ingredient.Id).FirstOrDefaultAsync() ?? throw new Exception("Ingredient not find by Id.");
+            var ingredientDb = await _appDbContext.Ingredient.Where(x => x.Id == ingredient.Id).FirstOrDefaultAsync() ?? throw new Exception("Ingredient not find by Id.");
             ingredientDb.Name = ingredient.Name;
             ingredientDb.Price = ingredient.Price;
 
@@ -35,14 +35,14 @@ namespace Infrastructure.DataSources
         public async Task<IngredientInputDto?> GetById(Guid id)
         {
 
-            var ingredient = await _appDbContext.Ingredients.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
+            var ingredient = await _appDbContext.Ingredient.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
 
             return ingredient is not null ? new IngredientInputDto(ingredient.Id, ingredient.CreatedAt, ingredient.Name, ingredient.Price) : null;
         }
 
         public async Task<List<IngredientInputDto>> GetAll()
         {
-            var ingredients = await _appDbContext.Ingredients.AsNoTracking().ToListAsync();
+            var ingredients = await _appDbContext.Ingredient.AsNoTracking().ToListAsync();
 
             return ingredients.Select(x => new IngredientInputDto(x.Id, x.CreatedAt, x.Name, x.Price)).ToList();
         }

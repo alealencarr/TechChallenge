@@ -2,6 +2,7 @@
 using Application.Interfaces.DataSources;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Shared.DTO.Categorie.Output;
 using Shared.Result;
 
@@ -23,7 +24,8 @@ namespace API.Endpoints.Categories
                })
                .WithTags("Categories")
                .Produces<ICommandResult<List<CategorieOutputDto>>>()
-               .WithName("Categorie.GetAll");
+               .WithName("Categorie.GetAll").RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" });
+
         }
     }
 }

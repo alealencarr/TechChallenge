@@ -23,6 +23,7 @@ internal sealed class GetById : IEndpoint
            })
            .WithTags("Orders")
            .Produces<ICommandResult<OrderOutputDto?>>()
-           .WithName("Order.GetById");
+           .WithName("Order.GetById")
+           .RequireAuthorization();
     }
 }

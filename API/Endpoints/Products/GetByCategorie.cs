@@ -2,6 +2,7 @@
 using Application.Interfaces.DataSources;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Product.Output;
 using Shared.Result;
@@ -23,7 +24,8 @@ internal sealed class GetByCategorie : IEndpoint
            })
            .WithTags("Products")
            .Produces<ICommandResult<List<ProductOutputDto>>>()
-           .WithName("Product.GetByCategorie");
+           .WithName("Product.GetByCategorie").RequireAuthorization();
+
     }
 }
 

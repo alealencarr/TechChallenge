@@ -1,105 +1,42 @@
-using Api.Extensions;
-using Application.Common;
+using API;
+using API.Extensions;
 using Application.Interfaces.Services;
+using Infrastructure;
 using Infrastructure.Configurations;
-using Infrastructure.DbContexts;
-using Infrastructure.Persistence;
 using Infrastructure.Services;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
- 
+Log.Logger = LogExtensions.ConfigureLog();
 
-builder.Services.AddEndpointsApiExplorer();
-
-
-builder.Services.AddScoped<HttpClient>();
-builder.Services.AddHttpContextAccessor();
-
-
-builder.Services.AddSwaggerGen(x =>
+try
 {
-    x.CustomSchemaIds(n => n.FullName);
-});
+    Log.Information("Iniciando aplicação...");
 
-var baseUrl = builder.Configuration["ApiUrls:Base"];
-Utils.Configure(baseUrl);
+    var builder = WebApplication.CreateBuilder(args);
+    
+    var fileStorageSettings = new FileStorageSettings();
+    builder.Configuration.GetSection("FileStorage").Bind(fileStorageSettings);
 
-builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+    builder.Services
+           .AddPresentation(builder.Configuration)
+           .AddInfrastructure(builder.Configuration)
+           .AddSingleton(fileStorageSettings)
+           .AddHealthChecks().AddHealthApi().AddHealthDb(builder.Configuration);
 
-var cnnStr = builder.Configuration.GetConnectionString(Configuration.ConnectionString);
-builder.Services.AddTransient<DataSeeder>();
+    var app = builder.Build();
 
-builder.Services.AddDbContext<AppDbContext>(x => { x.UseSqlServer(cnnStr); });
+    await app.InitializeApp(Log.Logger);
 
-builder.Services.AddDbContext<AppDbContext>(x =>
-{
-    x.UseSqlServer(cnnStr, options =>
-    {
-        options.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(10),
-            errorNumbersToAdd: null
-        );
-    });
-});
+    app.RegisterPipeline();
+    app.AddHealthChecks();
 
-var fileStorageSettings = new FileStorageSettings();
-fileStorageSettings.FileBasePath = builder.Environment.WebRootPath;
-builder.Services.AddSingleton(fileStorageSettings);
-
-var app = builder.Build();
-
-app.UseStaticFiles();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.Run();
 }
-
-
-#if DEBUG
-app.UseHttpsRedirection();
-#endif
-
-
-app.MapEndpoints();
-
-using (var scope = app.Services.CreateScope())
+catch (Exception ex)
 {
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
-    var seeder = services.GetRequiredService<DataSeeder>();
-
-    var retryCount = 0;
-    var maxRetries = 10;
-    var delay = TimeSpan.FromSeconds(5);
-
-    while (true)
-    {
-        try
-        {
-            await context.Database.MigrateAsync();
-            await seeder.Initialize();  
-            break;
-        }
-        catch (Exception ex)
-        {
-            retryCount++;
-            Console.WriteLine($"Erro ao aplicar migrations (tentativa {retryCount}): {ex.Message}");
-
-            if (retryCount >= maxRetries)
-                throw;
-
-            Thread.Sleep(delay);
-        }
-    }
+    Log.Fatal(ex, "Aplicação terminou inesperadamente");
 }
-
-
-
-
-
-await app.RunAsync();
+finally
+{
+    Log.CloseAndFlush();
+}

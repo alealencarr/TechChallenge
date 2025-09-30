@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: worker-configmap-tc
-data:
-  ApiUrls__Payment: "http://api-service-tc/api/payments/notification"

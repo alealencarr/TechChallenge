@@ -3,6 +3,7 @@ using Application.Interfaces.DataSources;
 using Domain.Entities;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Categorie.Output;
 using Shared.DTO.Customer.Request;
@@ -26,7 +27,8 @@ namespace API.Endpoints.Customers
                })
                .WithTags("Customers")
                .Produces<ICommandResult<CustomerOutputDto?>>()
-               .WithName("Customer.Update");
+               .WithName("Customer.Update")
+               .RequireAuthorization(new AuthorizeAttribute { Roles = "Customer,Master" });       
         }
     }
 }

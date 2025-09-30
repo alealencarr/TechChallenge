@@ -2,6 +2,7 @@
 using Application.Interfaces.DataSources;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Ingredient.Output;
 using Shared.Result;
@@ -23,6 +24,6 @@ internal sealed class GetById : IEndpoint
            })
            .WithTags("Ingredients")
            .Produces<ICommandResult<IngredientOutputDto?>>()
-           .WithName("Ingredient.GetById");
+           .WithName("Ingredient.GetById").RequireAuthorization();
     }
 }

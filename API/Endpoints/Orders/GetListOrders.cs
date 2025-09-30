@@ -22,6 +22,7 @@ internal sealed class GetListOrders : IEndpoint
            })
            .WithTags("Orders")
            .Produces<ICommandResult<List<OrderSummaryOutputDto>?>>()
-           .WithName("Order.GetListOrders");
+           .WithName("Order.GetListOrders")
+           .RequireAuthorization();
     }
 }

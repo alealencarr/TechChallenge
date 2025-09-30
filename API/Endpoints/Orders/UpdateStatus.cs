@@ -24,6 +24,7 @@ internal sealed class UpdateStatus : IEndpoint
           })
           .WithTags("Orders")
           .Produces<ICommandResult<OrderSummaryOutputDto?>>()
-          .WithName("Order.UpdateStatus");
+          .WithName("Order.UpdateStatus")
+          .RequireAuthorization();
     }
 }
