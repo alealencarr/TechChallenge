@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250909193715_UpdtM")]
-    partial class UpdtM
+    [Migration("20250930032514_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -323,6 +323,26 @@ namespace Infrastructure.Migrations
                     b.ToTable("ProductIngredient", (string)null);
                 });
 
+            modelBuilder.Entity("Infrastructure.DbModels.UsersModelsAggregate.RoleDbModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Role", (string)null);
+                });
+
             modelBuilder.Entity("Infrastructure.DbModels.UsersModelsAggregate.UserDbModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -340,14 +360,38 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime?>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Mail")
+                        .IsUnique();
+
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("Infrastructure.DbModels.UsersModelsAggregate.UserRoleDbModel", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Infrastructure.DbModels.OrderDbModel", b =>
@@ -441,6 +485,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Infrastructure.DbModels.UsersModelsAggregate.UserRoleDbModel", b =>
+                {
+                    b.HasOne("Infrastructure.DbModels.UsersModelsAggregate.RoleDbModel", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Infrastructure.DbModels.UsersModelsAggregate.UserDbModel", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Infrastructure.DbModels.CategorieDbModel", b =>
                 {
                     b.Navigation("Products");
@@ -473,6 +536,16 @@ namespace Infrastructure.Migrations
                     b.Navigation("ProductImages");
 
                     b.Navigation("ProductIngredients");
+                });
+
+            modelBuilder.Entity("Infrastructure.DbModels.UsersModelsAggregate.RoleDbModel", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Infrastructure.DbModels.UsersModelsAggregate.UserDbModel", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
