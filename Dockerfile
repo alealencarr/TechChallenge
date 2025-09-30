@@ -1,6 +1,6 @@
 # Dockerfile
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copia o arquivo .csproj para a raiz /src e renomeia se necessário.
