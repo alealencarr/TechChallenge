@@ -57,11 +57,6 @@
             position: absolute;
             bottom: -2px;
         }
-        .parallel-arrows .arrow-line {
-            height: 2px;
-            background-color: #58A6FF;
-            width: 100%;
-        }
         .fade-in {
             opacity: 0;
             transform: translateY(20px);
@@ -77,52 +72,66 @@
 
     <header class="bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-800">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-white">TechChallenge - Alexandre Alencar RM364893</h1>
-            <ul class="flex space-x-6 text-gray-300">
+            <h1 class="text-xl md:text-2xl font-bold text-white">TechChallenge - Fase 3</h1>
+            <ul class="hidden md:flex space-x-6 text-gray-300">
+                <li><a href="#video" class="hover:text-blue-400 transition-colors">Apresentação</a></li>
                 <li><a href="#arquitetura" class="hover:text-blue-400 transition-colors">Arquitetura</a></li>
+                <li><a href="#database" class="hover:text-blue-400 transition-colors">Banco de Dados</a></li>
+                <li><a href="#ci-cd" class="hover:text-blue-400 transition-colors">CI/CD</a></li>
                 <li><a href="#repositorios" class="hover:text-blue-400 transition-colors">Repositórios</a></li>
-                <li><a href="#tecnologias" class="hover:text-blue-400 transition-colors">Tecnologias</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="container mx-auto px-6 py-12">
         <section class="text-center mb-20 fade-in">
-            <h2 class="text-4xl font-bold text-white mb-4">Arquitetura de Software & CI/CD na Azure</h2>
+            <h2 class="text-4xl lg:text-5xl font-bold text-white mb-4">Arquitetura de Software & CI/CD na Azure</h2>
             <p class="text-lg text-gray-400 max-w-3xl mx-auto">
-                Uma visão geral da arquitetura de microsserviços implantada na nuvem Azure, orquestrada com Kubernetes e totalmente automatizada com Terraform e GitHub Actions.
+                Uma visão geral da arquitetura de microsserviços implantada na nuvem Azure, orquestrada com Kubernetes e totalmente automatizada com Terraform e GitHub Actions para a Fase 3 do TechChallenge.
             </p>
         </section>
 
+        <!-- Seção de Vídeo e Recursos -->
+        <section id="video" class="mb-24">
+            <h3 class="text-3xl font-bold text-center mb-12 section-title fade-in">Apresentação e Recursos</h3>
+            <div class="card p-6 md:p-8 rounded-xl fade-in">
+                <div class="aspect-w-16 aspect-h-9 mb-6">
+                    <!-- IMPORTANTE: Substitua "ID_DO_SEU_VIDEO" pelo ID real do seu vídeo do YouTube -->
+                    <iframe src="https://www.youtube.com/@alexandrealencar5328" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full rounded-lg shadow-2xl min-h-[480px]"></iframe>
+                </div>
+                <div class="text-center">
+                    <h4 class="text-2xl font-bold text-white mb-3">Recursos do Projeto</h4>
+                    <p class="text-gray-400 mb-6">Utilize a coleção do Postman para testar a arquitetura completa através do API Gateway.</p>
+                    <a href="./TechChallenge.postman_collection.json" download class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">
+                        Download da Coleção do Postman
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
         <section id="arquitetura" class="mb-24">
             <h3 class="text-3xl font-bold text-center mb-12 section-title fade-in">Diagrama de Fluxo e Ordem de Execução</h3>
-
             <div class="flex flex-col items-center space-y-2 fade-in">
-                <!-- Start -->
-                <div class="card p-4 rounded-lg shadow-lg w-full md:w-1/3 text-center">
+                <!-- Diagrama de fluxo dos repositórios (já existente) -->
+                 <div class="card p-4 rounded-lg shadow-lg w-full md:w-1/3 text-center">
                     <h4 class="font-semibold text-lg text-white">Início do Processo</h4>
                     <p class="text-sm text-gray-400">Este fluxo detalha o passo a passo executado do zero, para um melhor entendimento de como foi desenhado o fluxo com base nos repositórios.</p>
                 </div>
                 <div class="arrow"></div>
-
-                <!-- Foundational -->
                 <div class="card p-4 rounded-lg shadow-lg w-full md:w-1/2 text-center">
                     <p class="text-xs text-blue-400 font-mono mb-1">Passo 1</p>
                     <h4 class="font-bold text-xl text-white">TechChallenge-infra-foundational</h4>
                     <p class="text-sm text-gray-400">Cria a base: Grupo de Recursos, VNet e o Estado Remoto do Terraform.</p>
                 </div>
                 <div class="arrow"></div>
-                
-                <!-- Parallel Data & Compute -->
                 <div class="w-full text-center">
                     <p class="text-xs text-blue-400 font-mono mb-2">Passo 2 (Execução em Paralelo)</p>
                     <div class="flex flex-col md:flex-row justify-center gap-8 items-start">
-                        <!-- Data -->
                         <div class="card p-4 rounded-lg shadow-lg flex-1 text-center">
                             <h4 class="font-bold text-xl text-white">TechChallenge-infra-data</h4>
                             <p class="text-sm text-gray-400">Provisiona os serviços de persistência: Azure SQL e Blob Storage.</p>
                         </div>
-                        <!-- Compute -->
                         <div class="card p-4 rounded-lg shadow-lg flex-1 text-center">
                              <h4 class="font-bold text-xl text-white">TechChallenge-infra-compute</h4>
                             <p class="text-sm text-gray-400">Provisiona as plataformas de computação: AKS, ACR e Function App.</p>
@@ -130,17 +139,13 @@
                     </div>
                 </div>
                 <div class="arrow"></div>
-
-                <!-- Parallel Apps -->
                 <div class="w-full text-center">
                     <p class="text-xs text-blue-400 font-mono mb-2">Passo 3 (Execução em Paralelo)</p>
                     <div class="flex flex-col md:flex-row justify-center gap-8 items-start">
-                        <!-- API Principal -->
                         <div class="card p-4 rounded-lg shadow-lg flex-1 text-center">
                             <h4 class="font-bold text-xl text-white">TechChallenge</h4>
                             <p class="text-sm text-gray-400">Compila e faz deploy do código da API principal para o AKS.</p>
                         </div>
-                        <!-- Auth Function -->
                         <div class="card p-4 rounded-lg shadow-lg flex-1 text-center">
                              <h4 class="font-bold text-xl text-white">TechChallenge-app-function</h4>
                             <p class="text-sm text-gray-400">Compila e faz deploy do código de autenticação para a Function App.</p>
@@ -148,21 +153,158 @@
                     </div>
                 </div>
                 <div class="arrow"></div>
-
-                <!-- Gateway -->
                 <div class="card p-4 rounded-lg shadow-lg w-full md:w-1/2 text-center">
                     <p class="text-xs text-blue-400 font-mono mb-1">Passo 4</p>
                     <h4 class="font-bold text-xl text-white">TechChallenge-infra-gateway</h4>
                     <p class="text-sm text-gray-400">Cria o API Gateway e configura o roteamento para os serviços já implantados.</p>
                 </div>
                  <div class="arrow"></div>
-
-                <!-- Final State -->
                  <div class="card p-4 rounded-lg shadow-lg w-full md:w-1/3 text-center bg-green-900/50 border-green-500">
                     <h4 class="font-semibold text-lg text-white">MVP Concluído</h4>
                     <p class="text-sm text-gray-300">Arquitetura completa e funcional no Azure.</p>
                 </div>
+            </div>
+        </section>
 
+        <!-- Seção Explicação da Arquitetura -->
+        <section id="cloud-arch" class="mb-24">
+            <h3 class="text-3xl font-bold text-center mb-12 section-title fade-in">Explicação da Arquitetura em Nuvem</h3>
+            <div class="space-y-8 max-w-4xl mx-auto">
+                <div class="card p-6 rounded-xl fade-in">
+                    <h4 class="font-bold text-xl mb-2 text-white">Fundação (Foundational)</h4>
+                    <p class="text-gray-400 text-sm">A base de toda a arquitetura. O <b class="text-blue-400">Grupo de Recursos</b> organiza todos os serviços. A <b class="text-blue-400">Rede Virtual (VNet)</b> cria um perímetro de segurança, isolando nossos serviços da internet pública. As <b class="text-blue-400">Sub-redes</b> dividem a VNet em zonas lógicas para o AKS, Funções e APIM, controlando o fluxo de tráfego. Por fim, a <b class="text-blue-400">Conta de Armazenamento de Estado</b> do Terraform atua como a "memória" partilhada para todos os nossos pipelines de infraestrutura, garantindo consistência.</p>
+                </div>
+                <div class="card p-6 rounded-xl fade-in">
+                    <h4 class="font-bold text-xl mb-2 text-white">Dados (Data)</h4>
+                    <p class="text-gray-400 text-sm">A camada de persistência. O <b class="text-blue-400">Azure SQL</b> foi escolhido por ser um serviço gerenciado, robusto e compatível com o ecossistema .NET, garantindo a integridade dos dados transacionais (pedidos, clientes, etc). O <b class="text-blue-400">Azure Blob Storage</b> é usado para armazenar arquivos não estruturados, como imagens de produtos, de forma escalável e com URLs de acesso direto.</p>
+                </div>
+                <div class="card p-6 rounded-xl fade-in">
+                    <h4 class="font-bold text-xl mb-2 text-white">Computação (Compute)</h4>
+                    <p class="text-gray-400 text-sm">Onde a lógica é executada. O <b class="text-blue-400">Azure Kubernetes Service (AKS)</b> orquestra a nossa API principal, garantindo alta disponibilidade e escalabilidade. O <b class="text-blue-400">Azure Container Registry (ACR)</b> armazena de forma segura as nossas imagens Docker. A <b class="text-blue-400">Azure Function App</b>, configurada de forma privada na VNet, hospeda a nossa lógica de autenticação serverless, otimizando custos.</p>
+                </div>
+                 <div class="card p-6 rounded-xl fade-in">
+                    <h4 class="font-bold text-xl mb-2 text-white">Gateway (A Porta de Entrada)</h4>
+                    <p class="text-gray-400 text-sm">O <b class="text-blue-400">Azure API Management (APIM)</b> é o único ponto de entrada para toda a arquitetura. Ele é responsável por receber o tráfego da internet, aplicar políticas de segurança (como Rate Limit), e rotear de forma inteligente cada requisição para o serviço correto (a API no AKS ou a Function), que estão seguros e isolados na rede privada.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Banco de Dados -->
+        <section id="database" class="mb-24">
+            <h3 class="text-3xl font-bold text-center mb-12 section-title fade-in">Estrutura do Banco de Dados</h3>
+             <div class="card p-6 md:p-8 rounded-xl fade-in">
+                <h4 class="text-2xl font-bold text-white mb-4 text-center">Diagrama Entidade-Relacionamento</h4>
+              
+                <img src="./diagrama_bd.png" alt="Diagrama do Banco de Dados" class="rounded-lg shadow-lg mx-auto w-full max-w-5xl mb-8 border-2 border-gray-700">
+                
+                <h4 class="text-2xl font-bold text-white mb-4">Justificativa e Melhorias</h4>
+                <div class="text-gray-400 space-y-4 text-sm">
+                    <p>Para esta fase, a estrutura do banco de dados foi refinada para garantir maior integridade e clareza nos relacionamentos. As tabelas de `User`, `Role` e `UserRoles` foram adicionadas para suportar a autenticação de administradores, separando-os dos `Customers`.</p>
+                    <p>A escolha pelo <b class="text-blue-400">Azure SQL</b> como banco de dados gerenciável foi estratégica. Sendo um sistema relacional (RDBMS), ele garante a consistência transacional (ACID), que é crucial para uma aplicação de lanchonete onde operações como criar um pedido e registrar um pagamento não podem falhar pela metade. Além disso, por ser um serviço PaaS, ele abstrai toda a complexidade de gerenciamento de servidores, patching e backups, permitindo que a equipe foque na lógica de negócio.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ✅ SEÇÃO DE CI/CD ATUALIZADA -->
+        <section id="ci-cd" class="mb-24">
+            <h3 class="text-3xl font-bold text-center mb-12 section-title fade-in">Melhores Práticas de CI/CD</h3>
+            <div class="card p-6 md:p-8 rounded-xl fade-in">
+                <h4 class="text-2xl font-bold text-white mb-4 text-center">Proteção da Branch Main e Automação</h4>
+                <p class="text-gray-400 text-sm mb-12 text-center max-w-3xl mx-auto">Para garantir a qualidade e a estabilidade, a branch `main` de todos os 6 repositórios foi protegida, impedindo commits diretos e forçando o uso de Pull Requests. Cada merge na `main` aciona um pipeline de CI/CD no GitHub Actions que faz o deploy automatizado da aplicação ou da infraestrutura correspondente.</p>
+                
+                <div class="space-y-12">
+                    
+                    <!-- TechChallenge -->
+                    <div>
+                        <h5 class="font-bold text-xl mb-4 text-blue-300">Repositório: TechChallenge</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <img src="./print_techchallenge_pipeline.png" alt="Pipeline da API Principal" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Pipeline de deploy da API para o AKS.</p>
+                            </div>
+                            <div>
+                                <img src="./print_techchallenge_block.png" alt="Bloqueio de push na API Principal" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Tentativa de push direto bloqueada.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TechChallenge-app-function -->
+                    <div>
+                        <h5 class="font-bold text-xl mb-4 text-blue-300">Repositório: TechChallenge-app-function</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <img src="./print_appfunction_pipeline.png" alt="Pipeline da Function" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Pipeline de deploy da Azure Function.</p>
+                            </div>
+                            <div>
+                                <img src="./print_appfunction_block.png" alt="Bloqueio de push na Function" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Tentativa de push direto bloqueada.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TechChallenge-infra-foundational -->
+                    <div>
+                        <h5 class="font-bold text-xl mb-4 text-blue-300">Repositório: TechChallenge-infra-foundational</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <img src="./print_foundational_pipeline.png" alt="Pipeline da Infra Foundational" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Pipeline de deploy da infraestrutura base.</p>
+                            </div>
+                            <div>
+                                <img src="./print_foundational_block.png" alt="Bloqueio de push na Infra Foundational" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Tentativa de push direto bloqueada.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TechChallenge-infra-data -->
+                    <div>
+                        <h5 class="font-bold text-xl mb-4 text-blue-300">Repositório: TechChallenge-infra-data</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <img src="./print_data_pipeline.png" alt="Pipeline da Infra Data" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Pipeline de deploy dos serviços de dados.</p>
+                            </div>
+                            <div>
+                                <img src="./print_data_block.png" alt="Bloqueio de push na Infra Data" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Tentativa de push direto bloqueada.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TechChallenge-infra-compute -->
+                    <div>
+                        <h5 class="font-bold text-xl mb-4 text-blue-300">Repositório: TechChallenge-infra-compute</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <img src="./print_compute_pipeline.png" alt="Pipeline da Infra Compute" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Pipeline de deploy das plataformas de computação.</p>
+                            </div>
+                            <div>
+                                <img src="./print_compute_block.png" alt="Bloqueio de push na Infra Compute" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Tentativa de push direto bloqueada.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TechChallenge-infra-gateway -->
+                    <div>
+                        <h5 class="font-bold text-xl mb-4 text-blue-300">Repositório: TechChallenge-infra-gateway</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <img src="./print_gateway_pipeline.png" alt="Pipeline da Infra Gateway" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Pipeline de deploy do API Gateway.</p>
+                            </div>
+                            <div>
+                                <img src="./print_gateway_block.png" alt="Bloqueio de push na Infra Gateway" class="rounded-lg shadow-lg border-2 border-gray-700">
+                                <p class="text-center text-xs text-gray-500 mt-2">Tentativa de push direto bloqueada.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </section>
 
@@ -170,38 +312,36 @@
         <section id="repositorios" class="mb-24">
             <h3 class="text-3xl font-bold text-center mb-12 section-title fade-in">Estrutura de Repositórios</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
                 <div class="card p-6 rounded-xl fade-in">
-                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge/">TechChallenge</a></h4>
-                    <p class="text-gray-400 text-sm mb-4">Repositório principal da aplicação. Contém a lógica de negócio, Dockerfile e manifestos Kubernetes.</p>
+                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge" target="_blank" class="hover:underline">TechChallenge</a></h4>
+                    <p class="text-gray-400 text-sm mb-4">API principal com a lógica de negócio, Dockerfile e manifestos Kubernetes.</p>
                     <span class="repo-tag text-xs font-mono py-1 px-2 rounded-full text-gray-300">Aplicação</span>
                 </div>
                 <div class="card p-6 rounded-xl fade-in" style="transition-delay: 100ms;">
-                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-app-function/">TechChallenge-app-function</a></h4>
-                    <p class="text-gray-400 text-sm mb-4">Contém o código C# da função serverless de autenticação e seu pipeline de deploy.</p>
+                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-app-function" target="_blank" class="hover:underline">TechChallenge-app-function</a></h4>
+                    <p class="text-gray-400 text-sm mb-4">Código C# da função serverless de autenticação.</p>
                     <span class="repo-tag text-xs font-mono py-1 px-2 rounded-full text-gray-300">Aplicação</span>
                 </div>
                 <div class="card p-6 rounded-xl fade-in" style="transition-delay: 200ms;">
-                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-infra-foundational/">TechChallenge-infra-foundational</a></h4>
-                    <p class="text-gray-400 text-sm mb-4">Terraform para a infraestrutura base: Grupo de Recursos, VNet e Estado Remoto.</p>
+                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-infra-foundational" target="_blank" class="hover:underline">TechChallenge-infra-foundational</a></h4>
+                    <p class="text-gray-400 text-sm mb-4">Terraform para a infraestrutura base: VNet, Sub-redes e Estado Remoto.</p>
                     <span class="repo-tag text-xs font-mono py-1 px-2 rounded-full text-gray-300">Infraestrutura</span>
                 </div>
                  <div class="card p-6 rounded-xl fade-in" style="transition-delay: 300ms;">
-                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-infra-data/">TechChallenge-infra-data</a></h4>
+                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-infra-data" target="_blank" class="hover:underline">TechChallenge-infra-data</a></h4>
                     <p class="text-gray-400 text-sm mb-4">Terraform para os serviços de dados: Azure SQL e Blob Storage.</p>
                     <span class="repo-tag text-xs font-mono py-1 px-2 rounded-full text-gray-300">Infraestrutura</span>
                 </div>
                  <div class="card p-6 rounded-xl fade-in" style="transition-delay: 400ms;">
-                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-infra-compute/">TechChallenge-infra-compute</a></h4>
+                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-infra-compute" target="_blank" class="hover:underline">TechChallenge-infra-compute</a></h4>
                     <p class="text-gray-400 text-sm mb-4">Terraform para as plataformas de computação: AKS, ACR e Function App.</p>
                     <span class="repo-tag text-xs font-mono py-1 px-2 rounded-full text-gray-300">Infraestrutura</span>
                 </div>
                 <div class="card p-6 rounded-xl fade-in" style="transition-delay: 500ms;">
-                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-infra-gateway/">TechChallenge-infra-gateway</a></h4>
-                    <p class="text-gray-400 text-sm mb-4">Terraform para o ponto de entrada da arquitetura: o Azure API Management.</p>
+                    <h4 class="font-bold text-xl mb-2 text-white"><a href="https://github.com/alealencarr/TechChallenge-infra-gateway" target="_blank" class="hover:underline">TechChallenge-infra-gateway</a></h4>
+                    <p class="text-gray-400 text-sm mb-4">Terraform para o ponto de entrada da arquitetura: Azure API Management.</p>
                     <span class="repo-tag text-xs font-mono py-1 px-2 rounded-full text-gray-300">Infraestrutura</span>
                 </div>
-
             </div>
         </section>
 
@@ -239,7 +379,7 @@
     
     <footer class="border-t border-gray-800">
         <div class="container mx-auto px-6 py-6 text-center text-gray-500">
-            <p>&copy; 2025 - Desenvolvido por <a href="https://github.com/alealencarr" target="_blank" class="text-blue-400 hover:underline">alealencarr</a></p>
+            <p>&copy; 2025 - Desenvolvido por <a href="https://github.com/alealencarr" target="_blank" class="text-blue-400 hover:underline">Alexandre Alencar (RM364893)</a></p>
         </div>
     </footer>
 
@@ -262,3 +402,4 @@
     </script>
 </body>
 </html>
+
