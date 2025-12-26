@@ -13,7 +13,6 @@ namespace Application.Controllers.Authentication
     public class AuthenticationController
     {
         private IUserDataSource _dataSource;
-        private ICustomerDataSource _dataSourceCustomer;
         private ITokenService _tokenService;
         private IPasswordService? _passwordService;
         public AuthenticationController(IUserDataSource dataSource, ITokenService tokenService, IPasswordService? passwordService)
@@ -21,12 +20,6 @@ namespace Application.Controllers.Authentication
             _dataSource = dataSource;
             _tokenService = tokenService;
             _passwordService = passwordService;
-        }
-
-        public AuthenticationController(ICustomerDataSource dataSource, ITokenService tokenService)
-        {
-            _dataSourceCustomer = dataSource;
-            _tokenService = tokenService;            
         }
 
         public async Task<ICommandResult<TokenDto?>> Authentication(AuthenticationLoginRequestDto loginDto)
@@ -44,24 +37,6 @@ namespace Application.Controllers.Authentication
             catch (Exception ex)
             {
                 return userPresenter.Error<TokenDto?>(ex.Message);
-            }
-        }
-
-        public async Task<ICommandResult<string?>> AuthenticationCustomer(string? cpf)
-        {
-            AuthenticationPresenter userPresenter = new("Token gerado!");
-
-            try
-            {
-                var userGateway = CustomerGateway.Create(_dataSourceCustomer);
-                var useCaseLogin = AuthenticationTokenCustomerUseCase.Create(userGateway,  _tokenService);
-                var userEntity = await useCaseLogin.Run(cpf);
-
-                return userPresenter.TransformString(userEntity);  
-            }
-            catch (Exception ex)
-            {
-                return userPresenter.Error<string?>(ex.Message);
             }
         }
 

@@ -14,7 +14,7 @@ namespace Application.Interfaces.Services
         /// <summary>
         /// Gera um token para um cliente identificado (via CPF).
         /// </summary>
-        string GenerateCustomerToken(Customer customer);
+        string GenerateCustomerToken(dynamic customer);
 
         /// <summary>
         /// Gera um token para um cliente anônimo (convidado).

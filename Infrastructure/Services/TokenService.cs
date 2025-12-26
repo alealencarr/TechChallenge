@@ -1,9 +1,7 @@
 ﻿using Application.Interfaces.Services;
-using Domain.Entities;
 using Domain.Entities.Aggregates.AggregateUser;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.Composition;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -39,13 +37,13 @@ namespace Infrastructure.Services
                 claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name));
             }
 
-            var accessToken = GenerateToken(claims, DateTime.UtcNow.AddMinutes(15)); 
+            var accessToken = GenerateToken(claims, DateTime.UtcNow.AddMinutes(15));
             var refreshToken = GenerateRefreshToken();
- 
+
             return (accessToken, refreshToken);
         }
 
-        public string GenerateCustomerToken(Customer customer)
+        public string GenerateCustomerToken(dynamic customer)
         {
             var claims = new List<Claim>
             {
@@ -55,7 +53,7 @@ namespace Infrastructure.Services
                 new(ClaimTypes.Role, "Customer")
             };
 
-            return GenerateToken(claims, DateTime.UtcNow.AddHours(1));  
+            return GenerateToken(claims, DateTime.UtcNow.AddHours(1));
         }
 
         public string GenerateGuestToken()
@@ -85,7 +83,7 @@ namespace Infrastructure.Services
         // Método privado para evitar duplicação de código
         private string GenerateToken(IEnumerable<Claim> claims, DateTime expires)
         {
- 
+
             var token = new JwtSecurityToken(
                 _issuer,
                 _audience,
@@ -94,7 +92,7 @@ namespace Infrastructure.Services
                 signingCredentials: new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature)
             );
 
-              return new JwtSecurityTokenHandler().WriteToken(token);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

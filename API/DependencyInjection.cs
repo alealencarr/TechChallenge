@@ -1,4 +1,5 @@
 ﻿using Api.Extensions;
+using API.Configurations;
 using API.Extensions;
 using API.Extensions.HealthCheck;
 using API.Extensions.Middlewares;
@@ -34,6 +35,7 @@ public static class DependencyInjection
         services.AddControllersWithViews();
 
         //services.AddOptionsPattern(configuration);
+
         services.AddCors(opt =>
         {
             opt.AddDefaultPolicy(builder =>
@@ -56,7 +58,7 @@ public static class DependencyInjection
         {
 
             x.CustomSchemaIds(n => n.FullName);
-            x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Tech Challenge - Alexandre Alencar RM364893", Version = "v1", Description = "API o projeto da Pós-Tech em Arquitetura de Software na FIAP, hamburg" });
+            x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = ApiConfiguration.Title , Version = ApiConfiguration.Version, Description = ApiConfiguration.Description });
             var securitySchema = new OpenApiSecurityScheme
             {
                 Description = "Autorização efetuada via JWT token (Digite 'Bearer {seu_token}' para autenticar).",
@@ -178,12 +180,9 @@ public static class DependencyInjection
         app.MapOpenApi();
         app.MapScalarApiReference(options =>
         {
-            options.WithTitle("Tech Challenge - Alexandre Alencar RM364893")
+            options.WithTitle(ApiConfiguration.Title)
             .AddPreferredSecuritySchemes("Bearer")
-            .AddHttpAuthentication("Bearer", options =>
-            {
-                options.Token = "teste";
-            });
+            .AddHttpAuthentication("Bearer", options => {});
         });
     }
 
