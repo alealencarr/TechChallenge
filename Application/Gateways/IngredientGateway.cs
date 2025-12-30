@@ -1,7 +1,5 @@
 ﻿using Application.Interfaces.DataSources;
-using Application.UseCases.Ingredients.Command;
 using Domain.Entities;
-using Shared.DTO.Categorie.Input;
 using Shared.DTO.Ingrendient.Input;
 
 namespace Application.Gateways
@@ -41,7 +39,7 @@ namespace Application.Gateways
         }
         public async Task CreateIngredient(Ingredient ingredient)
         {
-            var ingredientInput = new IngredientInputDto(ingredient.Id, ingredient.CreatedAt, ingredient.Name, ingredient.Price );
+            var ingredientInput = new IngredientInputDto(ingredient.Id, ingredient.CreatedAt, ingredient.Name, ingredient.Price);
 
             await _dataSource.Create(ingredientInput);
         }

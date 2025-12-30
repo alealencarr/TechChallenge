@@ -1,6 +1,4 @@
-﻿using Domain.Entities.Aggregates.AggregateProduct;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Ingredient
     {
@@ -30,7 +28,7 @@ namespace Domain.Entities
         public Ingredient() { }
         public Guid Id { get; set; }
 
-        public ICollection<ProductIngredient> ProductIngredients { get; private set; } = [];
+        //public ICollection<ProductIngredient> ProductIngredients { get; private set; } = [];
 
 
         public string Name { get; set; }

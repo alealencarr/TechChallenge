@@ -1,6 +1,4 @@
-﻿using Infrastructure.DbModels.ProductModelsAggregate;
-
-namespace Infrastructure.DbModels;
+﻿namespace Infrastructure.DbModels;
 
 public class IngredientDbModel
 {
@@ -17,7 +15,7 @@ public class IngredientDbModel
     public IngredientDbModel() { }
     public Guid Id { get; set; }
 
-    public ICollection<ProductIngredientDbModel> ProductIngredients { get; private set; } = [];
+    //public ICollection<ProductIngredientDbModel> ProductIngredients { get; private set; } = [];
 
 
     public string Name { get; set; }

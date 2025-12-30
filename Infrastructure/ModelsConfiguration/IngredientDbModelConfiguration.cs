@@ -27,10 +27,10 @@ namespace Infrastructure.ModelsConfiguration
                 .IsRequired();
 
             // Relação 1:N Ingredient -> ProductIngredients
-            entity.HasMany(x => x.ProductIngredients)
-                .WithOne(pi => pi.Ingredient)
-                .HasForeignKey(pi => pi.IngredientId)
-                .OnDelete(DeleteBehavior.Restrict); // para evitar exclusão em cascata
+            //entity.HasMany(x => x.ProductIngredients)
+            //    .WithOne(pi => pi.Ingredient)
+            //    .HasForeignKey(pi => pi.IngredientId)
+            //    .OnDelete(DeleteBehavior.Restrict); // para evitar exclusão em cascata
         }
     }
 }

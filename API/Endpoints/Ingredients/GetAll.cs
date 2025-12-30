@@ -2,8 +2,6 @@
 using Application.Interfaces.DataSources;
 using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
-using Microsoft.AspNetCore.Authorization;
-using MiniValidation;
 using Shared.DTO.Ingredient.Output;
 using Shared.Result;
 
@@ -25,7 +23,7 @@ internal sealed class GetAll : IEndpoint
            })
            .WithTags("Ingredients")
            .Produces<ICommandResult<List<IngredientOutputDto>>>()
-           .WithName("Ingredient.GetAll").RequireAuthorization();//.RequireAuthorization();
+           .WithName("Ingredient.GetAll").RequireAuthorization();
     }
 }
 
