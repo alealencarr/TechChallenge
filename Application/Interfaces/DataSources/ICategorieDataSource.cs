@@ -9,13 +9,7 @@ namespace Application.Interfaces.DataSources
 
         Task<CategorieInputDto?> GetCategorieById(Guid id);
 
-        Task CreateCategorie(CategorieInputDto categorie);
-
         Task<CategorieInputDto?> GetByName(string name);
-
-        Task UpdateCategorie(CategorieInputDto categorie);
-
-        Task Delete(Guid id);
 
     }
 }

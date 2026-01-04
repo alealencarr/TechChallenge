@@ -13,7 +13,7 @@ namespace Domain.Entities.Aggregates.AggregateOrder
             Price = price * quantity;
             ProductId = productId;
             Quantity = quantity;
-            IsLanche = product!.Categorie!.IsLanche();
+            IsLanche = product!.IsLanche;
 
             if (IsLanche)
             {

@@ -84,24 +84,20 @@ namespace Infrastructure.DataSources
         public async Task<ProductInputDto?> GetById(Guid id)
         {
 
-            var product = await _appDbContext.Product.AsNoTracking().Include(p => p.Categorie)
+            var product = await _appDbContext.Product.AsNoTracking()
                 .Include(p => p.ProductIngredients)
-                    .ThenInclude(pi => pi.Ingredient)
                 .Include(p => p.ProductImages).Where(x => x.Id == id).FirstOrDefaultAsync();
 
             return product is not null ? new ProductInputDto(product.Id, product.CreatedAt, product.Name, product.Description, product.Price, product.CategorieId,
                 product.ProductImages.Select(x => new ProductImageInputDto(x.Id, x.FileName, x.MimeType, x.ImagePath, x.Name, x.Blob, x.ProductId)).ToList(),
-                product.ProductIngredients.Select(x => new ProductIngredientInputDto(x.IngredientId, x.Quantity, x.ProductId)).ToList(), new Shared.DTO.Categorie.Input.CategorieInputDto
-                (product.Categorie.Id, product.Categorie.Name, product.Categorie.IsEditavel, product.Categorie.CreatedAt)) : null;
+                product.ProductIngredients.Select(x => new ProductIngredientInputDto(x.IngredientId, x.Quantity, x.ProductId)).ToList(), product.IsLanche  ) : null;
         }
 
         public async Task<List<ProductInputDto>> GetByCategorie(string? id, string? name)
         {
             var query = _appDbContext.Product
                 .AsNoTracking()
-                .Include(p => p.Categorie)
                 .Include(p => p.ProductIngredients)
-                    .ThenInclude(pi => pi.Ingredient)
                 .Include(p => p.ProductImages)
                 .AsQueryable();
 
@@ -110,10 +106,6 @@ namespace Infrastructure.DataSources
             {
                 query = query.Where(x => x.CategorieId.ToString() == id);
             }
-            else if (!string.IsNullOrWhiteSpace(name))
-            {
-                query = query.Where(x => x.Categorie!.Name.ToLower().Contains(name.ToLower()));
-            }
             else
                 query = query.Where(x => true);
 
@@ -121,7 +113,7 @@ namespace Infrastructure.DataSources
             var products = await query.ToListAsync();
 
             return products.Select(x => new ProductInputDto(x.Id, x.CreatedAt, x.Name, x.Description, x.Price, x.CategorieId, x.ProductImages.Select(k => new ProductImageInputDto(k.Id, k.FileName, k.MimeType, k.ImagePath, k.Name, k.Blob, k.ProductId)).ToList(),
-             x.ProductIngredients.Select(o => new ProductIngredientInputDto(o.IngredientId, o.Quantity, o.ProductId)).ToList(), new Shared.DTO.Categorie.Input.CategorieInputDto(x.Categorie.Id, x.Categorie.Name,x.Categorie.IsEditavel, x.Categorie.CreatedAt)
+             x.ProductIngredients.Select(o => new ProductIngredientInputDto(o.IngredientId, o.Quantity, o.ProductId)).ToList(), x.IsLanche
              )).ToList();
 
         }
@@ -130,14 +122,12 @@ namespace Infrastructure.DataSources
         {
             var products = await _appDbContext.Set<ProductDbModel>()
                 .AsNoTracking()
-                .Include(p => p.Categorie)
                 .Include(p => p.ProductIngredients)
-                    .ThenInclude(pi => pi.Ingredient)
                 .Where(p => ids.Contains(p.Id))
                 .ToListAsync();
 
             return products.Select(x => new ProductInputDto(x.Id, x.CreatedAt, x.Name, x.Description, x.Price, x.CategorieId, x.ProductImages.Select(k => new ProductImageInputDto(k.Id, k.FileName, k.MimeType, k.ImagePath, k.Name, k.Blob, k.ProductId)).ToList(),
-                x.ProductIngredients.Select(o => new ProductIngredientInputDto(o.IngredientId, o.Quantity, o.ProductId)).ToList(), new Shared.DTO.Categorie.Input.CategorieInputDto(x.Categorie.Id,x.Categorie.Name, x.Categorie.IsEditavel, x.Categorie.CreatedAt)
+                x.ProductIngredients.Select(o => new ProductIngredientInputDto(o.IngredientId, o.Quantity, o.ProductId)).ToList(), x.IsLanche
                 )).ToList();
         }
  

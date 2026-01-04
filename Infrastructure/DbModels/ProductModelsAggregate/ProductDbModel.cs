@@ -25,8 +25,8 @@ namespace Infrastructure.DbModels
 
         public decimal Price { get; set; }
         public Guid CategorieId { get; set; }
-        public CategorieDbModel? Categorie { get; set; }
-
+        
+        public bool IsLanche { get; set; }
         public string Description { get; set; }
 
         public List<ProductImageDbModel> ProductImages { get;  set; } = [];

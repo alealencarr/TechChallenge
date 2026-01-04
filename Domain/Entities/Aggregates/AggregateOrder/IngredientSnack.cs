@@ -22,10 +22,10 @@
             Quantity = quantity;
         }
 
-        public IngredientSnack(Guid idIngrediente, int quantity, Ingredient ingredient)
+        public IngredientSnack(Guid idIngrediente, int quantity, decimal price)
         {
             Id = Guid.NewGuid();
-            Price = ingredient.Price;
+            Price = price;
             IdIngredient = idIngrediente;
             Quantity = quantity;
         }

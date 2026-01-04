@@ -3,6 +3,7 @@ using Application.Interfaces.Services;
 using Application.UseCases.Products.Command;
 using Domain.Entities;
 using Domain.Entities.Aggregates.AggregateProduct;
+using Shared.DTO.Categorie.Input;
 
 namespace Application.UseCases.Products
 {
@@ -11,7 +12,7 @@ namespace Application.UseCases.Products
         ProductGateway _gateway = null;
         CategorieGateway _gatewayCategorie = null;
         IngredientGateway _gatewayIngredient = null;
-        private Categorie _categorie;
+        private CategorieInputDto _categorie;
         ProductCommand _command;
         IFileStorageService _fileStorage;
         public static CreateProductUseCase Create(ProductGateway gateway, CategorieGateway categorieGateway, IngredientGateway ingredientGateway,IFileStorageService fileStorage)
@@ -40,7 +41,7 @@ namespace Application.UseCases.Products
                 var productImages = (product.Images is null ? new List<ProductImage>() :
                     product.Images?.Select(x => new ProductImage(x.Blob, x.Name)).ToList());
 
-                var productEntity = Product.Create(product.Name, product.Price, product.CategorieId, product.Description,  productsIngredients!, productImages!, _categorie);
+                var productEntity = Product.Create(product.Name, product.Price, product.CategorieId, product.Description,  productsIngredients!, productImages!, _categorie.IsEditavel);
 
                 await _gateway.CreateProduct(productEntity);
 

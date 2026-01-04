@@ -22,11 +22,7 @@ namespace Infrastructure.ModelsConfiguration.ProductAggregateConfiguration
                 .HasForeignKey(pi => pi.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Relacionamento com IngredientDbModel
-            entity.HasOne(pi => pi.Ingredient)
-                .WithMany(i => i.ProductIngredients)
-                .HasForeignKey(pi => pi.IngredientId)
-                .OnDelete(DeleteBehavior.Restrict);
+ 
         }
     }
 }

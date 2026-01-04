@@ -49,11 +49,7 @@ public class OrderDbModelConfiguration : IEntityTypeConfiguration<OrderDbModel>
               .IsRequired(false)         // pode ser nulo (sem pagamento atual)
               .OnDelete(DeleteBehavior.Restrict);
 
-        entity.HasOne(o => o.Customer)
-            .WithMany(c => c.Orders)
-            .HasForeignKey(o => o.CustomerId)
-            .OnDelete(DeleteBehavior.SetNull);
-
+ 
         entity.HasMany(o => o.Itens)
             .WithOne(i => i.Order)
             .HasForeignKey(i => i.OrderId)

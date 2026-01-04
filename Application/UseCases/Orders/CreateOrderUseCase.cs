@@ -3,6 +3,7 @@ using Application.UseCases.Orders.Command;
 using Domain.Entities;
 using Domain.Entities.Aggregates.AggregateOrder;
 using Domain.Entities.Aggregates.AggregateProduct;
+using Shared.DTO.Ingrendient.Input;
 
 namespace Application.UseCases.Orders
 {
@@ -15,7 +16,7 @@ namespace Application.UseCases.Orders
         OrderCommand _command;
 
         List<Product> _products;
-        List<Ingredient> _ingredients;
+        List<IngredientInputDto> _ingredients;
 
         public static CreateOrderUseCase Create(OrderGateway gateway, CustomerGateway customerGateway, IngredientGateway ingredientGateway, ProductGateway productGateway)
         {
@@ -41,7 +42,7 @@ namespace Application.UseCases.Orders
 
                 var itemsOrder = order.Itens.Select(x => new ItemOrder(x.Id, x.Quantity,
                     _products.Where(p => p.Id == x.Id).FirstOrDefault()!,
-                    x.IngredientsSnack.Select(y => new IngredientSnack(y.Id, y.Quantity, _ingredients.Where(i => i.Id == y.Id).FirstOrDefault()!)).ToList()
+                    x.IngredientsSnack.Select(y => new IngredientSnack(y.Id, y.Quantity, _ingredients.Where(i => i.Id == y.Id).Select(x => x.Price).FirstOrDefault()! )).ToList()
                     )
                 ).ToList();
 
@@ -91,12 +92,6 @@ namespace Application.UseCases.Orders
             _products = await _gatewayProduct.GetByIds(produtosIds);
             _ingredients = await _gatewayIngredient.GetByIds(ingredientesIds);
             var customerDb = await _gatewayCustomer.GetById(_command.CustomerId ?? Guid.NewGuid());
-
-            //await Task.WhenAll(taskProducts, taskIngredients, taskCustomer);
-
-            //var productsDb = await taskProducts;
-            //var ingredientesDb = await taskIngredients;
-            //var customerDb = await taskCustomer;
 
             if (customerDb is null)
                 validationErrors.Add($"Cliente com ID {_command.CustomerId} não encontrado.");

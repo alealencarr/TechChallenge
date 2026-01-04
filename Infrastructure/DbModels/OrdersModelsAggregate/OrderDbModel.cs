@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using Infrastructure.DbModels.OrdersModelsAggregate;
+﻿using Infrastructure.DbModels.OrdersModelsAggregate;
 
 namespace Infrastructure.DbModels
 {
@@ -24,10 +23,7 @@ namespace Infrastructure.DbModels
 
         public Guid? CustomerId { get; private set; }
         public Guid Id { get; private set; }
-        public int StatusPedido { get;  set; }
-
-        public CustomerDbModel? Customer { get; set; }
-
+        public int StatusPedido { get; set; }
         public decimal Price { get; private set; } = 0M;
 
         // FK para o pagamento atual/último
