@@ -48,7 +48,7 @@ namespace Infrastructure
 
         public static void AddHealthChecks(this WebApplication app)
         {
-            app.UseHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
+            app.UseHealthChecks("/ingredients/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
             {
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
