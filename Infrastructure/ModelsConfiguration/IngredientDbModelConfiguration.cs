@@ -26,11 +26,6 @@ namespace Infrastructure.ModelsConfiguration
             entity.Property(x => x.CreatedAt)
                 .IsRequired();
 
-            // Relação 1:N Ingredient -> ProductIngredients
-            //entity.HasMany(x => x.ProductIngredients)
-            //    .WithOne(pi => pi.Ingredient)
-            //    .HasForeignKey(pi => pi.IngredientId)
-            //    .OnDelete(DeleteBehavior.Restrict); // para evitar exclusão em cascata
         }
     }
 }

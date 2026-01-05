@@ -17,6 +17,9 @@ namespace Infrastructure.Persistence
         public async Task Initialize()
         {
             await SeedIngredientes();
+
+            if (_seedInDb) 
+                await _context.SaveChangesAsync();
         }
         private async Task SeedIngredientes()
         {
@@ -26,7 +29,7 @@ namespace Infrastructure.Persistence
             {
                 var ingredientesMock = new List<IngredientDbModel>()
                 {
-                                    // Carnes
+                // Carnes
                 new IngredientDbModel(Guid.Parse("10000000-0000-0000-0000-000000000011"), "Hambúrguer Angus 200g", 10.00m),
                 new IngredientDbModel(Guid.Parse("10000000-0000-0000-0000-000000000012"), "Frango Grelhado", 7.50m),
                 new IngredientDbModel(Guid.Parse("10000000-0000-0000-0000-000000000013"), "Carne Desfiada BBQ", 9.00m),
