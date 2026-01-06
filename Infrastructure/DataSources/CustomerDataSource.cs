@@ -1,26 +1,25 @@
 ﻿using Application.Interfaces.DataSources;
-using Infrastructure.DbContexts;
 using Shared.DTO.Categorie.Input;
 
 namespace Infrastructure.DataSources
 {
     public class CustomerDataSource : ICustomerDataSource
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly HttpClient _httpClient;
 
-        public CustomerDataSource(AppDbContext appDbContext)
+        public CustomerDataSource(IHttpClientFactory httpClient)
         {
-            _appDbContext = appDbContext;
+            _httpClient = httpClient.CreateClient("CustomersHttpClient");
         }
 
 
-        public async Task<CustomerInputDto?> GetByCpf(string cpf)
+        public async Task<CustomerDto?> GetByCpf(string cpf)
         {
             throw new Exception();
 
         }
 
-        public async Task<CustomerInputDto?> GetById(Guid id)
+        public async Task<CustomerDto?> GetById(Guid id)
         {
             throw new Exception();
         }

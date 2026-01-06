@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces.DataSources;
-using Shared.DTO.Categorie.Input;
+using Shared.DTO.Categorie;
 
 namespace Application.Gateways
 {
@@ -15,20 +15,20 @@ namespace Application.Gateways
         {
             return new CategorieGateway(dataSource);
         }
-        public async Task<List<CategorieInputDto>> GetAll()
+        public async Task<List<CategorieDto>> GetAll()
         {
             return await _dataSource.GetAllCategories();
 
         }
 
-        public async Task<CategorieInputDto?> GetById(Guid id)
+        public async Task<CategorieDto?> GetById(Guid id)
         {
             var categorie = await _dataSource.GetCategorieById(id);
 
             return categorie is not null ? categorie : null;
         }
 
-        public async Task<CategorieInputDto?> GetByName(string name)
+        public async Task<CategorieDto?> GetByName(string name)
         {
             var categorie = await _dataSource.GetByName(name);
 

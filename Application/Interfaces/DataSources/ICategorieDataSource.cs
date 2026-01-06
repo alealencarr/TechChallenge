@@ -1,15 +1,15 @@
 ﻿using Domain.Entities;
-using Shared.DTO.Categorie.Input;
+using Shared.DTO.Categorie;
 
 namespace Application.Interfaces.DataSources
 {
     public interface ICategorieDataSource
     {
-        Task<List<CategorieInputDto>> GetAllCategories();
+        Task<List<CategorieDto>> GetAllCategories();
 
-        Task<CategorieInputDto?> GetCategorieById(Guid id);
+        Task<CategorieDto?> GetCategorieById(Guid id);
 
-        Task<CategorieInputDto?> GetByName(string name);
+        Task<CategorieDto?> GetByName(string name);
 
     }
 }

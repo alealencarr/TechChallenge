@@ -3,7 +3,7 @@ using Application.Interfaces.Services;
 using Application.UseCases.Products.Command;
 using Domain.Entities;
 using Domain.Entities.Aggregates.AggregateProduct;
-using Shared.DTO.Categorie.Input;
+using Shared.DTO.Categorie;
 
 namespace Application.UseCases.Products
 {
@@ -13,7 +13,7 @@ namespace Application.UseCases.Products
         ProductGateway _gateway = null;
         CategorieGateway _gatewayCategorie = null;
         IngredientGateway _gatewayIngredient = null;
-        private CategorieInputDto _categorie = null;
+        private CategorieDto _categorie = null;
         ProductCommand _command = null;
         IFileStorageService _fileStorageService;
         public static UpdateProductUseCase Create(ProductGateway gateway, CategorieGateway categorieGateway, IngredientGateway ingredientGateway, IFileStorageService fileStorageService)

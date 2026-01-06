@@ -3,6 +3,7 @@ using API.Extensions;
 using API.Extensions.HealthCheck;
 using API.Extensions.Middlewares;
 using Application.Common;
+using Application.Externals;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -181,6 +182,41 @@ public static class DependencyInjection
                 options.Token = "teste";
             });
         });
+    }
+
+    public static IServiceCollection AddPocHttpClients(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddMemoryCache();
+
+        services.AddTransient<TokenAuthenticationHandler>();
+
+        services.AddHttpClient("AuthLambdaClient", client =>
+        {
+            client.BaseAddress = new Uri(configuration["AuthLambda:Url"]!);
+            client.Timeout = TimeSpan.FromSeconds(10);
+        });
+
+        services.AddNamedClient("CategoriesHttpClient", configuration);
+        services.AddNamedClient("IngredientsHttpClient", configuration);
+        services.AddNamedClient("CustomersHttpClient", configuration);
+
+        return services;
+    }
+
+    private static void AddNamedClient(this IServiceCollection services, string clientName, IConfiguration configuration)
+    {
+        var baseUrl = configuration[$"HttpClientsAuth:{clientName}:BaseUrl"];
+
+        services.AddHttpClient(clientName, client =>
+        {
+            if (!string.IsNullOrEmpty(baseUrl))
+                client.BaseAddress = new Uri(baseUrl);
+
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+            client.DefaultRequestHeaders.Add("X-Client-Config-Key", clientName);
+        })
+        .AddHttpMessageHandler<TokenAuthenticationHandler>();
     }
 
     //public static IServiceCollection AddOptionsPattern(this IServiceCollection services, IConfiguration configuration)

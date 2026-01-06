@@ -18,14 +18,14 @@ internal sealed class Update : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPut("api/products/{id}",
-           async (AppDbContext appDbContext, FileStorageSettings _settings, [FromRoute] Guid id, [FromBody] ProductRequestDto productDto) =>
+           async (AppDbContext appDbContext, IHttpClientFactory _http, FileStorageSettings _settings, [FromRoute] Guid id, [FromBody] ProductRequestDto productDto) =>
            {
                if (!MiniValidator.TryValidate(productDto, out var errors))
                    return Results.ValidationProblem(errors);
 
                IProductDataSource dataSource = new ProductDataSource(appDbContext);
-               ICategorieDataSource dataSourceCategorie = new CategorieDataSource(appDbContext);
-               IIngredientDataSource dataSourceIngrediente = new IngredientDataSource(appDbContext);
+               ICategorieDataSource dataSourceCategorie = new CategorieDataSource(_http);
+               IIngredientDataSource dataSourceIngrediente = new IngredientDataSource(_http);
                IFileStorageService _fileStorage = new FileStorageService(_settings);
 
                ProductController _productController = new ProductController(dataSource, dataSourceIngrediente, dataSourceCategorie, _fileStorage);

@@ -3,7 +3,7 @@ using Application.UseCases.Orders.Command;
 using Domain.Entities;
 using Domain.Entities.Aggregates.AggregateOrder;
 using Domain.Entities.Aggregates.AggregateProduct;
-using Shared.DTO.Ingrendient.Input;
+using Shared.DTO.Ingredient;
 
 namespace Application.UseCases.Orders
 {
@@ -16,7 +16,7 @@ namespace Application.UseCases.Orders
         OrderCommand _command;
 
         List<Product> _products;
-        List<IngredientInputDto> _ingredients;
+        List<IngredientDto> _ingredients;
 
         public static CreateOrderUseCase Create(OrderGateway gateway, CustomerGateway customerGateway, IngredientGateway ingredientGateway, ProductGateway productGateway)
         {

@@ -21,8 +21,9 @@ try
            .AddPresentation(builder.Configuration)
            .AddInfrastructure(builder.Configuration)
            .AddSingleton(fileStorageSettings)
+           .AddPocHttpClients()
            .AddHealthChecks().AddHealthApi().AddHealthDb(builder.Configuration);
-
+ 
     var app = builder.Build();
 
     await app.InitializeApp(Log.Logger);

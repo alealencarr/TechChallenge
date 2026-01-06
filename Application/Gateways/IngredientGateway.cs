@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces.DataSources;
-using Shared.DTO.Ingrendient.Input;
+using Shared.DTO.Ingredient;
 
 namespace Application.Gateways
 {
@@ -16,17 +16,17 @@ namespace Application.Gateways
             return new IngredientGateway(dataSource);
         }
 
-        public async Task<List<IngredientInputDto>> GetAll()
+        public async Task<List<IngredientDto>> GetAll()
         {
             return await _dataSource.GetAll();
         }
 
-        public async Task<List<IngredientInputDto>> GetByIds(List<Guid> ids)
+        public async Task<List<IngredientDto>> GetByIds(List<Guid> ids)
         {
             return await _dataSource.GetByIds(ids);
         }
 
-        public async Task<IngredientInputDto?> GetById(Guid id)
+        public async Task<IngredientDto?> GetById(Guid id)
         {
             var ingredient = await _dataSource.GetById(id);
 

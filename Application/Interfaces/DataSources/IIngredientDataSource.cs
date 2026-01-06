@@ -1,4 +1,4 @@
-﻿using Shared.DTO.Ingrendient.Input;
+﻿using Shared.DTO.Ingredient;
 
 namespace Application.Interfaces.DataSources
 {
@@ -6,10 +6,10 @@ namespace Application.Interfaces.DataSources
     public interface IIngredientDataSource
     {
  
-        Task<IngredientInputDto?> GetById(Guid id);
-        Task<List<IngredientInputDto>> GetAll();
+        Task<IngredientDto?> GetById(Guid id);
+        Task<List<IngredientDto>> GetAll();
 
-        Task<List<IngredientInputDto>> GetByIds(List<Guid> ids);
+        Task<List<IngredientDto>> GetByIds(List<Guid> ids);
 
     }
 }

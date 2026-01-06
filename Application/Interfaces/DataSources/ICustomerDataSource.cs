@@ -1,5 +1,4 @@
 ﻿using Shared.DTO.Categorie.Input;
-using Shared.DTO.Customer.Request;
 
 namespace Application.Interfaces.DataSources
 {
@@ -7,7 +6,7 @@ namespace Application.Interfaces.DataSources
     public interface ICustomerDataSource
     {
 
-        Task<CustomerInputDto?> GetById(Guid id);
-        Task<CustomerInputDto?> GetByCpf(string cpf);
+        Task<CustomerDto?> GetById(Guid id);
+        Task<CustomerDto?> GetByCpf(string cpf);
     }
 }

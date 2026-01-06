@@ -1,35 +1,32 @@
 ﻿using Application.Interfaces.DataSources;
-using Infrastructure.DbContexts;
-using Infrastructure.DbModels;
-using Microsoft.EntityFrameworkCore;
-using Shared.DTO.Ingrendient.Input;
+using Shared.DTO.Ingredient;
 
 namespace Infrastructure.DataSources
 {
     public class IngredientDataSource : IIngredientDataSource
     {
-        private readonly AppDbContext _appDbContext;
 
-        public IngredientDataSource(AppDbContext appDbContext)
+        private readonly HttpClient _httpClient;
+
+        public IngredientDataSource(IHttpClientFactory httpClient)
         {
-            _appDbContext = appDbContext;
+            _httpClient = httpClient.CreateClient("IngredientsHttpClient");
         }
 
- 
 
-        public async Task<IngredientInputDto?> GetById(Guid id)
-        {
-            throw new Exception();
-
-        }
-
-        public async Task<List<IngredientInputDto>> GetAll()
+        public async Task<IngredientDto?> GetById(Guid id)
         {
             throw new Exception();
 
         }
 
-        public async Task<List<IngredientInputDto>> GetByIds(List<Guid> ids)
+        public async Task<List<IngredientDto>> GetAll()
+        {
+            throw new Exception();
+
+        }
+
+        public async Task<List<IngredientDto>> GetByIds(List<Guid> ids)
         {
             throw new Exception();
 
