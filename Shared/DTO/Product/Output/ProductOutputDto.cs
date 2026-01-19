@@ -10,7 +10,7 @@ namespace Shared.DTO.Product.Output
 
         public decimal Price { get; set; }
 
-        public CategorieOutputDto? Categorie { get; set; }
+        public Guid? CategorieId { get; set; }
 
         public string Description { get; set; }
 

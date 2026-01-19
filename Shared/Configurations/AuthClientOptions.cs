@@ -1,5 +1,9 @@
-﻿namespace Shared.Configurations
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Shared.Configurations
 {
+    [ExcludeFromCodeCoverage]
+
     public class AuthClientOptions
     {
         public string ClientId { get; set; } = "";

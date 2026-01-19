@@ -8,6 +8,6 @@ namespace Shared.DTO
 {
     public class AuthTokenResponse
     {
-        public string AccessToken { get; set; } = "";
+        public string access_token { get; set; } = "";
     }
 }

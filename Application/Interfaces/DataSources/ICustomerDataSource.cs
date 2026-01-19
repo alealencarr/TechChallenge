@@ -7,6 +7,5 @@ namespace Application.Interfaces.DataSources
     {
 
         Task<CustomerDto?> GetById(Guid id);
-        Task<CustomerDto?> GetByCpf(string cpf);
-    }
+     }
 }

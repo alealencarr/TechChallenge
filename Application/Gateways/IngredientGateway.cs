@@ -16,10 +16,7 @@ namespace Application.Gateways
             return new IngredientGateway(dataSource);
         }
 
-        public async Task<List<IngredientDto>> GetAll()
-        {
-            return await _dataSource.GetAll();
-        }
+ 
 
         public async Task<List<IngredientDto>> GetByIds(List<Guid> ids)
         {

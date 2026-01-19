@@ -15,11 +15,7 @@ namespace Application.Gateways
         {
             return new CategorieGateway(dataSource);
         }
-        public async Task<List<CategorieDto>> GetAll()
-        {
-            return await _dataSource.GetAllCategories();
-
-        }
+ 
 
         public async Task<CategorieDto?> GetById(Guid id)
         {
@@ -27,12 +23,6 @@ namespace Application.Gateways
 
             return categorie is not null ? categorie : null;
         }
-
-        public async Task<CategorieDto?> GetByName(string name)
-        {
-            var categorie = await _dataSource.GetByName(name);
-
-            return categorie is not null ? categorie : null;
-        }
+ 
     }
 }

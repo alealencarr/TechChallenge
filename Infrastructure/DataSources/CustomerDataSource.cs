@@ -1,5 +1,8 @@
 ﻿using Application.Interfaces.DataSources;
+using Shared.DTO.Categorie;
 using Shared.DTO.Categorie.Input;
+using Shared.Result;
+using System.Net.Http.Json;
 
 namespace Infrastructure.DataSources
 {
@@ -12,16 +15,12 @@ namespace Infrastructure.DataSources
             _httpClient = httpClient.CreateClient("CustomersHttpClient");
         }
 
-
-        public async Task<CustomerDto?> GetByCpf(string cpf)
-        {
-            throw new Exception();
-
-        }
-
+ 
         public async Task<CustomerDto?> GetById(Guid id)
         {
-            throw new Exception();
+            var retorno = await _httpClient.GetFromJsonAsync<CommandResult<CustomerDto>>($"api/customers/id/{id}");
+
+            return retorno?.Data;
         }
 
     }

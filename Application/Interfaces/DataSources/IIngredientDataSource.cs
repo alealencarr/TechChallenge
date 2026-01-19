@@ -7,9 +7,8 @@ namespace Application.Interfaces.DataSources
     {
  
         Task<IngredientDto?> GetById(Guid id);
-        Task<List<IngredientDto>> GetAll();
-
-        Task<List<IngredientDto>> GetByIds(List<Guid> ids);
+ 
+        Task<List<IngredientDto>?> GetByIds(List<Guid> ids);
 
     }
 }

@@ -66,7 +66,8 @@ namespace Infrastructure.DataSources
                        product.Id,
                        group.Key,
                        group.Sum(x => x.Quantity)
-                   )).ToList()
+                   )).ToList(),
+               product.IsLanche
            );
 
             await _appDbContext.AddAsync(productDbModel);

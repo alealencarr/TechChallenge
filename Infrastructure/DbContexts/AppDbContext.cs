@@ -1,6 +1,8 @@
-﻿using Infrastructure.DbModels;
+﻿using Domain.Entities;
+using Infrastructure.DbModels;
 using Infrastructure.DbModels.OrdersModelsAggregate;
 using Infrastructure.DbModels.ProductModelsAggregate;
+
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -13,6 +15,7 @@ public class AppDbContext : DbContext
 
     }
     public DbSet<PaymentDbModel> Payment { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
 
     public DbSet<IngredientSnackDbModel> IngredientSnack { get; set; } = null!;
     public DbSet<ItemOrderDbModel> ItemOrder { get; set; } = null!;

@@ -15,13 +15,7 @@ namespace Application.Gateways
         {
             return new CustomerGateway(dataSource);
         }
-
-        public async Task<CustomerDto?> GetByCpf(string cpf)
-        {
-            var customer = await _dataSource.GetByCpf(cpf);
-
-            return customer is not null ? customer : null;
-        }
+ 
 
         public async Task<CustomerDto?> GetById(Guid id)
         {

@@ -1,5 +1,6 @@
 ﻿using HealthChecks.UI.Client;
 using Infrastructure.DbContexts;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ namespace Infrastructure
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             var cnnStr = configuration.GetConnectionString(Configuration.ConnectionString) ?? configuration.GetConnectionString("Default");
+            services.AddTransient<DataSeeder>();
 
             services.AddDbContext<AppDbContext>(x =>
             {

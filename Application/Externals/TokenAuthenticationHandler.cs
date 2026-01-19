@@ -56,7 +56,7 @@ public class TokenAuthenticationHandler(
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content.ReadFromJsonAsync<AuthTokenResponse>();
-        return result!.AccessToken;
+        return result!.access_token;
     }
 }
 

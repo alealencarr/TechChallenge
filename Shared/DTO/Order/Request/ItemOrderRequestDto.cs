@@ -11,6 +11,7 @@ namespace Shared.DTO.Order.Request
         [Range(1, int.MaxValue, ErrorMessage = "A quantidade deve ser maior ou igual a 1.")]
         public int Quantity { get; set; }
 
+        public bool IsLanche { get; set; } = false;
         public List<IngredientSnackRequestDto> IngredientsSnack { get; set; } = new();
     }
 }

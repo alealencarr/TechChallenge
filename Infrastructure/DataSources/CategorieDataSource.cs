@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.DataSources;
 using Shared.DTO.Categorie;
+using Shared.Result;
 using System.Net.Http.Json;
 
 namespace Infrastructure.DataSources
@@ -12,20 +13,13 @@ namespace Infrastructure.DataSources
         {
             _httpClient = httpClient.CreateClient("CategoriesHttpClient");
         }
-        public async Task<List<CategorieDto>> GetAllCategories()
-        {
-            throw new Exception();
-        }
-
-        public async Task<CategorieDto?> GetByName(string name)
-        {
-            return await _httpClient.GetFromJsonAsync<CategorieDto>($"api/categories/{name}");
-        }
+ 
 
         public async Task<CategorieDto?> GetCategorieById(Guid id)
         {
+            var retorno = await _httpClient.GetFromJsonAsync<CommandResult<CategorieDto>>($"api/categories/{id}");
 
-            throw new Exception();
+            return retorno?.Data;
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿namespace Infrastructure.Configurations
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Infrastructure.Configurations
 {
+    [ExcludeFromCodeCoverage]
     public class FileStorageSettings
     {
         public string StorageConnectionString { get; set; } 

@@ -80,7 +80,7 @@ namespace Domain.Entities.Aggregates.AggregateOrder
             Id = id;
         }
 
-        internal decimal GetPrice()
+        public decimal GetPrice()
         {
             var adicionais = Ingredients?.Where(x => x.Additional == true).Sum(x => x.Price * x.Quantity) ?? 0;
             Price = Price + adicionais;

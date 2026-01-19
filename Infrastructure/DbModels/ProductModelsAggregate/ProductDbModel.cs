@@ -7,7 +7,7 @@ namespace Infrastructure.DbModels
     {
         protected ProductDbModel() { }
 
-        public ProductDbModel(Guid id, string name, decimal price, Guid categorieId, string description, DateTime createdAt, List<ProductImageDbModel> productImages, List<ProductIngredientDbModel> productIngredients )
+        public ProductDbModel(Guid id, string name, decimal price, Guid categorieId, string description, DateTime createdAt, List<ProductImageDbModel> productImages, List<ProductIngredientDbModel> productIngredients, bool isLanche)
         {
             Id = id;
             Name = name;
@@ -17,6 +17,7 @@ namespace Infrastructure.DbModels
             CreatedAt = createdAt;
             ProductImages = productImages;
             ProductIngredients = productIngredients;
+            IsLanche = isLanche;
         }
 
         public DateTime CreatedAt { get; set; }

@@ -34,6 +34,7 @@ namespace Application.Presenter.Products
                 Name = product.Name,
                 Price = product.Price,
                 Description = product.Description,
+                CategorieId = product.CategorieId,
                 Ingredients = product.ProductIngredients.Select(x => new ProductIngredientOutputDto(x.IngredientId, x.Quantity)).ToList(),
                 Images = product.ProductImages.Select(x => new ProductImageOutputDto($"/{x.ImagePath}/{x.FileName}".ToAbsoluteUrl(), x.Name)).ToList()
             };

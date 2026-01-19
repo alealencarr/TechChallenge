@@ -1,5 +1,7 @@
 ﻿using Application.Interfaces.DataSources;
 using Shared.DTO.Ingredient;
+using Shared.Result;
+using System.Net.Http.Json;
 
 namespace Infrastructure.DataSources
 {
@@ -16,20 +18,19 @@ namespace Infrastructure.DataSources
 
         public async Task<IngredientDto?> GetById(Guid id)
         {
-            throw new Exception();
+            var retorno = await _httpClient.GetFromJsonAsync<CommandResult<IngredientDto>>($"api/ingredients/{id}");
 
+            return retorno?.Data;
         }
 
-        public async Task<List<IngredientDto>> GetAll()
+
+        public async Task<List<IngredientDto>?> GetByIds(List<Guid> ids)
         {
-            throw new Exception();
+            var retornoApi = await _httpClient.PostAsJsonAsync($"api/ingredients/listIngredients", ids);
 
-        }
+            var retornoJson = await retornoApi.Content.ReadFromJsonAsync<CommandResult<List<IngredientDto>>>();
 
-        public async Task<List<IngredientDto>> GetByIds(List<Guid> ids)
-        {
-            throw new Exception();
-
+            return retornoJson?.Data;
         }
     }
 }
