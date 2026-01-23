@@ -1,4 +1,5 @@
-﻿using Application.Presenter.Products;
+﻿using Application.Common;
+using Application.Presenter.Products;
 using Domain.Entities.Aggregates.AggregateProduct;  
 using FluentAssertions;
 using Xunit;
@@ -12,6 +13,7 @@ namespace Products.UnitTests.Application.Presenter
 
         public ProductPresenterTests()
         {
+            Utils.Configure("https://strgtchungryprod.blob.core.windows.net/imagens/");
             _presenter = new ProductPresenter(DefaultMessage);
         }
 
