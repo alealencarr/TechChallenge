@@ -132,6 +132,14 @@ jobs:
           kubectl create secret generic ms-orders-secrets \
             --from-literal=ConnectionStrings__Default='${{ secrets.DB_CONNECTION_STRING }}' \
             --from-literal=AZURE_STORAGE_CONNECTION_STRING='${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}' \
+            --from-literal=JWT__Key="408972174014y176f0aj0-ai0fnoano==090--sfa9102947819402" \
+            --from-literal=JWT__ExpiryInDays="1" \
+            --from-literal=JWT__Issuer="Emissor" \
+            --from-literal=JWT__Audience="Audiencia" \
+            --from-literal=ApiUrls__Base="https://strgtchungryprod.blob.core.windows.net/imagens/" \
+            --from-literal=HttpClientsAuth__CategoriesHttpClient__ClientSecret="categoriesSenha!" \
+            --from-literal=HttpClientsAuth__IngredientsHttpClient__ClientSecret="ingredientsSenha!" \
+            --from-literal=HttpClientsAuth__CustomersHttpClient__ClientSecret="customersSenha!" \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: 'Replace placeholders in manifests'
@@ -142,6 +150,9 @@ jobs:
 
       - name: 'Deploy to AKS'
         run: kubectl apply -f k8s/
+
+      - name: 'Force rolling restart to pick up new configs'
+        run: kubectl rollout restart deployment/ms-orders-deployment
 
       - name: 'Verify deployment'
         run: |

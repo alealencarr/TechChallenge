@@ -6,6 +6,20 @@ data:
   ASPNETCORE_ENVIRONMENT: "Production"
   Logging__LogLevel__Default: "Information"
   Logging__LogLevel__Microsoft: "Warning"
+  
+  # URL da Function de Auth (via APIM - mais seguro)
+  AuthLambda__Url: "https://apim-tchungry-gateway-latest.azure-api.net/api/token"
+  
+  # URLs dos outros microsserviços (comunicação interna K8s)
+  HttpClientsAuth__CategoriesHttpClient__BaseUrl: "http://ms-categories-service.default.svc.cluster.local/"
+  HttpClientsAuth__CategoriesHttpClient__ClientId: "categories-client"
+  
+  HttpClientsAuth__IngredientsHttpClient__BaseUrl: "http://ms-ingredients-service.default.svc.cluster.local/"
+  HttpClientsAuth__IngredientsHttpClient__ClientId: "ingredients-client"
+  
+  HttpClientsAuth__CustomersHttpClient__BaseUrl: "http://ms-customers-service.default.svc.cluster.local/"
+  HttpClientsAuth__CustomersHttpClient__ClientId: "customers-client"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -56,6 +70,7 @@ spec:
           env:
             - name: ASPNETCORE_URLS
               value: "http://+:8080"
+
 ---
 apiVersion: v1
 kind: Service
@@ -71,6 +86,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
+
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
