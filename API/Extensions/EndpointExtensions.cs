@@ -20,7 +20,7 @@ public static class EndpointExtensions
         services.TryAddEnumerable(serviceDescriptors);
 
         return services;
-    } 
+    }  
 
     public static IApplicationBuilder MapEndpoints(
         this WebApplication app,
