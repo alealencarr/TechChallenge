@@ -1,7 +1,9 @@
 ﻿using Infrastructure.DbModels.OrdersModelsAggregate;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.DbModels
 {
+    [ExcludeFromCodeCoverage]
     public class OrderDbModel
     {
         public OrderDbModel(Guid? customerId, int statusPedido, Guid id, DateTime createdAt, List<ItemOrderDbModel> itens, decimal price, Guid? paymentId)

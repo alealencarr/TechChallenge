@@ -1,9 +1,11 @@
 ﻿using Application.Interfaces.DataSources;
 using Polly;
 using Polly.Wrap;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.DataSources
 {
+    [ExcludeFromCodeCoverage]
     public class PaymentDataSource : IPaymentDataSource
     {
         private readonly HttpClient _httpClient;

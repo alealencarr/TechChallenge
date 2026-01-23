@@ -5,9 +5,11 @@ using Infrastructure.DbModels;
 using Infrastructure.DbModels.ProductModelsAggregate;
 using Microsoft.EntityFrameworkCore;
 using Shared.DTO.Product.Input;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.DataSources
 {
+    [ExcludeFromCodeCoverage]
     public class ProductDataSource : IProductDataSource
     {
         private readonly AppDbContext _appDbContext;

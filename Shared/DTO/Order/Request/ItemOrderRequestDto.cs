@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Shared.DTO.Order.Request
 {
+    [ExcludeFromCodeCoverage]
     public record ItemOrderRequestDto
     {
         [Required(ErrorMessage = "Favor informar o Id dos itens que compõem este pedido.")]

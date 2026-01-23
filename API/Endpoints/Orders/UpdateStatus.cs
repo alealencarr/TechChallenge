@@ -5,10 +5,12 @@ using Infrastructure.DbContexts;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Order.Output.OrderSummary;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Endpoints.Orders;
 internal sealed class UpdateStatus : IEndpoint
 {
+    [ExcludeFromCodeCoverage]
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPatch("api/orders/updatestatus/{id}",

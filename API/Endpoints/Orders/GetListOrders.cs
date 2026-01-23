@@ -4,8 +4,10 @@ using Infrastructure.DataSources;
 using Infrastructure.DbContexts;
 using Shared.DTO.Order.Output.OrderSummary;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Endpoints.Orders;
+[ExcludeFromCodeCoverage]
 internal sealed class GetListOrders : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)

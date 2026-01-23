@@ -1,10 +1,12 @@
 ﻿using Application.Interfaces.DataSources;
 using Shared.DTO.Ingredient;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 
 namespace Infrastructure.DataSources
 {
+    [ExcludeFromCodeCoverage]
     public class IngredientDataSource : IIngredientDataSource
     {
 

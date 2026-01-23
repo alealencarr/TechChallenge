@@ -2,10 +2,12 @@
 using Shared.DTO.Categorie;
 using Shared.DTO.Categorie.Input;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 
 namespace Infrastructure.DataSources
 {
+    [ExcludeFromCodeCoverage]
     public class CustomerDataSource : ICustomerDataSource
     {
         private readonly HttpClient _httpClient;

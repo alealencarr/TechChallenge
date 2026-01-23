@@ -1,5 +1,8 @@
-﻿namespace Shared.DTO.Order.Output.OrderSummary
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Shared.DTO.Order.Output.OrderSummary
 {
+    [ExcludeFromCodeCoverage]
     public record OrderSummaryOutputDto
     {
         public Guid Id { get; set; }

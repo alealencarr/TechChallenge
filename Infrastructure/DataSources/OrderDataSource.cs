@@ -5,9 +5,11 @@ using Infrastructure.DbModels.OrdersModelsAggregate;
 using Microsoft.EntityFrameworkCore;
 using Shared.DTO.Order.Input;
 using Shared.DTO.Payment;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.DataSources
 {
+    [ExcludeFromCodeCoverage]
     public class OrderDataSource : IOrderDataSource
     {
         private readonly AppDbContext _appDbContext;

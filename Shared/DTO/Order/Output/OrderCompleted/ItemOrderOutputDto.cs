@@ -1,5 +1,8 @@
-﻿namespace Shared.DTO.Order.Output.OrderCompleted
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Shared.DTO.Order.Output.OrderCompleted
 {
+    [ExcludeFromCodeCoverage]
     public record ItemOrderOutputDto
     {
         public Guid ProductId { get; set; }

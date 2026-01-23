@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Product.Output;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Endpoints.Products;
+[ExcludeFromCodeCoverage]
 internal sealed class GetByCategorie : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)

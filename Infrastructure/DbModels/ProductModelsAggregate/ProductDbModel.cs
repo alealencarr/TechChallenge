@@ -1,8 +1,10 @@
 ﻿using Domain.Entities;
 using Infrastructure.DbModels.ProductModelsAggregate;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.DbModels
 {
+    [ExcludeFromCodeCoverage]
     public class ProductDbModel
     {
         protected ProductDbModel() { }

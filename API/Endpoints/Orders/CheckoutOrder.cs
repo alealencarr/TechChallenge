@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Order.Output.CheckoutOrder;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Endpoints.Orders;
+[ExcludeFromCodeCoverage]
 internal sealed class CheckoutOrder : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)

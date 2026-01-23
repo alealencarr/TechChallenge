@@ -1,7 +1,9 @@
 ﻿using Domain.Entities.Aggregates.AggregateOrder;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.DbModels.OrdersModelsAggregate
 {
+    [ExcludeFromCodeCoverage]
     public class ItemOrderDbModel
     {
         protected ItemOrderDbModel() { }

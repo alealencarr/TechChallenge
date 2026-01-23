@@ -4,10 +4,11 @@ using Infrastructure.DbModels.OrdersModelsAggregate;
 using Infrastructure.DbModels.ProductModelsAggregate;
 
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Infrastructure.DbContexts;
-
+[ExcludeFromCodeCoverage]
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
