@@ -7,22 +7,23 @@ using MiniValidation;
 using Shared.DTO.Order.Output.OrderSummary;
 using Shared.DTO.Order.Request;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Endpoints.Orders;
-
+[ExcludeFromCodeCoverage]
 internal sealed class Create : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPost("api/orders",
-           async (AppDbContext appDbContext, [FromBody] OrderRequestDto orderDto) =>
+           async (AppDbContext appDbContext, IHttpClientFactory _http, [FromBody] OrderRequestDto orderDto) =>
            {
                if (!MiniValidator.TryValidate(orderDto, out var errors))
                    return Results.ValidationProblem(errors);
                IOrderDataSource dataSource = new OrderDataSource(appDbContext);
                IProductDataSource dataSourceProduct = new ProductDataSource(appDbContext);
-               ICustomerDataSource dataSourceCustomer = new CustomerDataSource(appDbContext);
-               IIngredientDataSource dataSourceIngrediente = new IngredientDataSource(appDbContext);
+               ICustomerDataSource dataSourceCustomer = new CustomerDataSource(_http);
+               IIngredientDataSource dataSourceIngrediente = new IngredientDataSource(_http);
 
                OrderController _orderController = new OrderController(dataSource, dataSourceIngrediente, dataSourceCustomer, dataSourceProduct);
 

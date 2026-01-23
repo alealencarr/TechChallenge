@@ -46,8 +46,6 @@ namespace Domain.Entities.Aggregates.AggregateOrder
         public Guid Id { get; private set; }
         public Enums.EStatusOrder StatusOrder { get; private set; }
 
-        public Customer? Customer { get; set; }
-
         public Guid? PaymentId { get; set; }
 
         public Payment? Payment { get; set; }
@@ -85,7 +83,7 @@ namespace Domain.Entities.Aggregates.AggregateOrder
                     throw new Exception("Este pedido já foi finalizado.");
 
                 default:
-                    throw new Exception("Status do pedido inválido.");                    
+                    throw new Exception("Status do pedido inválido.");
             }
         }
 

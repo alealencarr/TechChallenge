@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Shared.DTO.Order.Request
 {
+    [ExcludeFromCodeCoverage]
     public record IngredientSnackRequestDto
     {
         [Required(ErrorMessage = "Favor informar o Id do ingrediente.")]

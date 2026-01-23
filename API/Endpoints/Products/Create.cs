@@ -11,22 +11,23 @@ using MiniValidation;
 using Shared.DTO.Product.Output;
 using Shared.DTO.Product.Request;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Endpoints.Products;
-
+[ExcludeFromCodeCoverage]
 internal sealed class Create : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPost("api/products",
-           async (AppDbContext appDbContext, FileStorageSettings _settings, [FromBody] ProductRequestDto productDto) =>
+           async (AppDbContext appDbContext, IHttpClientFactory _http, FileStorageSettings _settings, [FromBody] ProductRequestDto productDto) =>
            {
                if (!MiniValidator.TryValidate(productDto, out var errors))
                    return Results.ValidationProblem(errors);
 
                IProductDataSource dataSource = new ProductDataSource(appDbContext);
-               ICategorieDataSource dataSourceCategorie = new CategorieDataSource(appDbContext);
-               IIngredientDataSource dataSourceIngrediente = new IngredientDataSource(appDbContext);
+               ICategorieDataSource dataSourceCategorie = new CategorieDataSource(_http);
+               IIngredientDataSource dataSourceIngrediente = new IngredientDataSource(_http);
                IFileStorageService _fileStorage = new FileStorageService(_settings);
 
                ProductController _productController = new ProductController(dataSource, dataSourceIngrediente, dataSourceCategorie, _fileStorage);

@@ -1,8 +1,10 @@
-﻿using System.Security.Cryptography;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Shared.Helpers
 {
+    [ExcludeFromCodeCoverage]
     public static class SignatureGenerator
     {
         public static string GenerateSignature(string jsonPayload, string secret)

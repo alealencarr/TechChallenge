@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Shared.DTO.Order.Request
 {
+    [ExcludeFromCodeCoverage]
     public record OrderRequestDto
     {
         [Required(ErrorMessage = "Favor informar ao menos um Item para o pedido")]

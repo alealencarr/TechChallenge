@@ -2,8 +2,12 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Infrastructure.Configurations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.Services;
+
+[ExcludeFromCodeCoverage]
+
 public class FileStorageService : IFileStorageService
 {
     private readonly BlobContainerClient _containerClient;

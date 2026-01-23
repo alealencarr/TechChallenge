@@ -1,9 +1,11 @@
 ﻿using Infrastructure.DbModels.ProductModelsAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.ModelsConfiguration.ProductAggregateConfiguration
 {
+    [ExcludeFromCodeCoverage]
     public class ProductIngredientDbModelConfiguration : IEntityTypeConfiguration<ProductIngredientDbModel>
     {
         public void Configure(EntityTypeBuilder<ProductIngredientDbModel> entity)
@@ -22,11 +24,7 @@ namespace Infrastructure.ModelsConfiguration.ProductAggregateConfiguration
                 .HasForeignKey(pi => pi.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Relacionamento com IngredientDbModel
-            entity.HasOne(pi => pi.Ingredient)
-                .WithMany(i => i.ProductIngredients)
-                .HasForeignKey(pi => pi.IngredientId)
-                .OnDelete(DeleteBehavior.Restrict);
+ 
         }
     }
 }

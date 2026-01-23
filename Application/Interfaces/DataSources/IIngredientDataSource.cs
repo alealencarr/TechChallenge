@@ -1,17 +1,14 @@
-﻿using Shared.DTO.Ingrendient.Input;
+﻿using Shared.DTO.Ingredient;
 
 namespace Application.Interfaces.DataSources
 {
 
     public interface IIngredientDataSource
     {
-        Task Create(IngredientInputDto customer);
-        Task Update(IngredientInputDto customer);
-
-        Task<IngredientInputDto?> GetById(Guid id);
-        Task<List<IngredientInputDto>> GetAll();
-
-        Task<List<IngredientInputDto>> GetByIds(List<Guid> ids);
+ 
+        Task<IngredientDto?> GetById(Guid id);
+ 
+        Task<List<IngredientDto>?> GetByIds(List<Guid> ids);
 
     }
 }

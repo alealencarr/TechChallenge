@@ -1,60 +1,38 @@
 ﻿using Application.Interfaces.DataSources;
-using Infrastructure.DbContexts;
-using Infrastructure.DbModels;
-using Microsoft.EntityFrameworkCore;
-using Shared.DTO.Ingrendient.Input;
+using Shared.DTO.Ingredient;
+using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http.Json;
 
 namespace Infrastructure.DataSources
 {
+    [ExcludeFromCodeCoverage]
     public class IngredientDataSource : IIngredientDataSource
     {
-        private readonly AppDbContext _appDbContext;
 
-        public IngredientDataSource(AppDbContext appDbContext)
+        private readonly HttpClient _httpClient;
+
+        public IngredientDataSource(IHttpClientFactory httpClient)
         {
-            _appDbContext = appDbContext;
+            _httpClient = httpClient.CreateClient("IngredientsHttpClient");
         }
 
-        public async Task Update(IngredientInputDto ingredient)
-        {
-            var ingredientDb = await _appDbContext.Ingredient.Where(x => x.Id == ingredient.Id).FirstOrDefaultAsync() ?? throw new Exception("Ingredient not find by Id.");
-            ingredientDb.Name = ingredient.Name;
-            ingredientDb.Price = ingredient.Price;
 
-            _appDbContext.Update(ingredientDb);
-            await _appDbContext.SaveChangesAsync();
-        }
-        public async Task Create(IngredientInputDto ingredient)
+        public async Task<IngredientDto?> GetById(Guid id)
         {
-            var ingredientDbModel = new IngredientDbModel(ingredient.Id, ingredient.Name, ingredient.Price, ingredient.CreatedAt);
+            var retorno = await _httpClient.GetFromJsonAsync<CommandResult<IngredientDto>>($"api/ingredients/{id}");
 
-            await _appDbContext.AddAsync(ingredientDbModel);
-            await _appDbContext.SaveChangesAsync();
+            return retorno?.Data;
         }
 
-        public async Task<IngredientInputDto?> GetById(Guid id)
+
+        public async Task<List<IngredientDto>?> GetByIds(List<Guid> ids)
         {
+            var retornoApi = await _httpClient.PostAsJsonAsync($"api/ingredients/listIngredients", ids);
 
-            var ingredient = await _appDbContext.Ingredient.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
+            var retornoJson = await retornoApi.Content.ReadFromJsonAsync<CommandResult<List<IngredientDto>>>();
 
-            return ingredient is not null ? new IngredientInputDto(ingredient.Id, ingredient.CreatedAt, ingredient.Name, ingredient.Price) : null;
-        }
-
-        public async Task<List<IngredientInputDto>> GetAll()
-        {
-            var ingredients = await _appDbContext.Ingredient.AsNoTracking().ToListAsync();
-
-            return ingredients.Select(x => new IngredientInputDto(x.Id, x.CreatedAt, x.Name, x.Price)).ToList();
-        }
-
-        public async Task<List<IngredientInputDto>> GetByIds(List<Guid> ids)
-        {
-            var ingredients = await _appDbContext.Set<IngredientDbModel>()
-               .AsNoTracking()
-               .Where(p => ids.Contains(p.Id))
-               .ToListAsync();
-
-            return ingredients.Select(x => new IngredientInputDto(x.Id, x.CreatedAt, x.Name, x.Price)).ToList();
+            return retornoJson?.Data;
         }
     }
 }

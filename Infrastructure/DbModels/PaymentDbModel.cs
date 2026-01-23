@@ -1,5 +1,8 @@
-﻿namespace Infrastructure.DbModels
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Infrastructure.DbModels
 {
+    [ExcludeFromCodeCoverage]
     public class PaymentDbModel
     {
         public Guid Id { get; private set; }

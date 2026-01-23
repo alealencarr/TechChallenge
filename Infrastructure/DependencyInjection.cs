@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure
 {
+    [ExcludeFromCodeCoverage]
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
@@ -32,7 +34,7 @@ namespace Infrastructure
                     );
                 });
             });
- 
+
             services.AddHealthChecksUI()
                     .AddSqlServerStorage(cnnStr);
 
@@ -42,7 +44,7 @@ namespace Infrastructure
         public static IHealthChecksBuilder AddHealthDb(this IHealthChecksBuilder services, IConfiguration configuration)
         {
             services.AddSqlServer(configuration.GetConnectionString(Configuration.ConnectionString), name: "SQL Server Check", tags: new string[] { "db", "data" });
-            return services;                                                
+            return services;
         }
 
 

@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Shared.DTO.Product.Request
 {
+    [ExcludeFromCodeCoverage]
     public record ProductRequestDto
     {
         [Required(ErrorMessage = "É necessário informar o nome.")]

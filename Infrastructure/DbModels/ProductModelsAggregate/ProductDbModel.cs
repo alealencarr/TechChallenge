@@ -1,13 +1,15 @@
 ﻿using Domain.Entities;
 using Infrastructure.DbModels.ProductModelsAggregate;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.DbModels
 {
+    [ExcludeFromCodeCoverage]
     public class ProductDbModel
     {
         protected ProductDbModel() { }
 
-        public ProductDbModel(Guid id, string name, decimal price, Guid categorieId, string description, DateTime createdAt, List<ProductImageDbModel> productImages, List<ProductIngredientDbModel> productIngredients )
+        public ProductDbModel(Guid id, string name, decimal price, Guid categorieId, string description, DateTime createdAt, List<ProductImageDbModel> productImages, List<ProductIngredientDbModel> productIngredients, bool isLanche)
         {
             Id = id;
             Name = name;
@@ -17,6 +19,7 @@ namespace Infrastructure.DbModels
             CreatedAt = createdAt;
             ProductImages = productImages;
             ProductIngredients = productIngredients;
+            IsLanche = isLanche;
         }
 
         public DateTime CreatedAt { get; set; }
@@ -25,8 +28,8 @@ namespace Infrastructure.DbModels
 
         public decimal Price { get; set; }
         public Guid CategorieId { get; set; }
-        public CategorieDbModel? Categorie { get; set; }
-
+        
+        public bool IsLanche { get; set; }
         public string Description { get; set; }
 
         public List<ProductImageDbModel> ProductImages { get;  set; } = [];

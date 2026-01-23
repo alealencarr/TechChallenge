@@ -1,9 +1,11 @@
 ﻿using Infrastructure.DbModels.ProductModelsAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.ModelsConfiguration.ProductAggregateConfiguration
 {
+    [ExcludeFromCodeCoverage]
     public class ProductImageDbModelConfiguration : IEntityTypeConfiguration<ProductImageDbModel>
     {
         public void Configure(EntityTypeBuilder<ProductImageDbModel> entity)

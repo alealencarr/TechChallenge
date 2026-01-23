@@ -1,67 +1,27 @@
 ﻿using Application.Interfaces.DataSources;
-using Domain.Entities;
-using Infrastructure.DbContexts;
-using Infrastructure.DbModels;
-using Microsoft.EntityFrameworkCore;
-using Shared.DTO.Categorie.Input;
-using System.Linq;
-
+using Shared.DTO.Categorie;
+using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http.Json;
 
 namespace Infrastructure.DataSources
 {
+    [ExcludeFromCodeCoverage]
     public class CategorieDataSource : ICategorieDataSource
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly HttpClient _httpClient;
 
-        public CategorieDataSource(AppDbContext appDbContext)
+        public CategorieDataSource(IHttpClientFactory httpClient)
         {
-            _appDbContext = appDbContext;
+            _httpClient = httpClient.CreateClient("CategoriesHttpClient");
         }
  
-        public async Task CreateCategorie(CategorieInputDto categorie)
+
+        public async Task<CategorieDto?> GetCategorieById(Guid id)
         {
-            var categorieDbModel = new CategorieDbModel(categorie.Id, categorie.Name, categorie.IsEditavel, categorie.CreatedAt);
+            var retorno = await _httpClient.GetFromJsonAsync<CommandResult<CategorieDto>>($"api/categories/{id}");
 
-            await _appDbContext.AddAsync(categorieDbModel);
-            await _appDbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateCategorie(CategorieInputDto categorie)
-        {
-            var categorieDb = await _appDbContext.Categorie.Where(x => x.Id == categorie.Id).FirstOrDefaultAsync() ?? throw new Exception("Customer not find by Id.");
-            categorieDb.Name = categorie.Name;
-            categorieDb.IsEditavel = categorie.IsEditavel;
-
-            _appDbContext.Update(categorieDb);
-            await _appDbContext.SaveChangesAsync();
-        }
-        public async Task<List<CategorieInputDto>> GetAllCategories()
-        {
-            var categories = await _appDbContext.Categorie.AsNoTracking().ToListAsync();
-
-            return categories.Select(x => new CategorieInputDto(x.Id , x.Name, x.IsEditavel, x.CreatedAt)).ToList();
-        }
-
-        public async Task<CategorieInputDto?> GetByName(string name)
-        {
-            var categorie = await _appDbContext.Categorie.AsNoTracking().Where(x => x.Name == name).FirstOrDefaultAsync();
-            return categorie is not null ? new CategorieInputDto(categorie.Id, categorie.Name, categorie.IsEditavel, categorie.CreatedAt) : null;
-        }
-
-        public async Task<CategorieInputDto?> GetCategorieById(Guid id)
-        {
-
-            var categorie = await _appDbContext.Categorie.AsNoTracking().Where(x => x.Id  == id).FirstOrDefaultAsync();
-            return categorie is not null ? new CategorieInputDto(categorie.Id , categorie.Name, categorie.IsEditavel, categorie.CreatedAt) : null;
-        }
-
-        public async Task Delete(Guid id)
-        {
-
-            var categorieDb = await _appDbContext.Categorie.Where(x => x.Id == id).FirstOrDefaultAsync() ?? throw new Exception("Categorie not find by Id.");
-
-            _appDbContext.Categorie.Remove(categorieDb);
-            await _appDbContext.SaveChangesAsync();
+            return retorno?.Data;
         }
     }
 }

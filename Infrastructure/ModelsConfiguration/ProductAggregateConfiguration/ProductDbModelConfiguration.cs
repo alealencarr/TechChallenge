@@ -1,9 +1,11 @@
 ﻿using Infrastructure.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.ModelsConfiguration.ProductAggregateConfiguration
 {
+    [ExcludeFromCodeCoverage]
     public class ProductDbModelConfiguration : IEntityTypeConfiguration<ProductDbModel>
     {
         public void Configure(EntityTypeBuilder<ProductDbModel> entity)
@@ -29,13 +31,7 @@ namespace Infrastructure.ModelsConfiguration.ProductAggregateConfiguration
 
             entity.Property(x => x.CreatedAt)
                 .IsRequired();
-
-            // Relação N:1 Product -> Categorie
-            entity.HasOne(x => x.Categorie)
-                .WithMany(c => c.Products)
-                .HasForeignKey(x => x.CategorieId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+ 
             // Relações 1:N para ProductImages e ProductIngredients
             entity.HasMany(x => x.ProductImages)
                 .WithOne(pi => pi.Product)

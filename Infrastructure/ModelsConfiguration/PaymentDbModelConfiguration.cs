@@ -1,9 +1,11 @@
 ﻿using Infrastructure.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.ModelsConfiguration
 {
+    [ExcludeFromCodeCoverage]
     public class PaymentDbModelConfiguration : IEntityTypeConfiguration<PaymentDbModel>
     {
         public void Configure(EntityTypeBuilder<PaymentDbModel> entity)

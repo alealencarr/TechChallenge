@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 namespace Infrastructure.ModelsConfiguration.OrdersAggregateConfiguration;
 
+[ExcludeFromCodeCoverage]
 public class OrderDbModelConfiguration : IEntityTypeConfiguration<OrderDbModel>
 {
     public void Configure(EntityTypeBuilder<OrderDbModel> entity)
@@ -49,11 +51,7 @@ public class OrderDbModelConfiguration : IEntityTypeConfiguration<OrderDbModel>
               .IsRequired(false)         // pode ser nulo (sem pagamento atual)
               .OnDelete(DeleteBehavior.Restrict);
 
-        entity.HasOne(o => o.Customer)
-            .WithMany(c => c.Orders)
-            .HasForeignKey(o => o.CustomerId)
-            .OnDelete(DeleteBehavior.SetNull);
-
+ 
         entity.HasMany(o => o.Itens)
             .WithOne(i => i.Order)
             .HasForeignKey(i => i.OrderId)

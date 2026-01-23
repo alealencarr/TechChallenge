@@ -1,7 +1,9 @@
 ﻿using Shared.DTO.Categorie.Output;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Shared.DTO.Order.Output.OrderCompleted
 {
+    [ExcludeFromCodeCoverage]
     public record OrderOutputDto
     {
         public Guid Id { get; set; }

@@ -1,9 +1,11 @@
 ﻿using Infrastructure.DbModels.OrdersModelsAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.ModelsConfiguration.OrdersAggregateConfiguration
 {
+    [ExcludeFromCodeCoverage]
     public class IngredientSnackDbModelConfiguration : IEntityTypeConfiguration<IngredientSnackDbModel>
     {
         public void Configure(EntityTypeBuilder<IngredientSnackDbModel> entity)

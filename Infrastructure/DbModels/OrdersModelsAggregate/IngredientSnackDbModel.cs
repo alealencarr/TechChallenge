@@ -1,6 +1,9 @@
 ﻿
+using System.Diagnostics.CodeAnalysis;
+
 namespace Infrastructure.DbModels.OrdersModelsAggregate
 {
+    [ExcludeFromCodeCoverage]
     public class IngredientSnackDbModel
     {
         public Guid Id { get; private set; }

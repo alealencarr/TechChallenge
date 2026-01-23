@@ -13,7 +13,7 @@ namespace Domain.Entities.Aggregates.AggregateOrder
             Price = price * quantity;
             ProductId = productId;
             Quantity = quantity;
-            IsLanche = product!.Categorie!.IsLanche();
+            IsLanche = product!.IsLanche;
 
             if (IsLanche)
             {
@@ -80,7 +80,7 @@ namespace Domain.Entities.Aggregates.AggregateOrder
             Id = id;
         }
 
-        internal decimal GetPrice()
+        public decimal GetPrice()
         {
             var adicionais = Ingredients?.Where(x => x.Additional == true).Sum(x => x.Price * x.Quantity) ?? 0;
             Price = Price + adicionais;

@@ -2,7 +2,7 @@
 {
     public class Product
     {
-        public Product(Guid id, string name, string description, decimal price, Guid categorieId, DateTime createdAt, List<ProductIngredient> ingredients, List<ProductImage> images, Categorie categorie)
+        public Product(Guid id, string name, string description, decimal price, Guid categorieId, DateTime createdAt, List<ProductIngredient> ingredients, List<ProductImage> images, bool isLanche)
         {
             Id = id;
             Name = name;
@@ -10,13 +10,12 @@
             Description = description;
             CategorieId = categorieId;
             CreatedAt = createdAt;
-            Categorie = categorie;
+            IsLanche = isLanche;
             ToAddImages(images);
             ToAddIngredients(ingredients);
         }
 
-        #region Construtor new Product
-        private Product(string name, decimal price, Guid categorieId, string description, List<ProductIngredient> ingredients, List<ProductImage> images, Categorie categorie)
+        private Product(string name, decimal price, Guid categorieId, string description, List<ProductIngredient> ingredients, List<ProductImage> images, bool isLanche)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("É necessário informar um nome para o Produto.");
@@ -33,7 +32,7 @@
             CategorieId = categorieId;
             CreatedAt = DateTime.Now;
 
-            if (categorie.IsLanche())
+            if (isLanche)
             {
                 if (ingredients.Count == 0)
                     throw new ArgumentException("É necessário informar pelo menos um ingrediente para criar um produto do tipo Lanche.");
@@ -48,13 +47,12 @@
                 ToAddImages(images);
             }
 
-            Categorie = categorie;
+            IsLanche = isLanche;
 
         }
-        #endregion
-
+ 
         #region Construtor Update Product 
-        private Product(Guid id, string name, decimal price, Guid categorieId, string description, List<ProductIngredient> ingredients, List<ProductImage> images, Categorie categorie)
+        private Product(Guid id, string name, decimal price, Guid categorieId, string description, List<ProductIngredient> ingredients, List<ProductImage> images, bool isLanche)
         {
             Id = id;
             Name = name;
@@ -62,7 +60,7 @@
             Description = description;
             CategorieId = categorieId;
 
-            if (categorie.IsLanche())
+            if (isLanche)
             {
                 if (ingredients.Count == 0)
                     throw new ArgumentException("É necessário informar pelo menos um ingrediente para alterar um produto do tipo Lanche.");
@@ -79,18 +77,18 @@
 
             }
 
-            Categorie = categorie;
+            IsLanche = isLanche;
         }
         #endregion
 
-        public static Product Create(string name, decimal price, Guid categorieId, string description, List<ProductIngredient> ingredients, List<ProductImage> images, Categorie categorie)
+        public static Product Create(string name, decimal price, Guid categorieId, string description, List<ProductIngredient> ingredients, List<ProductImage> images, bool isLanche)
         {
-            return new Product(name, price, categorieId, description, ingredients, images, categorie);
+            return new Product(name, price, categorieId, description, ingredients, images, isLanche);
         }
 
-        public static Product Update(Guid id, string name, decimal price, Guid categorieId, string description, List<ProductIngredient> ingredients, List<ProductImage> images, Categorie categorie)
+        public static Product Update(Guid id, string name, decimal price, Guid categorieId, string description, List<ProductIngredient> ingredients, List<ProductImage> images, bool isLanche)
         {
-            return new Product(id, name, price, categorieId, description, ingredients, images, categorie);
+            return new Product(id, name, price, categorieId, description, ingredients, images, isLanche);
         }
 
         protected Product() { }
@@ -100,7 +98,7 @@
 
         public decimal Price { get; set; }
         public Guid CategorieId { get; set; }
-        public Categorie? Categorie { get; set; }
+        public bool IsLanche { get; set; }  
 
         public string Description { get; set; }
 

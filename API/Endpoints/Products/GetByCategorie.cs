@@ -6,18 +6,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Product.Output;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Endpoints.Products;
+[ExcludeFromCodeCoverage]
 internal sealed class GetByCategorie : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapGet("api/products",
-           async (AppDbContext appDbContext, HttpContext httpContext, [FromQuery] string? idCategorie = null, [FromQuery] string? nameCategorie = null) =>
+           async (AppDbContext appDbContext, HttpContext httpContext, [FromQuery] string? idCategorie = null) =>
            {
                IProductDataSource dataSource = new ProductDataSource(appDbContext);
                ProductController _productController = new ProductController(dataSource);
-               var products = await _productController.GetProductsByCategorie(idCategorie, nameCategorie);
+               var products = await _productController.GetProductsByCategorie(idCategorie, null);
 
                return products.Succeeded ? Results.Ok(products) : Results.BadRequest(products);
 

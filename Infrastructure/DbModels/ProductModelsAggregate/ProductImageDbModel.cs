@@ -1,5 +1,8 @@
-﻿namespace Infrastructure.DbModels.ProductModelsAggregate
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Infrastructure.DbModels.ProductModelsAggregate
 {
+    [ExcludeFromCodeCoverage]
     public class ProductImageDbModel
     {
         public Guid ProductId { get; set; }
